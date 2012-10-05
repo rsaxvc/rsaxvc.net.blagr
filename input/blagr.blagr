@@ -1,0 +1,25 @@
+Title:Blagr
+Author:Richard Allen
+Date:2012-09-31
+Tag:Blogging
+---
+<p>This is a simple blogging platform I wrote to replace my dependence on Movable Type.
+I suppose it will require me to actually learn some css/html.</p>
+
+<p>Previously I tried updating my Movable Type install, but that wouldn't work.</p>
+<p>So I tried installing the new version and uploading the backup to it. But that didn't work.</p>
+<p>Next I tried a clean install of the old version, uploading the backup, and upgrading. But that didn't work</p>
+<p>Finally I looked at the documentation online, but it was plastered with spam comments.</p>
+<p>I really don't like being unable to get my data back in a nice parsable format.</p>
+
+<p>So that's how this started. Blagr uses a simple plain-text format, one file per post. 
+Blagr really isn't a blog or blog-engine by itself - it is only a transfer format. 
+You can see the source to all my posts in the blog/input directory.</p>
+
+<p>The format is quite simple - there are two parts, header and body, as well as a seperator
+between them: --- , that's three dashes in a row on one line. The header itself is a list
+of key-value pairs. Each line in the header has the key, then a colon, then the value. So
+you want to tag a post with pickles? Add Tag:Pickles to the header. The post body is XHMTL</p>
+
+<p>The blog you are reading right now is statically compiled by a small python program that
+only knows how to read .blagr files, sort them, and output html.</p>

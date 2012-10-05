@@ -1,0 +1,10 @@
+Title:A Blagr Test
+Author:Richard Allen
+Date:2012-09-29
+Tag:MovableType
+Tag:Blogging
+Tag:Abstraction
+---
+<p>
+Today I got fed up with MovableType. I needed to update my install. However, since that never goes smoothly, I created a duplicate install, downloaded the backup, uploaded it to the new install, and it still failed. So instead I wrote this thing.
+</p>
