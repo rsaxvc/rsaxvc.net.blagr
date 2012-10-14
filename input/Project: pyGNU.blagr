@@ -1,0 +1,13 @@
+Title:Project: pyGNU
+Author:rsaxvc
+CreatedDateTime:2012-01-02T22:23:34
+ModifiedDateTime:2012-01-02T22:23:34
+Tag:GNU
+Tag:Languages
+Tag:Programming
+Tag:Python
+Tag:pyGNU
+Tag:python
+---
+<a href="https://github.com/rsaxvc/pygnu">pyGNU</a>&nbsp;is a reimplementation of the GNU <a href="http://www.gnu.org/software/coreutils/">coreutils</a> in Python.&nbsp;
+<a href="http://python.org/">Python</a>&nbsp;is a fun language, and happens to have a pretty nice OS abstraction package, named 'os'. When combined with the 'sys' package, most coreutils are pretty straightforward to implement in Python.&nbsp;<div><br /></div><div>I thought this would be a simple way to learn a little more Python. But I've come to an interesting realization about my programming over time. When I was young, to solve a problem I'd choose a simple language, like basic on my Apple II. As I became older, I would do more projects in the language I knew best, C/C++. Now, I usually pick the language that involves the least amount of typing.</div><div><div><br /></div></div><div>Python's for-iterator syntax, sets, lists, and preexisting packages make it a joy to write. Many of the pyGNU programs aren't quite done yet, but all the programs are usable. If you know python, feel free to add a few more.</div>

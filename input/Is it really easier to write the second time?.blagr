@@ -1,0 +1,10 @@
+Title:Is it really easier to write the second time?
+Author:rsaxvc
+CreatedDateTime:2011-04-19T17:57:59
+ModifiedDateTime:2011-04-19T17:57:59
+Tag:Opencaching
+Tag:PHP
+Tag:Programming
+Tag:rss
+---
+Talking with a friend today, the concept that a program is easier to write the second time around came up. I think in general, this is true. However, most times it falls into one of two reasons.<div><ol><li>You didn't really have a good grasp of the solution before you started</li><li>Your programming language doesn't allow clear concise expression of ideas</li></ol><div>In particular, we were discussing my opencaching rss generator. I lost it when my virtual host crashed as I hadn't added /opencaching to my backups. The RSS generator was written in PHP. #1 definitely applied - I didn't know what the finished product looked like, but it would be something like construct query / parse GPX (later switched to JSON)/convert to RSS. However, by using PHP, #2 made up for #1 - things like json_decode() and curl made the implementation short and simple.</div></div>

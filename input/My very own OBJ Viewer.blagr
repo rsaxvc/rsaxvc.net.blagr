@@ -1,0 +1,9 @@
+Title:My very own OBJ Viewer
+Author:rsaxvc
+CreatedDateTime:2010-12-20T23:07:18
+ModifiedDateTime:2010-12-20T23:07:18
+Tag:Geometry
+Tag:Graphics
+Tag:Obj
+---
+<meta http-equiv="content-type" content="text/html; charset=utf-8"><div>The OBJ file format is a simple container for 3D geometry.</div><a href="http://en.wikipedia.org/wiki/Obj">http://en.wikipedia.org/wiki/Obj</a><div><br /></div><div>I needed a viewer for it, so I wrote one. So far it supports 3 element face-vertex form.Potentially, each face can have an unlimited number of vertices, but 3 serves my purposes. Also, there are several other items that can be stored, like texture and normal information that are not yet implemented, but it serves my purposes. Source code is available here:&nbsp;<a href="http://rsaxvc.net/code/obj3dviewer/">http://rsaxvc.net/code/obj3dviewer</a></div><div><br /></div>

@@ -1,0 +1,21 @@
+Title:CCCKC: PianoBar Player
+Author:rsaxvc
+CreatedDateTime:2011-07-10T10:10:48
+ModifiedDateTime:2011-07-10T10:10:48
+Tag:C3
+Tag:CCCKC
+Tag:Music
+Tag:Pandora
+Tag:PianoBar
+Tag:Via
+Tag:gcc
+---
+<div>Long night here at the cave, but Phillip Dorr and I built a <a href="http://6xq.net/projects/pianobar/">PianoBar</a> player. PianoBar is a command-line player for <a class="zem_slink" href="http://www.pandora.com/" title="Pandora Media" rel="homepage">Pandora</a>, written by Lars Braun. The unit is an old thin client sporting 533MHz <a class="zem_slink" href="http://en.wikipedia.org/wiki/VIA_C3" title="VIA C3" rel="wikipedia">Via C3</a> and 256MB PC133. Compile options make a big difference for this little guy. <a class="zem_slink" href="http://gcc.gnu.org/" title="GNU Compiler Collection" rel="homepage">GCC</a> does have a Via C3 CPU model, but doesn't do instruction scheduling for it. We found that with -O3 -march=pentium-mmx we were able to reach only 30% CPU usage, whereas the default -O2 took 40%ish. I suspect this is because pentium-mmx has an instruction scheduling model that matches the C3 better than no scheduling + 3dNow instructions.<br /><br />Here's what it looks like:<br /></div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5922354990/" title="CCCKC PianoBar in construction by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6123/5922354990_5b70f79680.jpg" alt="CCCKC PianoBar in construction" height="333" width="500" /></a></div><br />
+
+<div>Currently the box lies out of the way, with only a keyboard hanging out.</div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5921792609/" title="CCCKC PianoBar Controls by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6130/5921792609_830967012d.jpg" alt="CCCKC PianoBar Controls" height="333" width="500" /></a></div><br />
+
+<div>We hope to create a new controller by using an arduino that can appear as a USB keyboard, like the UNO.</div>

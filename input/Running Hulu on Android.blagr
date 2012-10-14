@@ -1,0 +1,23 @@
+Title:Running Hulu on Android
+Author:rsaxvc
+CreatedDateTime:2011-01-29T01:54:37
+ModifiedDateTime:2011-01-29T01:54:37
+Tag:Adobe Flash
+Tag:Android
+Tag:Flash
+Tag:Hack
+Tag:Mac OS X
+Tag:User agent
+Tag:Web browser
+---
+<div>***Don't try this at home. Don't blame me if it breaks your phone. It didn't break my phone though.***</div><div><br /></div>Recently, I posted&nbsp;<a href="http://rsaxvc.net/blog/2011/01/changing-your-google-chrome-flash-version.html">how to change your flash version</a>. I looked into this because I was curious how the web applications like <a class="zem_slink" href="http://hulu.com" title="hulu" rel="homepage">Hulu</a> could detect that your device was an Android client instead of a real web browser. Initially, I looked into packet dumps that I compared between my <a class="zem_slink" href="http://en.wikipedia.org/wiki/Motorola_Droid" title="Motorola Droid" rel="wikipedia">Droid phone</a> and my laptop. The user-agent strings can be changed to match, but some web apps can still detect they are running on a phone. The key is in the <a class="zem_slink" href="http://get.adobe.com/flashplayer" title="Adobe Flash" rel="homepage">Flash</a> version string. This string, accessible through the Adobe Flash API, is built into the library. So to make a phone look like a real browser, you both need a <a class="zem_slink" href="http://en.wikipedia.org/wiki/User_agent" title="User agent" rel="wikipedia">user-agent string</a> from a real browser, and a flash version from a real browser.<div><br /></div><div>What flash version should we use? Since the 'Desktop' user-agent option emulates an <a class="zem_slink" href="http://en.wikipedia.org/wiki/Apple%E2%80%93Intel_architecture" title="Apple-Intel architecture" rel="wikipedia">Intel Mac</a> running 10.5, "MAC 10,1,103,19" is a valid <a class="zem_slink" href="http://www.apple.com/macosx/" title="Mac OS X" rel="homepage">OS X</a> flash version. (You can find this by asking a friend with a Mac to go&nbsp;<a href="http://kb2.adobe.com/cps/155/tn_15507.html">check their flash version</a>.)<br /><div><br /></div></div><div>If you have a hexeditor on your phone, you can do this without ADB. I used ADB because I haven't yet installed my favorite hexeditor,&nbsp;<a href="http://rigaux.org/hexedit.html" style="text-decoration: underline; ">Pixel's Hexedit</a>, on my phone.</div><div><br /></div>
+
+<div><font class="Apple-style-span" style="font-size: 0.64em; "></font><ul><font class="Apple-style-span" style="font-size: 0.64em; ">
+
+<li>Close all browsers ( use a task killer )</li>
+<li>adb pull /data/data/com.adobe.<wbr>flashplayer/lib/<wbr>libflashplayer.so /tmp/libflashplayer.so</li>
+<li>cp /tmp/libflashplayer.so /&lt;backup-path&gt;/libflashplayer.android.orig.so</li>
+<li>Use hexeditor to&nbsp;<a href="http://rsaxvc.net/blog/2011/01/changing-your-google-chrome-flash-version.html">change flash version</a>&nbsp;to "MAC 10,1,103,19"</li>
+<li>adb push /tmp/libflashplayer.so /data/data/com.adobe/flashplayer/lib/libflashplayer.so</li>
+
+</font></ul></div><div><br /></div><div>At this point, I cleared all caches, cookies, and history from my browser and rebooted my phone. Finally, and before going to Hulu.com,&nbsp;<a href="http://www.absolutelyandroid.com/guide-hulu-on-android-2-2-froyo/">set your user-agent to desktop mode</a>, which acts like an Intel Mac.</div><div><br /></div><div>And then...</div><div><a href="http://www.flickr.com/photos/40925843@N03/5397654132/" title="Hulu on Android by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5297/5397654132_550739e4ac.jpg" width="500" height="333" alt="Hulu on Android" /></a></div><div><br /></div><div>The sound is clean, but the videos are pretty laggy. I'll have to try this on a friend's phone to see if a newer, perhaps 1+GHz CPU, will improve things.</div>

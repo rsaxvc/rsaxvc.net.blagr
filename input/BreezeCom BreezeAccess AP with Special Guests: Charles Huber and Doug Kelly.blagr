@@ -1,0 +1,27 @@
+Title:BreezeCom BreezeAccess AP with Special Guests: Charles Huber and Doug Kelly
+Author:rsaxvc
+CreatedDateTime:2011-04-21T21:54:20
+ModifiedDateTime:2011-04-22T23:16:35
+Tag:BreezeAccess
+Tag:BreezeCom
+Tag:Serial
+Tag:Serial port
+Tag:teardown
+---
+<div>Today we took apart a BreezeCom BreezeAccess AccessPoint.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5642293137/" title="BreezeCom BreezeAccess by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5050/5642293137_b04bf79d1c.jpg" width="500" height="333" alt="BreezeCom BreezeAccess" /></a></div><br />
+
+<div>Charles is excited to begin disassembling the device</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5642266133/" title="UberHuber by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5148/5642266133_43ce74986a.jpg" width="333" height="500" alt="UberHuber" /></a></div><br />
+
+<div>The electronics come on two boards, connected with a .1 pitch header</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5642860210/" title="BreezeAccess Electronics by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5048/5642860210_cd2140db0e.jpg" width="500" height="333" alt="BreezeAccess Electronics" /></a></div><br />
+
+<div>Here's what each side of both boards looks like</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5642864842/" title="BreezeAccess Boards by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5265/5642864842_8cdc6879b2.jpg" width="500" height="333" alt="BreezeAccess Boards" /></a></div><div><a href="http://www.flickr.com/photos/40925843@N03/5642296675/" title="BreezeAccess Boards by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5069/5642296675_ccd173a1f1.jpg" width="500" height="333" alt="BreezeAccess Boards" /></a></div><div><a href="http://www.flickr.com/photos/40925843@N03/5642866790/" title="BreezeAccess Boards by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5185/5642866790_4b07a746aa.jpg" width="500" height="333" alt="BreezeAccess Boards" /></a></div><div><a href="http://www.flickr.com/photos/40925843@N03/5642298641/" title="BreezeAccess Boards by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5222/5642298641_7a88b01845.jpg" width="500" height="333" alt="BreezeAccess Boards" /></a></div><br />
+
+<div>The serial console settings are conveniently exposed on the outside of the device on a 3x1 .1 pitch locking connector. The settings are 9600 baud, 8N1. Once on the serial console, Doug explored many options and menus. Some are only accessible by 'authorized users'.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5642861836/" title="BreezeCom BreezeAccess by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5049/5642861836_411141271e.jpg" width="500" height="333" alt="BreezeCom BreezeAccess" /></a></div><br />
+
+<div><a href="http://rsaxvc.net/datasheets/breezecom/">This documentation</a> might match the device we took apart</div><div><a href="http://rsaxvc.net/blog/breezeCom.txt">breezeCom.txt</a>&nbsp;is a serial capture of talking to the device</div>
+

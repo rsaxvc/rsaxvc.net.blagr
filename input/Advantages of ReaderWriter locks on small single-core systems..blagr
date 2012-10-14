@@ -1,0 +1,41 @@
+Title:Advantages of Reader/Writer locks on small single-core systems.
+Author:rsaxvc
+CreatedDateTime:2012-09-23T23:46:42
+ModifiedDateTime:2012-09-24T20:21:48
+Tag:Latency
+Tag:contention
+Tag:lock
+Tag:reader-writer-lock
+Tag:semaphore
+---
+<div>
+
+<div><br />Most commonly, reader/writer locks are applied to larger systems where it can decrease contention when there are many threads trying to read. In my case there were actually very few threads, but a reader/writer lock still proved advantageous. Let us examine what can happen when two threads need to read, using both a standard lock, and a reader/writer lock.<br /></div>
+
+<div><br />Premise: Thread A is high-priority, thread B is low-priority, and the OS provides hard-priority-scheduling. Only these two threads will run in the period of time we're interested in.<br /></div>
+
+<div><br />Here's what could happen using a single standard lock.
+<ol>
+<li>An event occurs, causing thread B to run.</li>
+<li>Thread B takes the lock and begins reading</li>
+<li>An event occurs, causing thread A to run.</li>
+<li>A context-switch occurs due to thread-priority. Thread A is now running.</li>
+<li>Thread A attempts to read but is blocked.</li>
+<li>A context-switch occurs, allowing thread B to release the lock.</li>
+<li>A context-switch occurs due to thread-priority. Thread A is now running.</li>
+<li>Thread A takes the lock, reads, unlocks, and blocks elsewhere.</li>
+<li>A Context switch occurs due to only one ready-to-run thread.</li>
+<li>Thread B continues until it blocks elsewhere.</li></ol></div>
+
+<div><br />But now, lets look at what happens with a reader/writer lock instead, with similar event timing.
+<ol>
+<li>An event occurs, causing thread B to run.</li>
+<li>Thread B takes the lock and begins reading</li>
+<li>An event occurs, causing thread A to run.</li>
+<li>A context-switch occurs due to thread-priority. Thread A is now running.</li>
+<li>Thread A also takes the lock, reads, and releases the lock. It then blocks elsewhere.</li>
+<li>Thread B finishes reading, releases the lock, and blocks elsewhere.</li></ol></div>
+
+<div><br />First we notice that using the reader/writer lock avoids a pair of unceccesary context-switches. This is nice, but the advantage is heavily architecture/OS dependent.</div><div><br /></div><div>Even assuming the context-switches are cheap, there's another advantage to the reader/writer lock in this situation. The advantage is system latency - by using the reader/writer lock instead of a simple lock, high-priority threads no longer have to wait for low-priority thread to release the lock. The ability to allow multiple threads to enter the critical section is the same reason it is often chosen in high-contention environments, but it also usefully provides reduced latency when experiencing any contention.</div>
+
+</div>

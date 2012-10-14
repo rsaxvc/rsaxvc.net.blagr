@@ -1,0 +1,12 @@
+Title:Libcutter now draws G-Code
+Author:rsaxvc
+CreatedDateTime:2011-02-13T19:15:09
+ModifiedDateTime:2011-02-13T19:15:09
+Tag:Cricut
+Tag:G-Code
+Tag:GCode
+Tag:Hack
+Tag:PCB
+Tag:libcutter
+---
+<div>Thanks to Ray S.&nbsp;<meta http-equiv="content-type" content="text/html; charset=utf-8"><a href="https://github.com/vangdfang/libcutter" style="text-decoration: underline; ">libcutter</a>&nbsp;now supports some basic G-Codes. Ray wrote a g-code interpreter in python (<a href="sites.google.com/site/drbobbobswebsite/cricut-gcode-interpreter">sites.google.com/site/drbobbobswebsite/cricut-gcode-interpreter</a>&nbsp;), which I then ported into C++, and <a href="https://github.com/vangdfang/libcutter">libcutter</a>. This is my first PCB drawing, which is a&nbsp;<a href="http://www.reprap.org/wiki/Pen_Holder">reprap</a>&nbsp;PCB that Ray sent me. G-code support helps open up many more possibilities, as it is a common standard for machine control. Currently, the interpreter only supports absolute positions, and Z of 0 or 1, to pick up or put down the tool.</div><div>&nbsp;</div><a href="http://www.flickr.com/photos/40925843@N03/5443668000/" title="My First PCB Printout by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5299/5443668000_74de84cae8.jpg" width="500" height="374" alt="My First PCB Printout" /></a>

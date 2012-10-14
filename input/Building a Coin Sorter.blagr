@@ -1,0 +1,19 @@
+Title:Building a Coin Sorter
+Author:rsaxvc
+CreatedDateTime:2011-07-09T22:10:52
+ModifiedDateTime:2011-07-09T22:10:52
+Tag:Camera
+Tag:Coin
+Tag:OpenCV
+---
+<div>A while back I had the idea of building a device that would optically sort coins. I've always been fascinated by the gravity-fed machines that sort different sizes of coins into bins. I want to take it further. I would like to be able to sort my coins by date into different tubes not only by size, but also color, year, and maybe quality.<br /><br />The first step for this, is to build a test rig that can hold a camera and different coins:</div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5920186425/" title="Coin Identification Rig by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6136/5920186425_8f580d03a3.jpg" alt="Coin Identification Rig" height="333" width="500" /></a></div><br />
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5920187505/" title="Coin Identification Rig by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6030/5920187505_d904a039a8.jpg" alt="Coin Identification Rig" height="333" width="500" /></a></div><br />
+
+<div>Once the computer+camera can make a repeatable good decision, I'll build a system to move the coins into different storage containers, but for now I'll settle for detecting different coins.</div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5920751190/" title="Nickel by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6129/5920751190_0e8e1c83d0.jpg" alt="Nickel" height="375" width="500" /></a></div><br />
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5920751160/" title="SoCar by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6143/5920751160_9105d7bf98.jpg" alt="SoCar" height="375" width="500" /></a></div>

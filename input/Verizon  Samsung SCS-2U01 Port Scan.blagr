@@ -1,0 +1,9 @@
+Title:Verizon / Samsung SCS-2U01 Port Scan
+Author:rsaxvc
+CreatedDateTime:2011-02-05T19:40:41
+ModifiedDateTime:2011-02-05T19:40:41
+Tag:SCS-2U01
+Tag:Samsung
+Tag:Verizon
+---
+<div>Starting Nmap 5.00 ( http://nmap.org ) at 2011-02-05 19:34 CST</div><div>Interesting ports on ws166 (172.30.3.166):</div><div>Not shown: 996 closed ports</div><div>PORT &nbsp; &nbsp; STATE &nbsp; &nbsp;SERVICE</div><div>22/tcp &nbsp; filtered ssh</div><div>23/tcp &nbsp; open &nbsp; &nbsp; telnet</div><div>80/tcp &nbsp; open &nbsp; &nbsp; http</div><div>9100/tcp open &nbsp; &nbsp; jetdirect</div><div><br /></div>

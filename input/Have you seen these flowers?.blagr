@@ -1,0 +1,13 @@
+Title:Have you seen these flowers?
+Author:rsaxvc
+CreatedDateTime:2011-06-11T21:04:40
+ModifiedDateTime:2011-06-11T21:34:55
+Tag:Android
+Tag:ROM
+Tag:flowers
+---
+<div>I found an image of flowers. I'm not sure I have the byte-alignment correct, but I found these flowers inside a memory device in my Android GTablet.</div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5822580855/" title="Android Flowers by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5313/5822580855_67d834be93.jpg" width="500" height="371" alt="Android Flowers"></a></div>
+
+<div>Anyhow, if you set GIMP to open a raw file that is 1024 pixels wide, supply it with /dev/mtd6 from a ViewSonic GTablet, and scroll on down to about 3302456, you just might find these flowers. I'm also running cyanogenmod7, and I wonder if it makes a difference.</div>

@@ -1,0 +1,21 @@
+Title:libgraphoscope: a project in need of a newer name
+Author:rsaxvc
+CreatedDateTime:2012-05-03T05:00:52
+ModifiedDateTime:2012-05-03T05:00:52
+Tag:audio
+Tag:oscilloscope
+---
+<div>I'll prefix this with; when I wrote it, I needed a name meaning graphing on an oscilloscope. Later I found it had been taken for some time. This all started when I saw this video:</div>
+<br />
+
+<div><object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/1UpwOtb7yh0&amp;hl=nl_NL&amp;fs=1&amp;" /><param name="allowFullScreen" value="true" /><param name="allowscriptaccess" value="always" /><embed src="http://www.youtube.com/v/s1eNjUgaB-g&amp;hl=nl_NL&amp;fs=1&amp;" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></object></div>
+
+<br />
+<div>So, I wrote a little library that can render out to the audio-card. Now I just need to write a sweet demo like the above video.</div>
+
+<br />
+
+<div><a href="https://github.com/rsaxvc/libgraphoscope">https://github.com/rsaxvc/libgraphoscope</a></div>
+
+<br />
+<div> It may require a little tuning in graphoscope_config.h for you particular soundcard.</div>

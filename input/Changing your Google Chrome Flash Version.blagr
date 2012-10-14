@@ -1,0 +1,9 @@
+Title:Changing your Google Chrome Flash Version
+Author:rsaxvc
+CreatedDateTime:2011-01-26T23:51:56
+ModifiedDateTime:2011-01-27T00:11:18
+Tag:dll
+Tag:flash
+Tag:hexedit
+---
+Sometimes it is useful to change your Flash version. Here's a simple trick to do that and see how apps behave.<div><a href="http://rsaxvc.net/blog/assets_c/2011/01/FlashWin-37.html" onclick="window.open('http://rsaxvc.net/blog/assets_c/2011/01/FlashWin-37.html','popup','width=708,height=376,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=0,top=0'); return false"><img src="http://rsaxvc.net/blog/assets_c/2011/01/FlashWin-thumb-480x254-37.png" width="480" height="254" alt="FlashWin.png" class="mt-image-none" style="" /></a></div><div>Steps:<br /><div><ol><li>Get the current flash version from&nbsp;<a href="http://kb2.adobe.com/cps/155/tn_15507.html">http://kb2.adobe.com/cps/155/tn_15507.html</a></li><li>grep for your current os + version in %USERPATH%\AppData\Local\Google\Chrome\Application\ . You'll find it in a subdirectory in gcswf32.dll</li><li>Hexedit and replace the os + version number. Because it is a NULL-terminated string, don't use any more characters than it already has.</li></ol><div><br /></div></div><div>...and tada!</div><div><a href="http://rsaxvc.net/blog/assets_c/2011/01/FlashSin-40.html" onclick="window.open('http://rsaxvc.net/blog/assets_c/2011/01/FlashSin-40.html','popup','width=702,height=349,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=0,top=0'); return false"><img src="http://rsaxvc.net/blog/assets_c/2011/01/FlashSin-thumb-480x238-40.png" width="480" height="238" alt="FlashSin.png" class="mt-image-none" style="" /></a></div><div><br /></div></div><div>Linux uses the prefix LNX and Android uses AND.&nbsp;</div>

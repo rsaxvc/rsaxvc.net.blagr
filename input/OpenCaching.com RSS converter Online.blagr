@@ -1,0 +1,9 @@
+Title:OpenCaching.com RSS converter Online
+Author:rsaxvc
+CreatedDateTime:2011-01-16T01:19:35
+ModifiedDateTime:2011-01-16T01:19:35
+Tag:Geocaching
+Tag:Opencaching
+Tag:RSS
+---
+It may not be much to look at, but&nbsp;<a href="http://rsaxvc.net/opencaching/">my opencaching to rss</a>&nbsp;converter will let you periodically search a small area for particular types of geocaches as they are posted on OpenCaching.com. There are two files to make it happen: index.html and rss.php, although rss.php is completely capable of running by itself.<div><br /></div><div>Index.html prompts the user to set up a filter. This filter is then encoded into a URL passed to rss.php. RSS.php builds up an OpenCaching.com JSON query, and transforms the result into RSS. To install the RSS into your favorite reader, simply fill in the form click submit, and copy the current URL into your RSS reader.<br /><div><br /></div></div>

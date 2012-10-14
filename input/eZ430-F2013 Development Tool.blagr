@@ -1,0 +1,37 @@
+Title:eZ430-F2013 Development Tool
+Author:rsaxvc
+CreatedDateTime:2011-01-26T21:56:34
+ModifiedDateTime:2011-01-26T21:56:34
+Tag:Development Kit
+Tag:I2C
+Tag:MSP430
+Tag:Microcontroller
+Tag:RS-232
+Tag:Serial
+Tag:TI
+Tag:USB
+Tag:eZ430-F2013
+---
+Normally I take apart all new toys, but this one has only 5 parts, and is designed to come apart easily. It costs only $20, available from TI&nbsp;<a href="http://focus.ti.com/docs/toolsw/folders/print/ez430-f2013.html">here</a>. Previously, there was a giveaway for up to 3 units, although you had to wait up to a month for shipping and handling.<div><br /></div><div>Packaging: I'm a big fan of the DVD case and double thick DVD case form factors. This comes in a single DVD case:<br /><div><br /></div></div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5391542981/" title="Front Box by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5051/5391542981_353512553c.jpg" width="333" height="500" alt="Front Box" /></a></div><div><br /></div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5391543983/" title="Rear Box by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5058/5391543983_e41d36e4fc.jpg" width="333" height="500" alt="Rear Box" /></a></div><div><br /></div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5392145828/" title="Open Box by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5255/5392145828_41cb82978a.jpg" width="500" height="333" alt="Open Box" /></a></div>
+
+<div><br /></div><div>Looks a lot like a thumbdrive, which is a great form factor for something like this:</div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5392146536/" title="Looks like a thumbdrive by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5052/5392146536_25b0b43efa.jpg" width="500" height="333" alt="Looks like a thumbdrive" /></a></div>
+
+<div><br /></div><div>Here's the important part</div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5391548051/" title="The important part by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5254/5391548051_c585a15eea.jpg" width="500" height="333" alt="The important part" /></a></div>
+
+<div><br /></div><div>It breaks apart into two pieces: the USB to RSR232/RS485 with TUSB3410, and the MSP430 itself:</div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5391549767/" title="eZ430-F2013 Dev Kit by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5094/5391549767_176f8cdce1.jpg" width="333" height="500" alt="eZ430-F2013 Dev Kit" /></a></div>
+
+<div><br /></div><div>For some perspective, this is sitting on an American Lincoln Penny<div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5392150850/" title="The MSP430 by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5060/5392150850_61eb6493c8.jpg" width="500" height="328" alt="The MSP430" /></a></div></div></div><div><br /></div><div>This looks to be a fun toy, for two reasons. One, is the MSP430 microcontroller. Two, is the USB to Serial Adapter. The serial adapter is a TUSB3410, which also holds an 8052 microcontroller with 16K of RAM, 10K of ROM, UART with DMA, dual 16-bit timers, IRDA encoder/decoder, and also I2C.</div>

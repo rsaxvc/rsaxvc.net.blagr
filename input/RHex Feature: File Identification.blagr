@@ -1,0 +1,13 @@
+Title:RHex Feature: File Identification
+Author:rsaxvc
+CreatedDateTime:2011-04-08T20:01:17
+ModifiedDateTime:2011-04-08T20:01:17
+---
+I want RHex to be able to look at the current cursor position, and report possible file types assuming that byte is the beginning of a file. To do this, I'm going to use libmagic. libmagic is a library for recognizing magic numbers, much like those often placed at the start of a file as a special marker. For example, FF D8 marks often the start of a <span class="caps">JPEG </span>file. When working with different types of archives and binaries the ability to quickly guess at the content of a file embedded within is a very useful feature for a hexeditor.<div><br /></div><div>So I tried to write a simple implementation of the unix command 'file'. I used libmagic, and it only took about 15 lines.</div>
+
+<div><pre><br />#include &lt;stdio.h&gt;<br />#include &lt;magic.h&gt;<br />int main( int numArgs, char * args[] )<br />{<br />magic_t m;<br /><br />m = magic_open( MAGIC_NONE );<br />magic_load( m, NULL );<br /><br />printf( "%s", magic_file( m, args[ 1 ] ) );<br />magic_close( m );<br />}<br />
+</pre></div>
+
+Do note not to free the memory. I suspect libfile loads the tables into memory for the time between magic_load() and magic_close(). Also, there is a function, magic_buffer( magic_t, const void * bufptr, size_t bytecnt ) that operates on a byte-array.
+
+

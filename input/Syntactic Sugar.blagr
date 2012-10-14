@@ -1,0 +1,6 @@
+Title:Syntactic Sugar
+Author:rsaxvc
+CreatedDateTime:2009-09-26T21:36:51
+ModifiedDateTime:2009-09-26T21:36:51
+---
+<span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">In C I am afraid of large functions, because they're often hard to read.</span><div style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">In C I am afraid of small functions, because they usually lead to a long call stack.</div><div style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">In Perl I am afraid of single lines, because of both of the above reasons.</div>

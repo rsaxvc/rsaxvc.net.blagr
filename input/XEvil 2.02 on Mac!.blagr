@@ -1,0 +1,11 @@
+Title:XEvil 2.02 on Mac!
+Author:rsaxvc
+CreatedDateTime:2009-11-11T21:46:19
+ModifiedDateTime:2009-11-11T21:46:19
+Tag:Debian
+Tag:Linux
+Tag:Mac OS X
+Tag:Operating Systems
+Tag:Snow Leopard
+---
+<span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><a class="zem_slink" href="http://www.xevil.com" title="XEvil" rel="homepage">Xevil</a> source patched by <a class="zem_slink" href="http://www.debian.org/" title="Debian" rel="homepage">Debian</a> project/me to compile on <a class="zem_slink" href="http://www.apple.com/macosx/" title="Mac OS X" rel="homepage">OSX</a> <a class="zem_slink" href="http://en.wikipedia.org/wiki/Snow_Leopard" title="Snow Leopard" rel="wikipedia">Snow Leopard</a>. Builds both <a class="zem_slink" href="http://en.wikipedia.org/wiki/Intel_80386" title="Intel 80386" rel="wikipedia">i386</a> and ppc objects. However, the linker will only make your local architecture, unless you add "-arch ppc -arch i386". Might build on <a class="zem_slink" href="http://en.wikipedia.org/wiki/Ppc64" title="Ppc64" rel="wikipedia">ppc64</a> and x86_64, but I haven't tested it.&nbsp;</span><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><a href="http://rsaxvc.net/Projects/xevil-2.02r2.mac.tar.lzma">Download it here.</a></span><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">&nbsp;You might also have better luck compiling this version on other newer unixes as well, since it looks like the codebase stopped development around 2002.</span>

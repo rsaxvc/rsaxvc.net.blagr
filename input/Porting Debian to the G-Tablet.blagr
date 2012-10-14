@@ -1,0 +1,11 @@
+Title:Porting Debian to the G-Tablet
+Author:rsaxvc
+CreatedDateTime:2011-06-11T18:16:06
+ModifiedDateTime:2011-06-11T18:16:06
+Tag:CyanogenMod
+Tag:Debian
+Tag:Init
+Tag:Linux
+Tag:NVidia
+---
+One day, I bought this sweet <a href="http://en.wikipedia.org/wiki/ViewSonic_G_Tablet">GTablet</a>. I also bought a keyboard case with kickstand. I used it for a month or so exclusively, and I've decided about the only think I need but can't do is develop software. So here's an idea, port a real OS like Debian. I've started fiddling around with the device through the ADB shell. Currently I'm running <a href="http://www.cyanogenmod.com/">CyanogenMod</a>, an aftermarket Android version.<div><br /></div><div>So, lets talk about how android starts up:</div><div><ol><li>Board-specific bootup ( turn on RAM, set up DRAM timings, ...)</li><li>Bootloader</li><li>Linux Kernel</li><li>Kernel runs first process ( init )</li><li>Android version of init goes through /init.rc script</li><li>/init.rc launches zygote</li><li>zygote runs bootanimation</li><li>google's android environment comes up</li></ol><div>So what can we take from here? First, killall zygote will restart the android environment, without restarting the linux environment below it. Second, it looks like the best way to get Debian going may be to build an image, then burn it through the bootloader ( APX mode for Nvidia). I had originally hoped to override the android system at init, then bring up debian around it, and that is still possible, but I suspect I'm better off going Debian from scratch.</div></div><div><br /></div><div>Note: This is not installing debian in a chroot, as many have done before. This is trying to install debian on the 16GB internal flash disk.</div>

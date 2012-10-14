@@ -1,0 +1,8 @@
+Title:My Favorite 64-bit Porting Guide
+Author:rsaxvc
+CreatedDateTime:2011-02-16T22:28:43
+ModifiedDateTime:2011-02-20T21:40:31
+Tag:Boomerang (decompiler)
+Tag:Decompiler
+---
+By way of an almost unrelated Google search, I re-found my favorite 64-bit porting guide.&nbsp;<a href="http://www.ibm.com/developerworks/library/l-port64.html">http://www.ibm.com/developerworks/library/l-port64.html</a>. The article takes you through a few different 64-bit systems, new alignment/packing issues, and how to do what you used to do (storing pointers in uints) in a more portable way(uintptr_t). I've had to refer to this a few times now when porting the <a href="http://boomerang.sourceforge.net/">boomerang decompiler</a> to 64-bit linux. Boomerang is a particularly fun case because sometimes you need to store a pointer in a uint. Do you use uintptr_t? Sometimes. You can only safely use it to store a native pointer. Because potentially you could add disassembly for a 64 bit architecture, but build on a 32 bit machine, you still need an extra-big type capable of holding the biggest pointer you could get. Luckily for us, a 64-bit datatype covers most pointers. Sadly for AS/400 users, this effectively means that boomerang won't be able to decompile your stuff without a major overhaul.<div><br /></div><div>There's also a small typo referencing the 'fred function' (fread) &nbsp;</div>

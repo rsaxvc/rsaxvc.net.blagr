@@ -1,0 +1,10 @@
+Title:boot-animator: convert videos to android boot animations
+Author:rsaxvc
+CreatedDateTime:2011-07-17T01:12:00
+ModifiedDateTime:2011-07-17T01:12:00
+Tag:Android
+Tag:animation
+Tag:opencv
+Tag:zip
+---
+Tonight I wrote a simple tool to read avi/mpeg/other video files and convert them to bootanimation.zip files for android. It depends on opencv to do the heavy lifting, the command-line zip tool does the zipping, and libpopt will do the switch handling. Right now it generates a bootanimation.zip with the same framerate and resolution as the original video, but I plan to add command-line switches for resolution, framerate, and a few others.<div><br /></div><div><meta http-equiv="content-type" content="text/html; charset=utf-8"><a href="https://github.com/rsaxvc/boot-animator">https://github.com/rsaxvc/boot-animator</a></div>

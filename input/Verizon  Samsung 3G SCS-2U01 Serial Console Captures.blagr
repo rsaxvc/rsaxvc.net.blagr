@@ -1,0 +1,12 @@
+Title:Verizon / Samsung 3G SCS-2U01 Serial Console Captures
+Author:rsaxvc
+CreatedDateTime:2011-02-05T18:30:33
+ModifiedDateTime:2011-02-05T18:30:33
+Tag:Console
+Tag:Linux
+Tag:SCS-2U01
+Tag:Samsung
+Tag:Serial
+Tag:Verizon
+---
+<div>The&nbsp;<a href="http://rsaxvc.net/blog/2010/12/attaching-a-console-cable-to-the-samsungverizon-scs-26uc4.html">SCS-26UC4 console cable</a>&nbsp;also connects to the <a class="zem_slink" href="http://www.samsung.com" title="Samsung Group" rel="homepage">Samsung</a> SCS-2U01 3G Verizon Router.</div><div><br /></div><div><a href="http://rsaxvc.net/blog/2010/12/attaching-a-console-cable-to-the-samsungverizon-scs-26uc4.html"></a></div><div>The bootup process goes something like this:</div><div><br /></div><div><ol><li>OneNAND Bootloader - ONBL2</li><li>ShadowUBL</li><li>U-Boot 1.1.1 waits 5 seconds for user input</li><li>U-Boot 1.1.1 engages&nbsp;<meta http-equiv="content-type" content="text/html; charset=utf-8">Watchdog with 64 second timeout</li><li>U-Boot loads a 1.1MB kernel and 6.6MB RFS image</li><li>MonteVista linux boots with a 2.6.18 kernel</li></ol><div>OtherNotes:</div><div><br /></div><div><ul><li>The built-in ethernet mac is a&nbsp;<meta http-equiv="content-type" content="text/html; charset=utf-8"><a href="http://www.innopower-tech.com/html/products/functional/Ethernet.jsp" style="text-decoration: underline; ">Faraday FTMAC110</a>&nbsp;</li><li>"Machine: Faraday A360"</li><li>32K Instruction Cache, 32K Data Cache</li><li>224MB usable ram</li><li><a class="zem_slink" href="http://www.acme.com/software/thttpd/" title="Thttpd" rel="homepage">thttpd</a> is still present</li><li>"MonteVista(R) <a class="zem_slink" href="http://www.kernel.org/" title="Linux" rel="homepage">Linux</a>(R) Professional Edition 5.0.0"</li><li>"The board type [0x61:12] vid[1]"</li><li>generates <a class="zem_slink" href="http://en.wikipedia.org/wiki/Secure_Shell" title="Secure Shell" rel="wikipedia">SSH</a> keys on startup</li></ul><div>Full log available here:&nbsp;<a href="http://rsaxvc.net/blog/samsung3g.cap">samsung3g.cap</a></div></div></div><div><br /></div>

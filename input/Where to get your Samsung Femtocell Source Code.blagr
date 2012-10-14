@@ -1,0 +1,10 @@
+Title:Where to get your Samsung Femtocell Source Code
+Author:rsaxvc
+CreatedDateTime:2010-12-11T11:12:55
+ModifiedDateTime:2010-12-11T11:12:55
+Tag:SCS-26UC4
+Tag:Samsung
+Tag:gpl
+Tag:gps
+---
+If you're the proud owner of a <a class="zem_slink" href="http://en.wikipedia.org/wiki/Samsung_Group" title="Samsung Group" rel="wikipedia">Samsung</a> SCS-26UC4, but the link for <a class="zem_slink" href="http://en.wikipedia.org/wiki/GNU_General_Public_License" title="GNU General Public License" rel="wikipedia">GPL</a>'d code in the manual doesn't work, where do you go?<div><br /></div><div><a href="http://www.samsung.com/global/business/telecomm/opensource/femtocell.html">http://www.samsung.com/global/business/telecomm/opensource/femtocell.html</a></div><div><br /></div><div>The source code must have moved since the manuals were printed, but included is all of the kernel, all of the boot loader (u-boot), cracklib, some of the GPS driver, and some other tools.</div>

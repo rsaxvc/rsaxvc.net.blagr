@@ -1,0 +1,26 @@
+Title:3rd Party Canon Remote Shutter Teardown
+Author:rsaxvc
+CreatedDateTime:2011-09-22T22:35:03
+ModifiedDateTime:2011-09-22T22:36:00
+Tag:20d
+Tag:Canon
+Tag:Remote
+Tag:Remote Shutter
+Tag:SLR
+Tag:dSLR
+---
+So, we all know you can shove a screwdriver into a Canon 20d to make it take pictures. Eventually I want to build a 555 timer based time-lapse controller. However, I ned a cable with Canon's connector on the end. Originals from Canon cost cash money, but full remotes from China cost ~$4. So I bought 2 and took one apart.
+
+<div><br /></div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/6173720223/" title="The Remote by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6154/6173720223_505abc6f25.jpg" width="500" height="333" alt="The Remote" /></a></div>
+
+<div><br /></div>
+
+<div>Pull the two screws. One is hidden under the sticker</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6174248238/" title="Pull these screw by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6159/6174248238_70d9241c41.jpg" width="333" height="500" alt="Pull these screw" /></a></div>
+
+<div><br /></div>
+
+<div>TaDa! The switch consists of three pieces of metal. I've also cut the wires for later use.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6174249440/" title="The Innards by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6162/6174249440_f443b25d3d.jpg" width="333" height="500" alt="The Innards" /></a></div><div><br /></div><div>So, eventually I want to attach a timer to that extra wire. It will consist of a 555 timer and some pots so that I can adjust the timings.</div>

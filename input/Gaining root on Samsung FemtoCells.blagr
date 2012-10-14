@@ -1,0 +1,26 @@
+Title:Gaining root on Samsung FemtoCells
+Author:rsaxvc
+CreatedDateTime:2011-07-17T23:36:11
+ModifiedDateTime:2011-07-25T23:56:50
+Tag:SCS-26UC
+Tag:SCS-26UC4
+Tag:SCS-2U01
+Tag:Samsung
+Tag:Serial port
+Tag:root
+Tag:serial
+---
+To summarize the steps needed to take over a femtocell:
+<div><ol>
+<li>Build a <a href="http://rsaxvc.net/blog/2010/12/attaching-a-console-cable-to-the-samsungverizon-scs-26uc4.html">serial cable</a></li>
+<li>Find your baud rate: SCS-2U01 is 115200:8N1, the Sprint Airave and SCS-24UC4 are 57600:8N1</li>
+<li><a href="http://rsaxvc.net/blog/2010/12/how-to-stop-autoboot-on-the-samsung-scs-26uc4.html">Retrieve the bootloader key</a> from their source code drop by diffing <a href="http://www.samsung.com/global/business/telecomm/opensource/femtocell.html">their u-boot</a> with <a href="ftp://ftp.denx.de/pub/u-boot/u-boot-1.1.1.tar.bz2">mainline u-boot</a> (hint, it is "sys\r")</li>
+<li>log into u-boot by using above key - it is time-limited different amounts on different devices</li>
+<li>go read the u-boot manual so I don't have to read the nitty-gritty</li>
+<li>copy the u-boot settings by logging your console and running `printenv`</li>
+<li>quickly turn off the hardware watchdog with `setenv watchdog_off 1`. Otherwise this is a great bugger.</li>
+<li>root the device by adding `init=/bin/sh` to $ramboot</li>
+<li>boot the device with `onandboot`</li>
+<li>Almost there: "sh-3.00#" At this point you have root, but very little is mounted(/etc/shadow is present though)</li><li>insmod the mdoc/tffs.ko and mdoc/tffsbd.ko from the /lib/modules/&lt;yourkernelhere&gt;/</li><li>`mount /dev/tffsa1 /mnt/mdoc` - brings up the main disk</li><li>`mount /proc` `mount /sys`</li><li>`mkdir /mnt/mdoc`</li><li>`mkdir /mnt/mdoc/RFS`</li><li>`mdoc_cp RFAB /mnt/mdoc/RFS/append_rfs.tgz 900000`</li><li>`cd /mnt/mdoc/RFS`</li><li>`tar xzfm append_rfs.tgz`</li><li>copy the created directories over / as needed.</li><li>bring up GPS with `insmod /mnt/mdoc/RFS/PATH_MODE/lib/modules/<yourkernelher>GpsCtrlDev.ko`</yourkernelher></li><li>You can now fiddle around with the device. Keep in mind that many of the read/write areas will actually store results in RAM for now, but you may get a 'No space left on device' error if you write too much.</li></ol><div><br /></div><div>Interesting bits:</div><ol><li>The web interface (only available to verizon) is running thttpd, and stores a hash in /udata/htdocs/.htpasswd</li><li>The cgi web interface is a set of ARM binaries in /udata/htdocs/cgi-bin/</li><li><a class="zem_slink" href="http://en.wikipedia.org/wiki/Shadow_password" title="Shadow password" rel="wikipedia">Shadow passwords</a> are used, but you're root anyhow</li><li>Component versions are in /udata/image.ver and /udata/oper.ver</li><li>iked-v.conf contains some very interesting settings, like 'set local psk XXXXXX'</li>
+
+</ol><div><br /></div></div><div>This is written as a summary of work on the SCS-24UC4, although it should apply directly to the SCS-2U01 and Airave.</div><div>This was a collaboration by RSAXVC and Doug.</div>

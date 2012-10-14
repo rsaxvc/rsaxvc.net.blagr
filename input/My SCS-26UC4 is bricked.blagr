@@ -1,0 +1,9 @@
+Title:My SCS-26UC4 is bricked
+Author:rsaxvc
+CreatedDateTime:2011-01-21T00:01:36
+ModifiedDateTime:2011-01-21T21:42:14
+Tag:SCS-26UC4
+Tag:Samsung
+Tag:U-Boot
+---
+As a note, I bricked my unit. Inside U-Boot, in the MDOC interface, I picked a menu item Update/Verify. To note, this isn't a menu: it updates, and then it verifies. Since I hadn't loaded anything explicitly, it loaded garbage to the preboot environment (IPL or Initial Program Load). This happened a while ago, &nbsp;and hadn't posted about it. This is actually my second unit, as I bought one from the Verizon Store, then returned it as I found one $100 cheaper. Anything from here on out is static analysis, or analysis of the device without the CPU running.

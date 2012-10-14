@@ -1,0 +1,27 @@
+Title:DeWalt DC9096 Battery Pack Teardown
+Author:rsaxvc
+CreatedDateTime:2011-01-11T23:47:00
+ModifiedDateTime:2011-01-11T23:48:43
+Tag:Battery
+Tag:DeWalt
+---
+<div><a class="zem_slink" href="http://www.dewalt.com/" title="DeWalt" rel="homepage">DeWalt</a> makes some nice tools. Today, I disassembled a DC9096 Nickel-Cadmium battery. I was intrigued by the fact that there only appears to be space for 14 sub-c cells in the battery, but 15 cells are needed to reach 18 volts. Also, I wanted to examine the possibility of replacing the <a class="zem_slink" href="http://en.wikipedia.org/wiki/Nickel-cadmium_battery" title="Nickel-cadmium battery" rel="wikipedia">NiCad</a> cells with <a class="zem_slink" href="http://en.wikipedia.org/wiki/Nickel-metal_hydride_battery" title="Nickel-metal hydride battery" rel="wikipedia">NiMH</a> cells, which can last much longer.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5347858929/" title="Ready to Open by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5010/5347858929_7bc0601efc.jpg" width="500" height="333" alt="Ready to Open" /></a></div>
+<br />
+<div>Remove these six screws</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5347859369/" title="Six Screws by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5082/5347859369_d540caed2f.jpg" width="500" height="333" alt="Six Screws" /></a></div>
+<br />
+<div>It should come out fairly easily, but some wiggling may be required</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5347860133/" title="Opened by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5170/5347860133_5acaa83ee2.jpg" width="500" height="333" alt="Opened" /></a></div>
+<br />
+<div>It doesn't add up. 14*1.2 = 16.8, not 18 Volts. There must be another cell</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5347860867/" title="But there's only 14 by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5210/5347860867_f96d81c363.jpg" width="500" height="333" alt="But there's only 14" /></a></div>
+<br />
+<div> What's this?</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5348475586/" title="But What's This? by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5201/5348475586_a459affd62.jpg" width="500" height="333" alt="But What's This?" /></a></div>
+<br />
+<div> Here it is. There didn't seem to be a good way to remove the other cells, so I cut them, and pulled the ribbon wire from the 15th cell. These appear to be welded on to the cell four times at each connection.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5347864985/" title="The 15th Cell by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5206/5347864985_f55b936c24.jpg" width="500" height="333" alt="The 15th Cell" /></a></div>
+<br />
+<div>Pinouts:</div><div><ul><li>Front pin (left in this image) goes to the white line in the pack.</li><li>Center in goes to the thermocouple ( not pictured )</li><li>Rear pin (right in this image) goes to the 15th battery cell.</li></ul></div>
+<div> <a href="http://www.flickr.com/photos/40925843@N03/5347864329/" title="Power Connector by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5045/5347864329_8c86f21066.jpg" width="500" height="333" alt="Power Connector" /></a></div>

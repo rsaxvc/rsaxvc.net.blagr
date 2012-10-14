@@ -1,0 +1,14 @@
+Title: a Universal Canon Remote Shutter 
+Author:rsaxvc
+CreatedDateTime:2011-09-25T17:00:32
+ModifiedDateTime:2011-09-25T17:00:32
+Tag:Canon
+Tag:Electronics
+Tag:Remote Shutter
+Tag:dSLR
+---
+<div>A bit ago, I purchased two remote shutter releases for my Canon 20d. The plan was to keep one, and convert the other into a time-lapse controller by removing the remote and adding a 555-timer circuit. This is all well and good, but I still couldn't attach either to my old EOS 350 Rebel. After thinking about it some, I've added 1/8 inch stereo jacks to all my remote release gear. This way I can swap cameras, control multiple cameras with a headphone splitter, and when I have time to build the time-lapse rig, I just have to add a 1/8 inch plug to it and it will work with everything else.</div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/6183005146/" title="Remote Shutter Setup by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6180/6183005146_d8cd549acb.jpg" width="500" height="333" alt="Remote Shutter Setup" /></a></div>
+
+<div>I did consider going with 2.5mm (headset jacks/plugs) connectors, as that is what older Canon SLRs used for remote releases, but one thing troubled me - long 2.5mm stereo extension cables are hard to find while any electronics store will have a 1/8th inch stereo headphone extension. Instead I bought a headphone-&gt;headset adapter for the old Rebel.</div>

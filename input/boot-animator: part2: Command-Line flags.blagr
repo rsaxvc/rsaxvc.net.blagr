@@ -1,0 +1,9 @@
+Title:boot-animator: part2: Command-Line flags
+Author:rsaxvc
+CreatedDateTime:2011-07-25T23:54:06
+ModifiedDateTime:2011-07-25T23:55:40
+Tag:Android
+Tag:Animation
+Tag:Command-line interface
+---
+tonight I added command-line flags to boot-animator. Of note:<div><ul><li>framerate</li><li>frameskip</li><li>frameseek</li><li>loop</li><li>width</li><li>height</li><li>numframes</li></ul><div>This makes the tool much more useful for generating android boot images, as well as taught me how to use libpopt, which handles interfacing the command flags for me.</div></div><div><br /></div><div><meta http-equiv="content-type" content="text/html; charset=utf-8">Here is the current code:&nbsp;<a href="https://github.com/rsaxvc/boot-animator">https://github.com/rsaxvc/boot-animator</a></div>

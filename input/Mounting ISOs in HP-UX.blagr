@@ -1,0 +1,9 @@
+Title:Mounting ISOs in HP-UX
+Author:rsaxvc
+CreatedDateTime:2010-12-08T20:33:40
+ModifiedDateTime:2010-12-08T20:33:40
+Tag:File system
+Tag:HP-UX
+Tag:ISO 9660
+---
+<ol><li>First, su to root, then kick off some PFS(Portable File System) daemons into the shell background:</li><li>`nohup pfs_mountd&amp;`</li><li>`nohup pfsd &amp;`</li><li>Finally, mount the image with:</li><li>`pfs_mount -x unix /full/path/to/iso.iso /full/path/to/mount/point</li><li>The "-x unix" makes the&nbsp;mount&nbsp;so that filenames don't contain extra ISO9660 information and makes all filenames lowercase.</li><li>For more information, `man pfs_mount`</li></ol>

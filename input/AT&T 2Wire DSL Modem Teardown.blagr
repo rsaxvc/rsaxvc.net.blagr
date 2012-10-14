@@ -1,0 +1,18 @@
+Title:AT&T 2Wire DSL Modem Teardown
+Author:rsaxvc
+CreatedDateTime:2011-08-27T01:10:53
+ModifiedDateTime:2011-08-27T01:10:53
+Tag:2Wire
+Tag:AT&T
+Tag:CCCKC
+Tag:DSL
+Tag:U-Verse
+Tag:teardown
+---
+<div>Some time ago, I took apart an AT&T 2Wire DSL modem. The design was similar although simpler than the AT&T 2Wire VDSL/UVerse unit that had an administrative serial console</div><br/>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/6084899976/" title="AT&amp;T 2Wire DSL Teardown by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6206/6084899976_e29309ae69.jpg" width="333" height="500" alt="AT&amp;T 2Wire DSL Teardown"></a></div><br/>
+
+<div>You can find more photos <a href="http://www.flickr.com/photos/40925843@N03/tags/2wire/">here</a>.</div><br/>
+
+<div>Interestingly, The 3800 UVerse device, this unit, and the next generation UVerse device all seem to have the same edge connector built into the PCB. I wonder what that does.</div>

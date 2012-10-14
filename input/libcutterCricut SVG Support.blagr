@@ -1,0 +1,12 @@
+Title:libcutter/Cricut SVG Support
+Author:rsaxvc
+CreatedDateTime:2010-10-07T20:23:57
+ModifiedDateTime:2010-10-07T21:27:52
+Tag:Cairo
+Tag:Data Formats
+Tag:Graphics
+Tag:SVG
+Tag:Scalable Vector Graphics
+Tag:XML
+---
+<div>My latest update to libcutter implements basic <a class="zem_slink" href="http://www.w3.org/Graphics/SVG/" title="Scalable Vector Graphics" rel="homepage">SVG</a> support.</div><div><a href="https://github.com/vangdfang/libcutter" style="text-decoration: underline; ">https://github.com/vangdfang/libcutter</a></div><div></div><div><br /></div><div></div><div>There are a few things missing, but ovals, arcs, circles, rectangles, and Bezier all work. In fact, everything I've drawn in <a href="http://www.inkscape.org/">InkScape</a> has worked so far. The SVG interpreter is based on the early <a href="http://www.t2-project.org/packages/libsvg.html">libsvg</a>. Sadly, libsvg was merged into <a href="http://cairographics.org/">Cairo</a>, and is now the libsvg-cairo. libsvg-cairo is much less sharable with other projects than the old libsvg.</div>

@@ -1,0 +1,52 @@
+Title:Astaro AP30 Teardown
+Author:rsaxvc
+CreatedDateTime:2010-12-23T23:14:52
+ModifiedDateTime:2011-01-07T23:21:07
+Tag:AP30
+Tag:Access Point
+Tag:Astaro
+Tag:CCCKC
+Tag:WiFi
+---
+
+I was given access to an Astaro AP30 access point.<div>
+<a href="http://www.flickr.com/photos/40925843@N03/5287364440/" title="Astaro by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5121/5287364440_43b10b4154.jpg" width="500" height="333" alt="Astaro" /></a></div>
+
+<br />
+
+<div>So I took it apart.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5287365398/" title="AP30 with Top Removed by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5050/5287365398_e854f4f9d4.jpg" width="500" height="333" alt="AP30 with Top Removed" /></a></div>
+
+<br />
+<div>Also, the serial port appears to speak 56K @ 3.3Volts.<a href="http://www.flickr.com/photos/40925843@N03/5287383838/">http://www.flickr.com/photos/40925843@N03/5287383838/</a></div><div><br /></div><div><a href="http://www.flickr.com/photos/40925843@N03/5287383838/"></a></div>
+
+<br />
+
+<div>Good grief. The antennas are glued down. At least they used a standard coax connector, U.FL.
+</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/5286765577/" title="U.FL Antennas by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5047/5286765577_29ed300660.jpg" width="500" height="333" alt="U.FL Antennas" /></a></div>
+<br />
+<div>Also, the CPU has a heatsink! A heatsink for a microcontroller.</div>
+<div>
+<a href="http://www.flickr.com/photos/40925843@N03/5287369386/" title="HeatSink by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5008/5287369386_c3606dc6c3.jpg" width="500" height="333" alt="HeatSink" /></a></div>
+
+<br />
+
+<div>Here's what the serial port says on powerup:</div>
+<div>
+<div><b>============================================</b></div>
+<div><b>ASIC 3052_MP2 (Port5&lt;-&gt;None)</b></div>
+<div><b>Product Name: EAP9550</b></div>
+<div><b>SDRAM CAS = 3(d1835272)</b></div>
+<div><b>============================================</b></div>
+<div><b><br /></b></div>
+<div><b>Please choose the operation:</b></div>
+<div><b>&nbsp;&nbsp; 1: Load system code to SDRAM via TFTP.</b></div>
+<div><b><br /></b></div>
+<div><b>You choosed trigger_button---&gt;0x1</b></div>
+</div>
+
+<div><br /></div><a href="http://www.flickr.com/photos/40925843@N03/sets/72157625536971053/with/5287362528/">http://www.flickr.com/photos/40925843@N03/sets/72157625536971053/with/5287362528/</a>
+
+
+

@@ -1,0 +1,12 @@
+Title:a Time-Lapse Shutter Release
+Author:rsaxvc
+CreatedDateTime:2011-10-09T21:52:13
+ModifiedDateTime:2011-10-09T21:52:13
+Tag:Canon
+Tag:Remote Shutter
+Tag:Time-Lapse
+---
+<div>I plan to post again with the schematics and the math, but today I finished:</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6228457975/" title="Time Lapse Timer by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6091/6228457975_982e0003d4.jpg" width="333" height="500" alt="Time Lapse Timer"></a></div>
+<div><br/></div>
+<div>This circuit connects to all my other remote shutter peripherals. I used a 555 timer to generate the timing, and two potentiometers - one for on-time/exposure, one for off-time. Add the times together to see the times between shots. I also used a transistor, as the 555 generates an active-high pulse, and the Canon releases use a  current-short to take photos.</div>

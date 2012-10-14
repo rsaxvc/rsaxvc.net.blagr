@@ -1,0 +1,25 @@
+Title:Game:Pickin' Duino
+Author:rsaxvc
+CreatedDateTime:2012-01-02T23:28:15
+ModifiedDateTime:2012-01-02T23:28:15
+Tag:Arduino
+Tag:NTSC
+Tag:PAL
+Tag:Pickin' Sticks
+Tag:game
+Tag:potentiometers
+Tag:video
+---
+Rachel and Jestin, of <a href="http://c3kc.org/">CCCKC</a>&nbsp;fame, pointed me toward a library named&nbsp;<a href="http://code.google.com/p/arduino-tvout/">arduino tv-out</a>, which is a software modulator for NTSC and PAL video signals. Rachel wrote a game long ago, called&nbsp;<a href="http://pickinsticks.moosader.com/">Pickin' Sticks</a>. <a href="https://github.com/rsaxvc/pickin-duino">Pickin' Duino</a> is an implementation of Pickin Sticks on Arduino. The game itself is pretty simple - there is one player, and one other item on the screen, a bundle of sticks. Move your character to the sticks to gain a point. Oh no, more sticks appeared. Eventually I set the score to 'WIN' at some point when you've been playing far too long.<div><br /></div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/6623040363/" title="Me and PickinSticks by rsaxvc, on Flickr"><img src="http://farm8.staticflickr.com/7153/6623040363_e43264f183.jpg" width="500" height="333" alt="Me and PickinSticks" /></a></div>
+
+<div><br /></div>
+
+<div>Tada! Also, I didn't have a controller to interface to the arduino, so instead I wrote a simple screen-saver like guidance system. Here's a long exposure:</div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/6623035055/" title="Ooh, look at that AI! by rsaxvc, on Flickr"><img src="http://farm8.staticflickr.com/7162/6623035055_fcdf774332.jpg" width="500" height="333" alt="Ooh, look at that AI!" /></a></div>
+
+<div><br /></div>
+
+<div>And that's about it. Eventually I intend to add a real controller, but for now I'm going to use two potentiometers.</div>

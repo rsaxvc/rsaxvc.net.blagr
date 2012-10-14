@@ -1,0 +1,6 @@
+Title:RHex Feature: Fast Editing
+Author:rsaxvc
+CreatedDateTime:2011-04-09T21:37:46
+ModifiedDateTime:2011-04-09T21:37:46
+---
+When I talk about fast editing, I mean responsive editing of very large files. Previously, I have edited multi-megabyte images and multi-gigabyte filesystem images. Of editors that support inserting bytes in the middle of a file, editor responsiveness has been difficult to say the least.<div><br /></div><div>Under as many circumstances as possible, writes must not block. To manage this, I'm working on a small I/O library. Reads will be memory-mapped back to the file, but writes will be buffered for later writes. To accomplish this, the file is represented by a list of places to get the data. The list contains two different types of entries - part of a file can be memory mapped to the backing store and part of a file can be saved only in ram, waiting to be flushed to disk. On the start of a write, the file will be expanded to reserve the space that will be written soon. The only blocking case remaining is when the system is low on memory, a library thread may be waited upon to free up a large write buffer.</div>

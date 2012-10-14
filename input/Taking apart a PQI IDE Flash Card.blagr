@@ -1,0 +1,18 @@
+Title:Taking apart a PQI IDE Flash Card
+Author:rsaxvc
+CreatedDateTime:2011-07-10T08:31:43
+ModifiedDateTime:2011-07-10T08:31:43
+Tag:IDE
+Tag:PQI
+Tag:flash
+Tag:tssop
+---
+<div>A while back I ended up with a bunch of <a class="zem_slink" href="http://en.wikipedia.org/wiki/VIA_C3" title="VIA C3" rel="wikipedia">Via C3</a>-based thin clients. Each one came with a 16MB IDE flash card designed by PQI Industrial. Today I took one apart.<br /></div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5922087746/" title="PQI IDE Flash Teardown by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6148/5922087746_3f091fb32e.jpg" alt="PQI IDE Flash Teardown" height="333" width="500" /></a></div><br />Use a screwdriver to pry the locks back. You'll need two screwdrivers to get it to happen at the same time, or you can break one and hold the other with the driver.<br />
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/5921519425/" title="PQI IDE Flash Teardown by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6134/5921519425_0b72a8e19e.jpg" alt="PQI IDE Flash Teardown" height="333" width="500" /></a></div><br />
+
+<div>After pulling back the device, you can see a standard flash TSSOP.<br /><a href="http://www.flickr.com/photos/40925843@N03/5921523849/" title="PQI IDE Flash Teardown by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6143/5921523849_4bc4d07d1f.jpg" alt="PQI IDE Flash Teardown" height="333" width="500" /></a></div><br /><div>On the back is the TDK TSSOP&lt;-&gt;IDE controller.<br /><a href="http://www.flickr.com/photos/40925843@N03/5922086682/" title="PQI IDE Flash Teardown by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6013/5922086682_2edd9713c6.jpg" alt="PQI IDE Flash Teardown" height="333" width="500" /></a><br /><br /></div><br />
+
+<div>In particular, this device uses a GBDriverRA2e, which is an older design.<br /><a href="http://www.flickr.com/photos/40925843@N03/5921520591/" title="PQI IDE Flash Teardown by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6028/5921520591_4c91725e52.jpg" alt="PQI IDE Flash Teardown" height="333" width="500" /></a><br /><br />I'm curious if I can pick up some cheap thumbdrives to make my own internal SSDs. However, the number of computers I own with IDE slots is quickly dwindling, although these may find themselves in some small embedded x86 projects.</div>

@@ -1,0 +1,14 @@
+Title:Attaching a Console Cable to the Samsung/Verizon SCS-26UC4
+Author:rsaxvc
+CreatedDateTime:2010-12-03T21:23:51
+ModifiedDateTime:2011-07-21T20:54:00
+Tag:Cable
+Tag:Electronics
+Tag:FTDI
+Tag:HDMI
+Tag:SCS-26UC4
+Tag:Samsung
+Tag:Serial port
+Tag:Verizon
+---
+<div><a href="http://rsaxvc.net/blog/assets_c/2010/12/IMG_20101203_000702-21.html" onclick="window.open('http://rsaxvc.net/blog/assets_c/2010/12/IMG_20101203_000702-21.html','popup','width=2592,height=1952,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=0,top=0'); return false"><img src="http://rsaxvc.net/blog/assets_c/2010/12/IMG_20101203_000702-thumb-480x361-21.jpg" width="480" height="361" alt="SerialOverHDMI" class="mt-image-none" style="" /></a></div>You may have noticed that the SCS-26UC4 has what appears to be an <a class="zem_slink" href="http://en.wikipedia.org/wiki/HDMI" title="HDMI" rel="wikipedia">HDMI</a> port. However, if you have a meter, you may have also noticed that the HDMI port doesn't follow the HDMI specification - it has a 3.3 volt power line instead of a 5 volt line. Curiouser and curiouser, many of the other pins are not connected properly either for an HDMI port. It turns out, that this HDMI connector is actually a 3.3 volt asynchronous <a class="zem_slink" href="http://en.wikipedia.org/wiki/Linux_console" title="Linux console" rel="wikipedia">Linux console</a> port.<div><a href="http://rsaxvc.net/blog/assets_c/2010/12/IMG_20101202_234544-24.html" onclick="window.open('http://rsaxvc.net/blog/assets_c/2010/12/IMG_20101202_234544-24.html','popup','width=2592,height=1952,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=0,top=0'); return false"><img src="http://rsaxvc.net/blog/assets_c/2010/12/IMG_20101202_234544-thumb-480x361-24.jpg" width="480" height="361" alt="SolderJoints" class="mt-image-none" style="" /></a></div><div>Assuming you used a standard HDMI cable from Wal-Mart and a 3.3Volt FTDI serial adapter, make the following connections:</div><div><br /></div><div><ol><li>HDMI bare copper ground to FTDI Black(Ground)</li><li>HDMI White to FTDI Yellow (RX to computer)</li><li>HDMI Orange to FTDI Orange(TX from computer)</li></ol></div><div>Now configure your terminal to 57600 baud, no flow control, and tada:</div><div><a href="http://rsaxvc.net/blog/SCS26UC4/samsung_boot.log">samsung_boot.log</a></div>

@@ -1,0 +1,9 @@
+Title:Samsung / Verizon SCS-2U01 GPS Captures
+Author:rsaxvc
+CreatedDateTime:2011-02-03T23:30:26
+ModifiedDateTime:2011-02-03T23:30:26
+Tag:GPS
+Tag:Global Positioning System
+Tag:Samsung
+---
+So today, we were able to get some serial captures from the <a class="zem_slink" href="http://en.wikipedia.org/wiki/Global_Positioning_System" title="Global Positioning System" rel="wikipedia">GPS</a> chipset on the <a class="zem_slink" href="http://www.samsung.com" title="Samsung Group" rel="homepage">Samsung</a> SCS--2U01. The protocol appears to be GloNav API, running at 115200, 8N1. The chipset on the SCS-2U01 is built directly on the PCB, unlike the SCS-26UC4. In addition, the GPS firmware version is printed, 2.07.11.<div><br /></div><div>Here are some logs:</div><div><a href="http://rsaxvc.net/blog/gpslogs.scs-2u01.tar.lzma">gpslogs.scs-2u01.tar.lzma</a><div><br /></div></div>

@@ -1,0 +1,20 @@
+Title:Inside the LinkStar ViaSat Satellite Modem
+Author:rsaxvc
+CreatedDateTime:2011-10-01T15:10:21
+ModifiedDateTime:2011-10-01T15:10:59
+Tag:modem
+Tag:satellite
+Tag:serial
+Tag:teardown
+---
+<div>Cleaning out CCCKC, I found a Satellite modem.</div>
+<div><br /></div>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/6200949109/" title="LinkStar by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6169/6200949109_88be90b08a.jpg" width="500" height="333" alt="LinkStar" /></a></div>
+<div><br /></div>
+
+<div>Ironic, as this was found inside a cave. The model number is CL0006910-01. The manual states that the IP address is 10.X.Y.Z, where X,Y, and Z are the decimal equivalents of the last three octets of the MAC address. This yields only a telnet port for setting up the unit. Inside you will find a port labelled JTAG, a port labelled EMU, and an RJ-11 port labelled CONSOLE. The console is a 9600-8N1 serial port running full RS232 voltages. vMost logic inside appears to be 3.3 volt, although there is a 5 volt regulator on board as well. If we had two, it would be neat to try and make a point-to-point link.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6200917147/" title="MainBoard by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6003/6200917147_bd578c2b80.jpg" width="500" height="333" alt="MainBoard" /></a></div>
+<div><br /></div>
+
+<div>In the serial console, early enough on boot, if you press enter 3 times it will drop you to a bootloader that can be used to reset the unit to default settings, change console ports (I wouldn't recommend it unless you find the other port), set the MAC address, and read/write the flash and ram. To reset the unit, run 'zapp', then 'boot', and now the root password is blank. when logged in as root, many more commands are available. In both the OS and bootloader, run '?' to get a list of commands. Be aware, if you type a single letter, it may match it to the first available command.</div><div><br /></div><div>More photos are up:&nbsp;<a href="http://www.flickr.com/photos/40925843@N03/sets/72157627794846750">http://www.flickr.com/photos/40925843@N03/sets/72157627794846750</a></div><meta http-equiv="content-type" content="text/html; charset=utf-8">

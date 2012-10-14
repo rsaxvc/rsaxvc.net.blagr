@@ -1,0 +1,11 @@
+Title:Retraction: BSidesKC Samsung Presentation
+Author:rsaxvc
+CreatedDateTime:2012-01-02T21:19:17
+ModifiedDateTime:2012-01-02T21:19:17
+Tag:Bsides
+Tag:femtocell
+Tag:security
+Tag:sprint
+Tag:verizon
+---
+On October 26, 2011, at BSidesKC, I gave a talk on how to remotely exploit Verizon and Sprint femtocells. It turns out I was wrong. My attack was based on some services running locally on the device. Early in my work with the device, I wrote a small script to help me boot the units. This included taking over the bootloader and setting up the kernel properly, as well as mounting filesystems and clearing iptables. The service I used to gain control of the device appears to be entirely unused, but is still running on the devices. However, iptables had blocked it entirely. Since I only probed my units over the VPN, I had note noticed that my testing environment changed the units I was examining. I apologize for crying wolf.

@@ -1,0 +1,6 @@
+Title:Finding a New Fileserver OS: Step Three - Giving Up
+Author:rsaxvc
+CreatedDateTime:2009-04-07T20:15:16
+ModifiedDateTime:2009-04-07T20:15:16
+---
+<span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">Well, I didn't make it. I spent a while with OpenSolaris, which was the closest I've come to a non-linux posix I could love. Original Solaris is still a load of outdated software, and has the least user-friendly cli I've ever used. Nexenta is a half implemented joke. FreeBSD would never boot, and fuse doesn't support things like mmap.</span><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><br /></span><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><br /></span><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">So I'm back to linux Raid5/jfs. It's a little slow, but my data is all safe. In fact, I had a sata cable come loose recently, and it emailed me, and I plugged it in, no questions asked, a few minutes later the drive was done.</span> 

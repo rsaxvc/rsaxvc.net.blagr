@@ -1,0 +1,27 @@
+Title:Poking around a Pelco CCTV DVR
+Author:rsaxvc
+CreatedDateTime:2011-09-24T09:40:12
+ModifiedDateTime:2011-09-24T09:46:55
+Tag:CCCKC
+Tag:CCTV
+Tag:DVR
+Tag:Pelco
+Tag:teardown
+---
+<div>Some time ago our hackerspace was given a Pelco CCTV DVR. We used it in the cave for a while, but nobody was monitoring it. The plan was to write some open-source software to interconnect with it so we could use it as an 8-port ethernet video receiver. While moving to the new space, I took apart the unit so we could take some photos, probe some lines, and image the disk.</div>
+
+<div><br /></div>
+
+<div>Here it is. The Hard Disk area is obscured, but is a single channel IDE disk. A second disk comes with the 16 port model.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6178060926/" title="Innards of the Pelco DVR by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6153/6178060926_96f68ba68e.jpg" width="500" height="333" alt="Innards of the Pelco DVR" /></a></div>
+
+<div><br /></div>
+<div>A 5 Volt Serial Port is available on the middle board, although I did not have my adapter</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6178062054/" title="Serial Port on Middle Board by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6180/6178062054_04be36c3fc.jpg" width="500" height="333" alt="Serial Port on Middle Board" /></a></div>
+
+<div><br /></div>
+<div>JTAG is available on the upper board</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6177530647/" title="JTAG Port on Upper Board by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6159/6177530647_d6c611613f.jpg" width="500" height="333" alt="JTAG Port on Upper Board" /></a></div>
+
+<div><br /></div>
+<div>I pulled the disk to see how the video was stored. The disk has a single ext3 partition. All settings are stored in a file named dx3100.ini - clear text passwords too. Also, you can configure camera names and the like through the file, which is probably easier than typing them in on the device while it is running. Also, alarms and network settings are in the file. There's a log directory, and an old_log directory, both of which were empty on our unit. The video is stored in files, about 100MB or so each, in a folder with the date of the recording. However, the folder sturcture, /disstech/diss/&lt;4digityear&gt;&lt;2digitmonth&gt;&lt;2digitday&gt;/*.dsf matches digiop DVR recording systems, so we may be able to play footage using their tools, some of which are available&nbsp;<a href="http://bulletcam.ca/digiopsupport.php">here</a>. I've placed one dsf file, dx3100.ini file, and a file list to into <a href="http://rsaxvc.net/projects/pelco/10000000D.dsf">this project</a>. There were also some INX files, but I have yet to take a look at them.</div>

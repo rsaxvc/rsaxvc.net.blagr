@@ -1,0 +1,10 @@
+Title:Cricut USB Protocol Reversed
+Author:rsaxvc
+CreatedDateTime:2010-07-21T20:08:44
+ModifiedDateTime:2010-07-21T20:08:44
+Tag:Crafts
+Tag:Cricut
+Tag:Hardware
+Tag:Universal Serial Bus
+---
+<div>Some folks up at CCCKC have figured out how to talk to the <a class="zem_slink" href="http://en.wikipedia.org/wiki/Cricut" title="Cricut" rel="wikipedia">Cricut</a> over <a class="zem_slink" href="http://en.wikipedia.org/wiki/Universal_Serial_Bus" title="Universal Serial Bus" rel="wikipedia">USB</a>. This paves the way to drive the Cricut with a laptop to cut puzzles, engine gaskets, <a class="zem_slink" href="http://en.wikipedia.org/wiki/Polychlorinated_biphenyl" title="Polychlorinated biphenyl" rel="wikipedia">PCBs</a>, and much more. Before this software, crafters were limited to the shapes they could purchase from ProvoCraft.</div><div><br /></div><div><a href="http://built-to-spec.com/cricutwiki">http://built-to-spec.com/cricutwiki</a></div><a href="https://github.com/vangdfang/libcutter">https://github.com/vangdfang/libcutter</a><div><br /></div><div><a href="https://github.com/vangdfang/libcutter"></a>Cricuts can be upgraded with better knife tools to cut puzzle materials. This same knife can cut gasket material. Also, a small PCB Etch Resistant marker can be installed in the Cricut, and draw on copper clad board.</div>

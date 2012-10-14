@@ -1,0 +1,133 @@
+Title:Poking around an Ademco RapidEye Multi
+Author:rsaxvc
+CreatedDateTime:2011-09-25T14:58:05
+ModifiedDateTime:2011-09-25T14:58:05
+Tag:Ademco
+Tag:CCCKC
+Tag:CCTV
+Tag:DVR
+Tag:FAT
+Tag:RapidEye
+Tag:VxWorks
+Tag:teardown
+---
+<div><a href="http://www.flickr.com/photos/40925843@N03/6179768537/" title="RapidEyeMulti by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6155/6179768537_9970d6167c.jpg" width="333" height="500" alt="RapidEyeMulti" /></a></div>
+<div><br /></div>
+
+<div>The Ademco RapidEye Multi is a small CCTV DVR, serving the same purpose as the Pelco. As it turns out, this hardware is quite different from Pelco's. The Ademco uses a Pentium-I desktop, wrapped with a custom housing and interface boards.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6176741079/" title="What's this? by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6178/6176741079_e96a5683e6.jpg" width="333" height="500" alt="What's this?" /></a></div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6176744311/" title="Warranty Void by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6163/6176744311_bdd084ccab.jpg" width="500" height="333" alt="Warranty Void" /></a></div>
+
+<div><br /></div>
+
+<div>The unit is also running Wind River VxWorks. Since we all know a Pentium cannot simultaneously compress 8 different video streams, this card contains the extra horsepower. It also has a small wire running to the motherboard's reset line.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6177270744/" title="PCI Video I/O Card by rsaxvc, on Flickr"><img src="http://farm7.static.flickr.com/6173/6177270744_84060e9315.jpg" width="500" height="333" alt="PCI Video I/O Card" /></a></div>
+
+<div><br /></div>
+
+<div>The unit also has a modem and two serial ports. If you attach a cable to the second port, you can interrupt the boot sequence to change settings like the IP address. Use 8-N-1, 9600 baud. You'll need to press enter quickly to block the boot-up sequence. Here's an example capture:
+<pre>AVAILABLE COMMANDS    DESCRIPTION
+?                     This command list
+q                     Quit; Start Application; Run OS shell on console
+cls                   Clear Screen
+ver                   Display Product Version
+show                  Show all parameter values
+<name>=<value>        Set LAN parameter, e.g.,
+                       'ip = 172.25.2.1'
+                       'gateway = 172.25.100.1'
+                       'netmask = 255.255.0.0'
+                      Set PPP parameter, e.g.,
+                       'local = 172.26.2.1'
+                       'host = 172.26.200.1'
+                       'comport = port1'
+                        (options are 'none', 'port1', 'port2', or 'internal')
+                       'timeout = 60'
+                        (timeout may be between 0 and 999 seconds)
+                       'baudrate = 9600'
+                        (options are 9600, 19200, 38400, 57600, 115200)
+                       'modem prefix = at'
+                       'modem init = z'
+                       'modem dial = D'
+recover               Recover system to the previous version.
+
+Enter a command, or '?' for help:
+ver
+
+Rapid Eye MULTI
+Configuration Shell
+Version 3.2
+
+Copyright 1999-2000, Ademco
+
+Enter a command, or '?' for help:
+show
+
+Current LAN Settings:
+  ip       = 10.174.8.64
+  gateway  = 10.174.8.1
+  netmask  = 255.255.254.0
+Current PPP Settings:
+  local    = 172.26.2.1
+  host     = 172.26.200.1
+  comport  = internal
+  timeout  = 60
+  baudrate = 115200
+  modem prefix = AT
+  modem init   = Z
+  modem dial   = D
+
+
+Enter a command, or '?' for help:
+q
+
+Configuration Shell Stopped...
+Attached TCP/IP interface to eeE
+</value></name></pre></div>
+
+<div><br /></div>
+
+<div>I also imaged the disk. The disk is split into two partitions. The first is a 2GB FAT containing VxWorks. The second is a partition listed as 'free space', but actually holds the video data. Here's the file list:
+<pre>.
+./streadir.dat
+./STARTUP
+./VERSION
+./eventdup.dat
+./JAV308.O
+./system.log
+./JAV306.O
+./VXWORKS
+./EVENTDIR.DAT
+./TEMP
+./KALATEL.O
+./blockdir.dat
+./PPPWAIT
+./DAU
+./storage.cfg
+./streadup.dat
+./alarmdir.dat
+./PPPINIT
+./PELCO_P.O
+./MANUF
+./serialid
+./alarmdup.dat
+./eventcol.dat
+./SECURITY
+./BOOTROM.SYS
+./MTC
+./MTC/SECURITY
+./MTC/USR.INI
+./MTC/LUCENT.INI
+./MTC/config
+./MTC/cfgdup
+./GPOSTATE
+./DELTA.O
+./storage.csv
+./CONTEXT
+./PELCO_D.O
+./DSH2
+./config
+./DSHUNLD
+./cfgdup
+</pre></div>
+
+<div>More photos are available here: <a href="http://www.flickr.com/photos/40925843@N03/sets/72157627615155249/">http://www.flickr.com/photos/40925843@N03/sets/72157627615155249/</a></div>

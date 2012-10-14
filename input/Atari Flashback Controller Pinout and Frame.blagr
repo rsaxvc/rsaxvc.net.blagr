@@ -1,0 +1,19 @@
+Title:Atari Flashback Controller Pinout and Frame
+Author:rsaxvc
+CreatedDateTime:2012-01-07T23:44:48
+ModifiedDateTime:2012-01-07T23:44:48
+Tag:Atari
+Tag:Atari Flashback
+Tag:Pickin' Sticks
+Tag:Serial
+Tag:Synchronous Serial
+Tag:arduino
+Tag:hack
+Tag:pinout
+Tag:serial
+---
+The previously disassembled Atari Flashback Controller has 5 important pins inside. When looking straight into the connector::<div><ul><li>OUT(Orange,Top row, near right)</li><li>SCK(White,Top row, near left)</li><li>DO(Yellow,Top row, center)</li><li>GND(Black,Bottom row, near left</li><li>5V(Red,Bottom row, near right)</li><li>and 4 grey lines, two of which appear to be open, two are connected to each other, none of which hit the connector.</li></ul>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/6623517563/" title="Rear PCB by rsaxvc, on Flickr"><img src="http://farm8.staticflickr.com/7165/6623517563_1077ab0f97.jpg" width="500" height="333" alt="Rear PCB" /></a></div>
+
+<div><br /></div></div><div>The data comes out of the OUT pin, and the bits are clocked by the SCK pin.&nbsp;The bitword(OUT pin), from 1 at t=0, goes:</div><div><ol><li>Left Button</li><li>Right Button</li><li>Select</li><li>Pause</li><li>Up Stick</li><li>Down Stick</li><li>Left Stick</li><li>Right Stick</li></ol><div>These are active low, meaning pushing the button makes the corresponding bit go from a one to a zero. I'd like to maybe make an arduino library for Pickin Duino</div></div>

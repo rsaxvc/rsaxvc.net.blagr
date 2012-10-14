@@ -1,0 +1,21 @@
+Title:Atari Flashback Controller Teardown
+Author:rsaxvc
+CreatedDateTime:2012-01-03T01:46:58
+ModifiedDateTime:2012-01-03T01:46:58
+Tag:Atari
+Tag:Atari Flashback
+Tag:serial
+Tag:spi
+Tag:teardown
+---
+<div>Recently, I disassembled an Atari Flashback controller to see if it could be easily interfaced to an arduino for Pickin' Duino.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6623505057/" title="Front by rsaxvc, on Flickr"><img src="http://farm8.staticflickr.com/7020/6623505057_d67e08aa79.jpg" width="500" height="333" alt="Front" /></a></div>
+<div><br /></div>
+
+<div>Once the case is open, you can easily see the side buttons are implemented with membrane switches, as is the joystick, and as are the front switches.</div><div><br /></div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/6623513761/" title="Case Open by rsaxvc, on Flickr"><img src="http://farm8.staticflickr.com/7001/6623513761_7ec73be6ba.jpg" width="333" height="500" alt="Case Open" /></a></div>
+<div><br /></div>
+
+<div>The board appears to be using some sort of clocked serial interface, probably SPI related.</div><div><a href="http://www.flickr.com/photos/40925843@N03/6623517563/" title="Rear PCB by rsaxvc, on Flickr"><img src="http://farm8.staticflickr.com/7165/6623517563_1077ab0f97.jpg" width="500" height="333" alt="Rear PCB" /></a></div><div><br /></div>
+
+<div>I was hoping that the 9-pin interface was just a switch array, but there's a IC under an epoxy blob. It should be possible to learn the protocol with an oscilloscope.</div><div><br /></div>

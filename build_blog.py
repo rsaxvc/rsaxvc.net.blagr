@@ -2,6 +2,7 @@ import os
 import fileinput
 import glob
 import shutil
+from datetime import datetime
 
 BLOG_TITLE      = "RSAXVC Development"
 POST_PATH_BASE  = "posts/"
@@ -17,33 +18,23 @@ class post:
 	title = ""
 	tags = []
 	text = ""
-	date = ""
-	time = ""
+	dt = ""
 	def __cmp__(self, other):
-		if( self.date == other.date ):
-			if( self.date < other.time ):
-				return 1
-			elif( self.time == other.time ):
-				return 0
-			else:
-				return -1
- 		else:
-			if( self.date < other.date ):
-				return 1
-			elif( self.date == other.date ):
-				return 0
-			else:
-				return -1
+		if( self.dt < other.dt ):
+			return 1
+		elif( self.dt == other.dt ):
+			return 0
+		else:
+			return -1
 
 	def path(self):
-		return POST_PATH_BASE + "2012/09/30/" + self.title + ".html"
+		return POST_PATH_BASE + str(self.dt.year) + "/" + str(self.dt.month) + "/" + str(self.dt.day) + "/" + str(self.title) + ".html"
 
 	def has_tag(self, search_tag):
 		for tag in self.tags:
 			if( tag == search_tag ):
 				return True
 		return False
-
 
 class tag:
 	text = ""
@@ -83,10 +74,8 @@ def parse_blagr_entry( filename ):
 					p.tags.append( tag( text ) )
 				elif( chunk == "Author" ):
 					p.author = text
-				elif( chunk == "Date" ):
-					p.date = text
-				elif( chunk == "Time" ):
-					p.time = text
+				elif( chunk == "CreatedDateTime" ):
+					p.dt = datetime.strptime( text, "%Y-%m-%dT%H:%M:%S" )
 				elif( chunk == "Title" ):
 					p.title = text
 		else:
@@ -139,7 +128,7 @@ def generate_post_html( f, post, path_depth ):
 	for i in range(path_depth):
 		upbuffer += "../"
 	f.write("<h1>"+post.title+"</h1>\n" )
-	f.write("<h4> Written "+post.date+"</h4>\n" )
+	f.write("<h4> Written "+str(post.dt.date)+"</h4>\n" )
 	f.write("<h4> Tags:")
 	for tag in post.tags:
 		f.write( "<a href=\"" + upbuffer + tag.path()+"\">" + tag.text + "</a>&nbsp;" )

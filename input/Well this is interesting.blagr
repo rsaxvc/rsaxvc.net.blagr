@@ -1,0 +1,21 @@
+Title:Well this is interesting
+Author:rsaxvc
+CreatedDateTime:2011-01-21T00:24:04
+ModifiedDateTime:2011-01-22T12:31:33
+Tag:GPS
+Tag:NMEA
+Tag:SCS-26UC4
+Tag:STMicroelectronics
+Tag:Samsung
+Tag:SigNav
+Tag:TAIP
+Tag:TSIP
+Tag:Trimble
+Tag:Verizon
+Tag:SparkFun
+---
+I photographed my teardown of my first SCS-26UC4. However, after bricking the second one,&nbsp;Doug Kelly, Kevin,&nbsp;and I disassembled it. Funny enough, the components weren't quite the same. Working on some information from&nbsp;<a href="http://laboratoryb.org/">Laboratory B</a>, we re-examined the GPS port, to see if the pins could be scoped once it had a signal. More interestingly, the GPS chipset is different from the first unit we took apart.<div><br /></div>
+
+<div>This first one is a SigNav:</div><div><a href="http://www.flickr.com/photos/40925843@N03/5155964323/" title="SamSungChips by rsaxvc, on Flickr"><img src="http://farm5.static.flickr.com/4013/5155964323_f6d8bc703f.jpg" width="500" height="333" alt="SamSungChips" /></a></div><div><br /></div>
+
+<div>This next one is a Trimble:</div><div><a href="http://www.flickr.com/photos/40925843@N03/5374229103/" title="New GPS Chipset by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5289/5374229103_5344da46bc.jpg" width="500" height="333" alt="New GPS Chipset" /></a></div><div><br /></div><div>Since the device was bricked, it probably doesn't need any signal shield...</div><div><a href="http://www.flickr.com/photos/40925843@N03/5374229739/" title="New GPS Chipset by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5206/5374229739_9cff2efa7d.jpg" width="500" height="333" alt="New GPS Chipset" /></a></div><div>And it uses an STMicroelectronics GPS Baseband processor.</div><div><br /></div><div>Cool. There are datasheets for one of the Trimble units&nbsp;<a href="http://www.google.com/url?sa=t&amp;source=web&amp;cd=1&amp;ved=0CBMQFjAA&amp;url=ftp%3A%2F%2Fftp.trimble.com%2Fpub%2Fsct%2Fembedded%2Fbin%2FManuals%2FCopernicus%2520v3.02%2520revA.pdf&amp;ei=ciM5TfvtMIK0lQeDzs2pBw&amp;usg=AFQjCNGbBHEZDPZ1ni-3HE8kEGgnap3oAA">here</a>. In all likelihood, the device is a&nbsp;<a href="http://www.dpie.com/gps/copernicus.html">Copernicus I/II</a>, but it might also be a <a href="http://www.dpie.com/gps/trimble-condor-gps-module.html" style="text-decoration: underline; ">Condor</a>. <a href="http://www.sparkfun.com/">SparkFun</a> sells&nbsp;<a href="http://www.sparkfun.com/products/7951">a Copernicus</a>&nbsp;for $45.&nbsp;A re-check of the serial i/o voltages should confirm which model. Potentially, there are three possible GPS protocols: NMEA(A text based standard), TSIP(Trimble Standard), and TAIP(Another Trimble Standard).&nbsp;<a href="http://www.pages.drexel.edu/~kws23/research/summerMentorship/Output.htm">This</a>&nbsp;seems to explain it well enough. Hopefully we're one step closer to GPS in the cave.</div><div><a href="http://www.dpie.com/gps/copernicus.html"></a></div><div><div><br /></div></div>

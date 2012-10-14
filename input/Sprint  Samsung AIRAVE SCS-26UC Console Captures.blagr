@@ -1,0 +1,11 @@
+Title:Sprint / Samsung AIRAVE SCS-26UC Console Captures
+Author:rsaxvc
+CreatedDateTime:2011-02-13T21:37:41
+ModifiedDateTime:2011-02-13T21:37:41
+Tag:HDMI
+Tag:Linux
+Tag:SCS-26UC
+Tag:Samsung Group
+Tag:U-Boot
+---
+The Sprint/Samsung <a href="http://www.samsung.com/us/mobile/cell-phones/SCS-26UC">AIRAVE</a> has a serial port in the HDMI socket, just like like the Verizon/Samsung SCS-26UC4 and SCS-2U01. The baud rate is 57600, just like the SCS-26UC4. It appears to be running linux 2.6.10 on an Omap 1710, with U-Boot 1.1.1. To stop U-Boot autoboot, enter sys&lt;enter&gt; within 1 second after the prompt. The device includes 64MB ram, TFFS, mdoc, and thttpd. Here's the log:&nbsp;<a href="http://rsaxvc.net/blog/airave.cap">airave.cap</a>

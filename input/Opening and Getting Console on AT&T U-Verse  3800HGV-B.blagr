@@ -1,0 +1,28 @@
+Title:Opening and Getting Console on AT&T U-Verse  3800HGV-B
+Author:rsaxvc
+CreatedDateTime:2011-01-28T01:27:35
+ModifiedDateTime:2011-01-28T01:27:35
+Tag:AT&T
+Tag:ATT
+Tag:CCCKC
+Tag:Console
+Tag:Serial
+Tag:U-Verse
+Tag:VDSL
+---
+How to open your 3800HGV-B: First push in the plastic tabs on each side of the case and prop with a plastic knife. There are two tabs per side.
+<div><a href="http://www.flickr.com/photos/40925843@N03/5395181064/" title="Open Here by rsaxvc, on Flickr"><img src="http://farm5.static.flickr.com/4126/5395181064_7e2684ed8a.jpg" width="500" height="333" alt="Open Here" /></a></div>
+
+<div><br /></div><div>Halfway there.</div><div><a href="http://www.flickr.com/photos/40925843@N03/5395181558/" title="ATT U-Verse 3800HGV-B by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5216/5395181558_08731070fa.jpg" width="500" height="333" alt="ATT U-Verse 3800HGV-B" /></a></div>
+
+<div><br /></div><div>Here's the top case now removed.</div><div><a href="http://www.flickr.com/photos/40925843@N03/5394586899/" title="3800HGV-B Top Case by rsaxvc, on Flickr"><img src="http://farm5.static.flickr.com/4116/5394586899_4250e32250.jpg" width="500" height="333" alt="3800HGV-B Top Case" /></a></div>
+
+<div><br /></div><div>This is the bottom case and PCB.</div><div><a href="http://www.flickr.com/photos/40925843@N03/5394587621/" title="U-Verse 3800HGV-B Bottom case and PCB by rsaxvc, on Flickr"><img src="http://farm5.static.flickr.com/4114/5394587621_03e23d7511.jpg" width="500" height="333" alt="U-Verse 3800HGV-B Bottom case and PCB" /></a></div>
+
+<div><br /></div><div>What an interesting little 4-pin header. Could it be Power, Ground, TX, and RX?</div><div><a href="http://www.flickr.com/photos/40925843@N03/5395183266/" title="What's this do? by rsaxvc, on Flickr"><img src="http://farm6.static.flickr.com/5294/5395183266_45b0cc87b9.jpg" width="500" height="333" alt="What's this do?" /></a></div>
+
+<div><br /></div><div>It is indeed serial, running 3.3Volts@38400Baud. Pinout from top/rightmost pin should be power, serial from unit to pc, serial from pc to unit, ground. Power and ground might be swapped.</div><div><a href="http://www.flickr.com/photos/40925843@N03/5394588795/" title="This is the 3800HGV-B serial header by rsaxvc, on Flickr"><img src="http://farm5.static.flickr.com/4134/5394588795_14361d4089.jpg" width="500" height="333" alt="This is the 3800HGV-B serial header" /></a></div>
+
+<div><br /></div><div>These next shots are some console output. Sadly I forgot to enable logging, so I only have pictures.</div><div><a href="http://www.flickr.com/photos/40925843@N03/5395184952/" title="ATT U-Verse 3800HGV-B by rsaxvc, on Flickr"><img src="http://farm5.static.flickr.com/4154/5395184952_13b17eefbe.jpg" width="500" height="333" alt="ATT U-Verse 3800HGV-B" /></a></div><div><br /></div><div><a href="http://www.flickr.com/photos/40925843@N03/5395185432/" title="ATT U-Verse 3800HGV-B by rsaxvc, on Flickr"><img src="http://farm5.static.flickr.com/4146/5395185432_a1015851f1.jpg" width="500" height="333" alt="ATT U-Verse 3800HGV-B" /></a></div>
+
+<div><br /></div>
