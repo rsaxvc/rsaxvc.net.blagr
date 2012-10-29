@@ -7,7 +7,7 @@ from datetime import datetime
 BLOG_TITLE      = "RSAXVC Development"
 POST_PATH_BASE  = "posts/"
 TAG_PATH_BASE   = "tags/"
-INPUT_PATH_BASE = "input/"
+INPUT_PATH_BASE = "input/posts/"
 
 shutil.rmtree(POST_PATH_BASE,True)
 shutil.rmtree(TAG_PATH_BASE,True)
