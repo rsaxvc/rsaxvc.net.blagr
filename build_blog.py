@@ -4,10 +4,16 @@ import glob
 import shutil
 from datetime import datetime
 
+#configuration
 BLOG_TITLE      = "RSAXVC Development"
+
 POST_PATH_BASE  = "posts/"
 TAG_PATH_BASE   = "tags/"
-INPUT_PATH_BASE = "input/posts/"
+CSS_PATH_BASE   = "css/"
+
+INPUT_PATH_BASE = "input/"
+INPUT_CSS_PATH  = "css/"
+INPUT_POST_PATH = "posts/"
 
 shutil.rmtree(POST_PATH_BASE,True)
 shutil.rmtree(TAG_PATH_BASE,True)
@@ -91,18 +97,25 @@ def globulate_tags( posts ):
 				tags.append( tag )
 	return tags
 
-def generate_html_start( f, title ):
+def generate_html_start( f, title, path_depth ):
+	"Writes common header/title/css-includes/..."
+	upbuffer = ""
+	for i in range(path_depth):
+		upbuffer += "../"
 	f.write( "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" )
 	f.write( "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">\n" )
 	f.write( "<head>\n" )
 	f.write( "<meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\" />\n")
 	f.write( "<title>"+title+"</title>\n")
+	f.write( '<LINK href="' + upbuffer + CSS_PATH_BASE + 'blog.css" rel="stylesheet" type="text/css">')
 	f.write( "</head><body>\n" )
 
 def generate_html_end( f ):
+	"terminate the html document"
 	f.write( "</body></html>\n" )
 
 def generate_tag_html( f, tag, posts, path_depth ):
+	"makes the html for a tag page"
 	f.write( "<h4>Posts tagged with " + tag.text + "</h4>\n" )
 	f.write( "<ul>\n" )
 	upbuffer = ""
@@ -114,49 +127,57 @@ def generate_tag_html( f, tag, posts, path_depth ):
 	f.write("</ul>\n")
 
 def write_tag_html( tag, posts ):
+	"makes the file and writes the text for a tag page"
 	filename = tag.path()
 	if( os.path.exists( os.path.dirname( filename ) ) == False ):
 		os.makedirs( os.path.dirname( filename ) )
 	f = open(filename, 'w')
-	generate_html_start( f, "Tag listing for "+tag.text )
+	generate_html_start( f, "Tag listing for "+tag.text, 1 )
 	generate_tag_html( f, tag, posts, 1 )
 	generate_html_end( f )
 	f.close()
 	
 def generate_post_html( f, post, path_depth ):
+	"makes the html for a post"
 	upbuffer = ""
 	for i in range(path_depth):
 		upbuffer += "../"
-	f.write("<h1>"+post.title+"</h1>\n" )
-	f.write("<h4> Written "+str(post.dt.date())+"</h4>\n" )
-	f.write("<h4> Tags:")
+	f.write('<div class="post">')
+	f.write('<h1 class="title">'+post.title+"</h1>\n" )
+	f.write('<h4 class="post_date"> Written '+str(post.dt.date())+"</h4>\n" )
+	f.write('<h4 class="tag_list"> Tags:')
 	for tag in post.tags:
 		f.write( "<a href=\"" + upbuffer + tag.path()+"\">" + tag.text + "</a>&nbsp;" )
 	f.write("</h4>\n")
+	f.write('<div class="body_text">')
 	f.write(post.text)
+	f.write("</div>")
+	f.write("</div>")
 
 def write_post_html( post ):
+	"makes the file and writes the text for a post"
 	filename = post.path()
 	if( os.path.exists( os.path.dirname( filename ) ) == False ):
 		os.makedirs( os.path.dirname( filename ) )
 	f = open( filename, 'w' )
-	generate_html_start( f, post.title )
+	generate_html_start( f, post.title, 4 )
 	generate_post_html( f, post, 4 )
 	generate_html_end( f )
 	f.close();
 
 def write_posts_html( filename, title, posts ):
+	"writes all the posts"
 	if( os.path.exists( os.path.dirname( filename ) ) == False ):
 		os.makedirs( os.path.dirname( filename ) )
 	f = open( filename, 'w' )
-	generate_html_start( f, title )
+	generate_html_start( f, title, 1 )
 	for post in posts:
 		generate_post_html( f, post, 1 )
 	generate_html_end( f )
 	f.close()
 	
 posts = []
-for infile in glob.glob( os.path.join(INPUT_PATH_BASE, '*.blagr') ):
+for infile in glob.glob( os.path.join(INPUT_PATH_BASE + INPUT_POST_PATH, '*.blagr') ):
 	print "Parsing: " + infile
 	posts.append( parse_blagr_entry( infile ) )
 
