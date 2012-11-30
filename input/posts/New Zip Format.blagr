@@ -1,0 +1,42 @@
+Title:A New, Future-Proofable Archive Format
+Author:rsaxvc
+CreatedDateTime:2012-11-30T21:08:14
+Tag:Zip
+Tag:Arc
+Tag:Compression
+Tag:Future-Proofing
+---
+<div>
+
+<div>
+I've been dealing with different archive formats recently, and I'm a little bummed that none of them do everything I want. So I've been kicking 
+around the idea of an archive format that is scalable to future algorithms, can be optimized at pack-time for what is stored, and can be updated 
+with more advanced decompression algorithms without needing to update the client. What I've come up with so far is embedding a small subset of a 
+programming language into the archive itself.
+</div><br/>
+
+<div>
+Examples:
+<ul>Text files can be compressed with the same LZxx algorithms today</ul>
+<ul>WAV files can be compressed as FLAC files, and decompressed on the fly as needed</ul>
+<ul>Bitmaps can be compressed any number of ways(PNG/JP2/...)</ul>
+</div><br/>
+
+<div>
+One hurdle is making the decompression algorithm small enough for this to be effective. That said, for small files, a smaller but less efficient
+decompressor may be included to keep the total filesize still small.
+</div><br/>
+
+<div>
+Future proofing is intrinsic - when an archive is packed, it contains the algorithms used to compress it, so any new compression algorithms
+will work fine on old implementations.
+</div><br/>
+
+<div>
+Security concerns - each archive contains one or more programs running on the user's machine. This is where exposing only a subset of
+normal OS bindings comes in - the program gets access to read the compressed data block, ability to read/free memory, the ability to
+write to the output buffer, and of course entry/exit points for open/close/read/seek.
+</div><br/>
+
+
+</div>
