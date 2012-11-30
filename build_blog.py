@@ -2,21 +2,27 @@ import os
 import fileinput
 import glob
 import shutil
+from pyatom import AtomFeed
 from datetime import datetime
 
 #configuration
 BLOG_TITLE      = "RSAXVC Development"
+BLOG_SUBTITLE   = "Software, Hardware, Radios, Algorithms"
+BLOG_FEED_URL   = "http://rsaxvc.net/blog/atom.xml"
+BLOG_URL        = "http://rsaxvc.net/blog/"
+BLOG_AUTHOR     = "rsaxvc"
 
-POST_PATH_BASE  = "posts/"
-TAG_PATH_BASE   = "tags/"
-CSS_PATH_BASE   = "css/"
+PATH_BASE       = "../blog/"
+POST_PATH_BASE  = PATH_BASE
+TAG_PATH_BASE   = PATH_BASE + "tags/"
+CSS_PATH_BASE   = PATH_BASE + "css/"
+ATOM_PATH		= PATH_BASE + "atom.xml"
 
 INPUT_PATH_BASE = "input/"
-INPUT_CSS_PATH  = "css/"
-INPUT_POST_PATH = "posts/"
+INPUT_CSS_PATH  = INPUT_PATH_BASE + "css/"
+INPUT_POST_PATH = INPUT_PATH_BASE + "posts/"
 
-shutil.rmtree(POST_PATH_BASE,True)
-shutil.rmtree(TAG_PATH_BASE,True)
+shutil.rmtree(PATH_BASE,True)
 
 #Contains a single post
 class post:
@@ -33,8 +39,14 @@ class post:
 		else:
 			return -1
 
+	def relpath(self):
+		return str(self.dt.year) + "/" + str(self.dt.month) + "/" + str(self.dt.day) + "/" + str(self.title) + ".html"
+
 	def path(self):
-		return POST_PATH_BASE + str(self.dt.year) + "/" + str(self.dt.month) + "/" + str(self.dt.day) + "/" + str(self.title) + ".html"
+		return POST_PATH_BASE + self.relpath()
+
+	def wobpath(self):
+		return BLOG_URL + self.relpath()
 
 	def has_tag(self, search_tag):
 		for tag in self.tags:
@@ -160,8 +172,8 @@ def write_post_html( post ):
 	if( os.path.exists( os.path.dirname( filename ) ) == False ):
 		os.makedirs( os.path.dirname( filename ) )
 	f = open( filename, 'w' )
-	generate_html_start( f, post.title, 4 )
-	generate_post_html( f, post, 4 )
+	generate_html_start( f, post.title, 3 )
+	generate_post_html( f, post, 3 )
 	generate_html_end( f )
 	f.close();
 
@@ -170,14 +182,14 @@ def write_posts_html( filename, title, posts ):
 	if( os.path.exists( os.path.dirname( filename ) ) == False ):
 		os.makedirs( os.path.dirname( filename ) )
 	f = open( filename, 'w' )
-	generate_html_start( f, title, 1 )
+	generate_html_start( f, title, 0 )
 	for post in posts:
-		generate_post_html( f, post, 1 )
+		generate_post_html( f, post, 0 )
 	generate_html_end( f )
 	f.close()
 	
 posts = []
-for infile in glob.glob( os.path.join(INPUT_PATH_BASE + INPUT_POST_PATH, '*.blagr') ):
+for infile in glob.glob( os.path.join(INPUT_POST_PATH, '*.blagr') ):
 	print "Parsing: " + infile
 	posts.append( parse_blagr_entry( infile ) )
 
@@ -190,3 +202,23 @@ tags = globulate_tags( posts )
 tags.sort()
 for tag in tags:
 	write_tag_html( tag, posts )
+
+feed = AtomFeed(title=BLOG_TITLE,
+	subtitle=BLOG_SUBTITLE,
+	feed_url=BLOG_FEED_URL,
+	url=BLOG_URL,
+	author=BLOG_AUTHOR)
+
+for post in posts:
+	# Do this for each feed entry
+	feed.add(title=post.title,
+		content=post.text,
+		content_type="html",
+		author=post.author,
+		url=post.wobpath(),
+		updated=post.dt
+		)
+
+f = open(ATOM_PATH, 'w')
+f.write( feed.to_string() )
+f.close()
