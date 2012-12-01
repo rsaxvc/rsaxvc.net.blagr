@@ -222,3 +222,5 @@ for post in posts:
 f = open(ATOM_PATH, 'w')
 f.write( feed.to_string() )
 f.close()
+
+shutil.copytree( INPUT_CSS_PATH, CSS_PATH_BASE );
