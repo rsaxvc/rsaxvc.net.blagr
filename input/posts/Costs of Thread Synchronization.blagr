@@ -45,7 +45,7 @@ Tag:Atomic-Operations
 	<div>
 		<h3>Thread-based storage local to each thread</h3>
 		This mode uses a variable unique to each thread-function. This is nearly the same as above,
-		but
+		but effectively places the variables in areas that will not be vulnerable to cache-line sharing.
 	</div>
 
 	<h2>The Machines</h2>
