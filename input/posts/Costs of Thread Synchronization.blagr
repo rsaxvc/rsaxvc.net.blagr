@@ -1,0 +1,98 @@
+Title:The Costs of Thread Synchronization
+Author:rsaxvc
+CreatedDateTime:2012-12-04T21:36:51
+ModifiedDateTime:2012-12-04T21:36:51
+Tag:Monte-Carlo-Simulation
+Tag:Cache-Line-Sharing
+Tag:Caches
+Tag:Atomic-Operations
+---
+<div>
+	Recently I implemented a set of simple programs that use Monte-Carlo simulations to estimate the value of PI. I ran it on a few different machines to see the cost of different thread syncronization methods on these architectures.
+
+	<h2>The Algorithm</h2>
+	This algorithm approximates the value of pi with a Monte-Carlo simulation. Effectively, this works by pseudo-randomly placing points in a domain, evaluating them, and tallying results. In our case, the domain is the set of x-y pairs from (0,0) to (1,1). The evaluation function checks if the distance from the point to (0,0) is greater than 1. The tallying consists of two counters - points farther than 1 away from (0.0), and points closer than 1 to (0,0).
+	<br/><a href="http://www.flickr.com/photos/40925843@N03/8245522909/" title="Circle Quadrant by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8059/8245522909_543319e2e7.jpg" width="500" height="375" alt="Circle Quadrant"></a><br/>
+	The final approximation is the ratio of points in the circle to total points, and must be scaled by 4 to match a simulation of a full circle and square centered on (0,0). Since we can approximate the ratio of areas via the Monte-Carlo method, we solve for PI and approximate PI via the adjusted area ratios.
+
+	<h2>The Synchronization Options</h2>
+	<div>
+		<h3>Binary Semaphore/Mutex</h3>
+		This is a standard mutex operation - only a single thread at a time can control it,
+		and any thread who tries to reserve it when it is already reserved will block until
+		it is available. These are fairly heavyweight structures that usually involve contacting
+		the operating system for resolution when multiple threads want the mutex.
+	</div>
+
+	<div>
+		<h3>Atomic Operations</h3>
+		Atomic operations have the ability to read/modify/write all in one instruction, 
+		or the ability to rollback an operation that failed to acheive atomicity, and report 
+		it to the user. In this way, two threads can share a single variable in memory, and each 
+		thread can modify it with atomic operations. However, this still doesn&apos;t scale to large
+		numbers of threads due to cache-line sharing and coherency-tracking.
+	</div>
+
+	<div>
+		<h3>Thread-based storage in a shared area</h3>
+		This mode allocates all thread-control structures and counters in a linear block of
+		memory. Each thread has its own value to increment, but because they&apos;re near each
+		other in memory, there may be some contention for cache-lines. Had I though about it 
+		earlier, I&apos;d&apos;ve placed all the counters in one linear block and the 
+		thread-control structures in another to try and illustrate the effect.
+	</div>
+
+	<div>
+		<h3>Thread-based storage local to each thread</h3>
+		This mode uses a variable unique to each thread-function. This is nearly the same as above,
+		but
+	</div>
+
+	<h2>The Machines</h2>
+
+	<div>
+		<h3>Intel CoreDuo-T2300</h3>
+		The first box is my old CoreDuo powered Thinkpad T60 laptop. Semaphores are pretty unscalable. Atomics scale better, but are still surprisingly expensive. Thread-local options work much better, and with a good number of threads, it is possible to beat the single-threaded performance(untrue for atomics and semaphores).
+		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381219/" title="graph_CoreDuo_T2300 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8206/8245381219_426b8e0a84.jpg" width="500" height="375" alt="graph_CoreDuo_T2300"></a>
+	</div>
+
+	<div>
+		<h3>Intel Core2Duo-T7600</h3>
+		The next box is my current Core2Duo powered Thinkpad T60P laptop. The results are similar to the CoreDuo results, but the Core2Duo is quite a bit faster(as expected).
+		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381251/" title="graph_Core2Duo_T7600 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8060/8245381251_b553d69e59.jpg" width="500" height="375" alt="graph_Core2Duo_T7600"></a>
+	</div>
+
+	<div>
+		<h3>Intel dual Xeon 5650</h3>
+		This box is my webserver and VM host. It has two six-core chips and hyperthreading, so it is expected that the runtime of scalable implementations of the benchmark will decrease in execution time up to or around using 24 threads. However, I couldn&apos;t take down the minecraft VMs that are also on this box, so I won&apos;t put as much faith in these numbers. Semaphores were quite slow and leveled off well before we reached 24 threads. Atomics scaled better here than on the above two intel chips, which I find suprising - I expected that if any threads ended up on the second chip, this would be much slower. However, accumulating the results local to each thread was the definite winner.
+		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381209/" title="graph_i7_5650_x2 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8062/8245381209_cd24705321.jpg" width="500" height="375" alt="graph_i7_5650_x2"></a><br/>
+		Genpfault pointed out I should play with numactl on this box to enforce splitting over sockets or locality to a single socket.
+	</div>
+
+	<div>
+		<h3>Texas Instruments MicroSPARC</h3>
+		The next graph is from my 50MHz MicroSPARC running OpenBSD. This one is interesting because it performs surprisingly well. However, since Compare-and-Swap was only implemented with SPARCv9, and MicroSPARC is a SPARCv8, there were no atomic operations to test. Additionally, since this is a single-core machine, flat curves are expected. Lastly, the performance for the semaphore mode isn&apos;t bad when using only one thread, so uncontended semaphores aren&apos;t too expensive on this box, but contended ones ( thread counts 2-100 ) are terrible.<br/>
+		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381187/" title="graph_MicroSPARC by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8349/8245381187_080f89e51f.jpg" width="500" height="375" alt="graph_MicroSPARC"></a>
+	</div>
+
+	<h2>Conclusions</h2>
+	<div>
+		<h3>Atomic operations aren&apos;t a magic bullet</h3>
+		On the platforms that support them, atomic operations can be much better than semaphores. However, even less thread communication scales even better.
+	</div>
+
+	<div>
+		<h3>Semaphore cost can vary widely over different platforms</h3>
+		Performance of the semaphore mode on OpenBSD/SPARC32 was surprising at over 100x more expensive than individual thread variables. Even with a single thread, the uncontended semaphore cost was still 10x that of individual thread variables, while on Linux/IntelXeon, the single-threaded performance is indistinguishable between the modes.
+	</div>
+
+	<div>
+		<h3>Often times, a single-thread can do pretty well</h3>
+		On CoreDuo and Core2Duo a single thread beat any number of threads using atomics or semaphores. On Xeon, a single thread was equivalent to all cores when using atomics, and was better than using semaphores.
+	</div>
+
+	<div>
+		<h3>Costs of synchronization should be mitigatable</h3>
+		Costs should be mitigatable by doing more work between synchronization or communication with other threads. The work being done by this benchmark is quite simple. It consists of two calls to rand_r(), computing distance-squared, a comparison, and an action based on that comparison. As the complexity of the work done goes up, the ratio of the time spent synchronizing vs time spend working should go down quite a bit.
+	</div>
+</div>
