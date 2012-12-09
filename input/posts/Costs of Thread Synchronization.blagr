@@ -1,7 +1,7 @@
 Title:The Costs of Thread Synchronization
 Author:rsaxvc
 CreatedDateTime:2012-12-04T21:36:51
-ModifiedDateTime:2012-12-04T21:36:51
+ModifiedDateTime:2012-12-09T21:36:51
 Tag:Monte-Carlo-Simulation
 Tag:Cache-Line-Sharing
 Tag:Caches
@@ -73,6 +73,15 @@ Tag:Atomic-Operations
 		<h3>Texas Instruments MicroSPARC</h3>
 		The next graph is from my 50MHz MicroSPARC running OpenBSD. This one is interesting because it performs surprisingly well. However, since Compare-and-Swap was only implemented with SPARCv9, and MicroSPARC is a SPARCv8, there were no atomic operations to test. Additionally, since this is a single-core machine, flat curves are expected. Lastly, the performance for the semaphore mode isn&apos;t bad when using only one thread, so uncontended semaphores aren&apos;t too expensive on this box, but contended ones ( thread counts 2-100 ) are terrible.<br/>
 		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381187/" title="graph_MicroSPARC by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8349/8245381187_080f89e51f.jpg" width="500" height="375" alt="graph_MicroSPARC"></a>
+	</div>
+
+	<div>
+		<h3>Intel Atom N455</h3>
+		This pair of graphs is from a single-core, hyperthreaded netbook running OpenBSD 5.2. The first graph should seem familiar - it seems OpenBSD semaphores are expensive. I'm not sure what the dip around 7 threads is; it probably warrants running the benchmark a few more times.
+        <br/><a href="http://www.flickr.com/photos/40925843@N03/8259647934/" title="graph_atom_N455 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8073/8259647934_e6522a6ddb.jpg" width="500" height="375" alt="graph_atom_N455"></a>
+		<br/>Next is the same data with the semaphore plot removed, as it made the scale awful.
+		<br/><a href="http://www.flickr.com/photos/40925843@N03/8258579853/" title="graph_atom_N455_no_sem by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8066/8258579853_20dd43cf27.jpg" width="500" height="375" alt="graph_atom_N455_no_sem"></a>
+		<br/>Interestingly, once you discount outliers, atomic operations on this platform appear to be no more expensive than using independent threads. I suspect this is due to the fact that the N455 is really a single-core CPU - with only a single L1 cache, there won't be any cacheline-sharing.
 	</div>
 
 	<h2>Conclusions</h2>
