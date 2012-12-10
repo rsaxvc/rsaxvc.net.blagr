@@ -51,37 +51,46 @@ Tag:Atomic-Operations
 	<h2>The Machines</h2>
 
 	<div>
-		<h3>Intel CoreDuo-T2300</h3>
+		<h3>Intel CoreDuo-T2300 running Linux 3.2</h3>
 		The first box is my old CoreDuo powered Thinkpad T60 laptop. Semaphores are pretty unscalable. Atomics scale better, but are still surprisingly expensive. Thread-local options work much better, and with a good number of threads, it is possible to beat the single-threaded performance(untrue for atomics and semaphores).
 		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381219/" title="graph_CoreDuo_T2300 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8206/8245381219_426b8e0a84.jpg" width="500" height="375" alt="graph_CoreDuo_T2300"></a>
 	</div>
 
 	<div>
-		<h3>Intel Core2Duo-T7600</h3>
+		<h3>Intel Core2Duo-T7600 running Linux 3.2</h3>
 		The next box is my current Core2Duo powered Thinkpad T60P laptop. The results are similar to the CoreDuo results, but the Core2Duo is quite a bit faster(as expected).
 		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381251/" title="graph_Core2Duo_T7600 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8060/8245381251_b553d69e59.jpg" width="500" height="375" alt="graph_Core2Duo_T7600"></a>
 	</div>
 
 	<div>
-		<h3>Intel dual Xeon 5650</h3>
+		<h3>Intel dual Xeon 5650 running Linux 3.2</h3>
 		This box is my webserver and VM host. It has two six-core chips and hyperthreading, so it is expected that the runtime of scalable implementations of the benchmark will decrease in execution time up to or around using 24 threads. However, I couldn&apos;t take down the minecraft VMs that are also on this box, so I won&apos;t put as much faith in these numbers. Semaphores were quite slow and leveled off well before we reached 24 threads. Atomics scaled better here than on the above two intel chips, which I find suprising - I expected that if any threads ended up on the second chip, this would be much slower. However, accumulating the results local to each thread was the definite winner.
 		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381209/" title="graph_i7_5650_x2 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8062/8245381209_cd24705321.jpg" width="500" height="375" alt="graph_i7_5650_x2"></a><br/>
 		Genpfault pointed out I should play with numactl on this box to enforce splitting over sockets or locality to a single socket.
 	</div>
 
 	<div>
-		<h3>Texas Instruments MicroSPARC</h3>
+		<h3>Texas Instruments MicroSPARC running OpenBSD 5.1</h3>
 		The next graph is from my 50MHz MicroSPARC running OpenBSD. This one is interesting because it performs surprisingly well. However, since Compare-and-Swap was only implemented with SPARCv9, and MicroSPARC is a SPARCv8, there were no atomic operations to test. Additionally, since this is a single-core machine, flat curves are expected. Lastly, the performance for the semaphore mode isn&apos;t bad when using only one thread, so uncontended semaphores aren&apos;t too expensive on this box, but contended ones ( thread counts 2-100 ) are terrible.<br/>
 		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381187/" title="graph_MicroSPARC by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8349/8245381187_080f89e51f.jpg" width="500" height="375" alt="graph_MicroSPARC"></a>
 	</div>
 
 	<div>
-		<h3>Intel Atom N455</h3>
-		This pair of graphs is from a single-core, hyperthreaded netbook running OpenBSD 5.2. The first graph should seem familiar - it seems OpenBSD semaphores are expensive. I'm not sure what the dip around 7 threads is; it probably warrants running the benchmark a few more times.
+		<h3>Intel Atom N455 running OpenBSD 5.2</h3>
+		This pair of graphs is from <a href="http://www.h-i-r.net/">Ax0n&apos;a</a> single-core, hyperthreaded netbook running OpenBSD 5.2. The first graph should seem familiar - it seems OpenBSD semaphores are expensive. I&apos;m not sure what the dip around 7 threads is; it probably warrants running the benchmark a few more times.
         <br/><a href="http://www.flickr.com/photos/40925843@N03/8259647934/" title="graph_atom_N455 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8073/8259647934_e6522a6ddb.jpg" width="500" height="375" alt="graph_atom_N455"></a>
 		<br/>Next is the same data with the semaphore plot removed, as it made the scale awful.
 		<br/><a href="http://www.flickr.com/photos/40925843@N03/8258579853/" title="graph_atom_N455_no_sem by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8066/8258579853_20dd43cf27.jpg" width="500" height="375" alt="graph_atom_N455_no_sem"></a>
-		<br/>Interestingly, once you discount outliers, atomic operations on this platform appear to be no more expensive than using independent threads. I suspect this is due to the fact that the N455 is really a single-core CPU - with only a single L1 cache, there won't be any cacheline-sharing.
+		<br/>Interestingly, once you discount outliers, atomic operations on this platform appear to be no more expensive than using independent threads. I suspect this is due to the fact that the N455 is really a single-core CPU - with only a single L1 cache, there won&apos;t be any cacheline-sharing.
+	</div>
+
+	<div>
+		<h3>IBM PowerPC Quad-G5 running OSX 10.5</h3>
+		This pair of graphs is from CCCKC&apos;s Mac-Pro. Similar to OpenBSD, semaphore performance is slow and skews the scale so that you can&apos;t see anything else.
+		<br/><a href="http://www.flickr.com/photos/40925843@N03/8258640377/" title="graph_G5 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8204/8258640377_f138eb3df9.jpg" width="500" height="375" alt="graph_G5"></a>
+		<br/>Here&apos;s the same plot but with semaphores removed and scale reset.
+		<br/><a href="http://www.flickr.com/photos/40925843@N03/8259708646/" title="graph_G5_no_sema by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8497/8259708646_933d1b7d1e.jpg" width="500" height="375" alt="graph_G5_no_sema"></a>
+		<br/>As expected, atomic operations are slower than independent threads on this platform, but similarly so to other multi-core devices. Atomics are still much faster than semaphores.
 	</div>
 
 	<h2>Conclusions</h2>
@@ -92,7 +101,7 @@ Tag:Atomic-Operations
 
 	<div>
 		<h3>Semaphore cost can vary widely over different platforms</h3>
-		Performance of the semaphore mode on OpenBSD/SPARC32 was surprising at over 100x more expensive than individual thread variables. Even with a single thread, the uncontended semaphore cost was still 10x that of individual thread variables, while on Linux/IntelXeon, the single-threaded performance is indistinguishable between the modes.
+		At first I thought that OpenBSD/SPARC32 just had slow semaphores. However, after running the same benchmark on OSX/PPC-G5 and OpenBSD/Intel, it seems that Linux just has really cheap semaphores. Additionally, on all platforms, the semaphore benchmark ran best with only a single thread. Lastly, on every platform, the semaphore benchmark was the worst of the benchmarks.
 	</div>
 
 	<div>
