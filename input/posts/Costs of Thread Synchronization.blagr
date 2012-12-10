@@ -113,4 +113,9 @@ Tag:Atomic-Operations
 		<h3>Costs of synchronization should be mitigatable</h3>
 		Costs should be mitigatable by doing more work between synchronization or communication with other threads. The work being done by this benchmark is quite simple. It consists of two calls to rand_r(), computing distance-squared, a comparison, and an action based on that comparison. As the complexity of the work done goes up, the ratio of the time spent synchronizing vs time spend working should go down quite a bit.
 	</div>
+
+	<h2>Source Code</h2>
+	<div>
+		Source code is available at <a href="https://github.com/rsaxvc/monte-carlo-benchmark">https://github.com/rsaxvc/monte-carlo-benchmark</a>. Slight modifications were needed for OSX, whose atomic builtins are named differently than GCC's default ones, as well as OpenBSD, which needed changes for the path for bash.
+	</div>
 </div>
