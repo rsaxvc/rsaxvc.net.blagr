@@ -187,7 +187,7 @@ def write_post_html( post, end_text ):
 	generate_html_start( f, post.title, 3 )
 	generate_post_html( f, post, 3 )
 	generate_html_end( f, end_text )
-	f.close();
+	f.close()
 
 def write_posts_html( filename, title, posts, end_text ):
 	"writes all the posts"
@@ -225,7 +225,6 @@ feed = AtomFeed(title=BLOG_TITLE,
 	author=BLOG_AUTHOR)
 
 for post in posts:
-	# Do this for each feed entry
 	feed.add(title=post.title,
 		content=post.text,
 		content_type="html",
@@ -238,4 +237,4 @@ f = open(ATOM_PATH, 'w')
 f.write( feed.to_string() )
 f.close()
 
-shutil.copytree( INPUT_CSS_PATH, CSS_PATH_BASE );
+shutil.copytree( INPUT_CSS_PATH, CSS_PATH_BASE )
