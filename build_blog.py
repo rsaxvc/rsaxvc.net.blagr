@@ -167,7 +167,7 @@ def generate_post_html( f, post, path_depth ):
 	for i in range(path_depth):
 		upbuffer += "../"
 	f.write('<div class="post">')
-	f.write('<h1 class="title">'+post.title+"</h1>\n" )
+	f.write('<h1 class="title"><a href=\"'+upbuffer+post.path()+"\">" + post.title + "</a></h1>\n" )
 	f.write('<h4 class="post_date"> Written '+str(post.dt.date())+"</h4>\n" )
 	f.write('<h4 class="tag_list"> Tags:')
 	for tag in post.tags:
