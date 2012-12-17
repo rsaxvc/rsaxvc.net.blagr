@@ -1,0 +1,28 @@
+Title:Disassembling ELF files with Beyond-Compare
+Author:rsaxvc
+CreatedDateTime:2012-12-16T18:13:54
+ModifiedDateTime:2012-12-16T18:13:54
+Tag:Disassembly
+Tag:objdump
+Tag:BeyondCompare
+---
+<div>
+Today I combined two great tools - BeyondCompare and objdump. Objdump is GNU's assembler. BeyondCompare is a slick text-and-more differencing tool with a neat UI. However, BeyondCompare also supports using external programs to generate text on the fly from binary files. Under Tools-\&gt;File Formats, you can see a list of custom filetypes. You can make a new one, and under the 'Conversion' tab, specify 'External Program' and add &quot;objdump -d &#37;s > &#37;t&quot;.
+
+<h2>Left-hand-side</h2>
+int check_result( float x, int y )
+<br/>{
+<br/>return ((int)x*(int)x+y*y) > 65536;
+<br/>}
+
+<h2>Right-hand-side</h2>
+int check_result( int x, int y )
+<br/>{
+<br/>return (x*x+y*y) > 65536;
+<br/>}
+
+<h2>Results</h2>
+<a href="http://www.flickr.com/photos/40925843@N03/8279982098/" title="bc3_disasm by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8208/8279982098_321b132329.jpg" width="750" height="445" alt="bc3_disasm"></a>
+<br/>Well, it works. You can see the instructions are very similar except in how they load the operands from the stack. It would be drop the offset column(column 1). Additionally, if BeyondCompare had the ability to extend folder structures(maybe it exists, but I haven't found it), I'd set it up to parse every ELF file as an archive, and each function could be disassembled in its own instance. My current setup gets pretty messy when diffing files with many large functions in it. It may need a little refinement, but I think this'll be a useful tool for me.
+</div>
+
