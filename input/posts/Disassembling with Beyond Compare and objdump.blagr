@@ -23,6 +23,6 @@ int check_result( int x, int y )
 
 <h2>Results</h2>
 <a href="http://www.flickr.com/photos/40925843@N03/8279982098/" title="bc3_disasm by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8208/8279982098_321b132329.jpg" width="750" height="445" alt="bc3_disasm"></a>
-<br/>Well, it works. You can see the instructions are very similar except in how they load the operands from the stack. It would be drop the offset column(column 1). Additionally, if BeyondCompare had the ability to extend folder structures(maybe it exists, but I haven't found it), I'd set it up to parse every ELF file as an archive, and each function could be disassembled in its own instance. My current setup gets pretty messy when diffing files with many large functions in it. It may need a little refinement, but I think this'll be a useful tool for me.
+<br/>Well, it works. You can see the instructions are very similar except in how they load the operands from the stack. It would be nice to drop the offset column(column 1). Additionally, if BeyondCompare had the ability to extend folder structures(maybe it exists, but I haven't found it), I'd set it up to parse every ELF file as an archive, and each function could be disassembled in its own instance. My current setup gets pretty messy when diffing files with many large functions in it. It may need a little refinement, but I think this'll be a useful tool for me.
 </div>
 
