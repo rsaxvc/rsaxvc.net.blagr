@@ -49,7 +49,9 @@ Tag:Atomic-Operations
 	</div>
 
 	<h2>The Machines</h2>
-
+	<div>
+	Each plot shows execution time(Y) in seconds versus to the number of threads used(X). The number of computations is fixed at 1 Million, and the work is divided as evenly as possible between the threads. Additionally, each run was run a single time, so the graphs are somewhat noisy.
+	</div>
 	<div>
 		<h3>Intel CoreDuo-T2300 running Linux 3.2</h3>
 		The first box is my old CoreDuo powered Thinkpad T60 laptop. Semaphores are pretty unscalable. Atomics scale better, but are still surprisingly expensive. Thread-local options work much better, and with a good number of threads, it is possible to beat the single-threaded performance(untrue for atomics and semaphores).
