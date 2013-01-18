@@ -1,0 +1,20 @@
+Title:A simple streaming H.264 latency reduction trick
+Author:rsaxvc
+CreatedDateTime:2013-01-17T21:34:26
+ModifiedDateTime:2013-01-17T21:34:26
+Tag:x264
+Tag:h.264
+Tag:video
+Tag:latency
+---
+<div>
+
+<div>
+h.264 streaming NALs are identified by a frame marker byte-sequence: 0x00000001. These are sent at the start of each h.264 NAL. When operating on a streamed network connection, like a UART, these byte-sequences are used to split up the NALs from the data stream and hand them to the decoder. However, by placing the framing markers at the start of each packet, a deframer must wait for the 0x00000001 of the next NAL before splitting up the stream back into NALs.
+</div>
+<br/>
+<div>
+The solution is easy - the encoder can stuff the frame marker at the end of each packet instead of the start, and stuff an extra one at the start of the stream. This actually saves 1 frame of video latency because we no longer have to wait for the start of the next NAL, which usually involves waiting for the next video frame to be started.
+</div>
+
+</div>

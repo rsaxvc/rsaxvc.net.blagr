@@ -1,0 +1,43 @@
+Title:Video over a simplex 56k UART
+Author:rsaxvc
+CreatedDateTime:2013-01-08T21:36:51
+ModifiedDateTime:2013-01-08T21:36:51
+Tag:Video
+Tag:UART
+Tag:Serial
+Tag:h.264
+---
+<div>
+
+<div>Some time ago, genpfault and I started building a car. Not just any car. This was a stripped down R/C car from the 90s I got from someone from work. It originally used a 3-step servo(turns all the way left, centers, or turns all the way right), and had two speeds which you toggled through a mechanical transmission. I'll post more about the car later. This project was getting low-latency video from it so we could drive it like a first-person-shooter. On the way there, I ended up with video from my Playstation Eye forwarded over a jumper-wire.</div>
+
+<div>
+<h3>Source Code</h3>
+The project is currently being kept at <a href="https://github.com/rsaxvc/LowLatencyVideoPrototype">github</a>.
+</div>
+
+<div>
+<h3>Test Setup</h3>
+Currently, I'm using two PL2303 usb to serial adapters, with a jumper wire connecting one adapter's RX line to the other's TX line.
+
+Both are configured by stty with the flags 'raw 57600'.
+</div>
+
+<div>
+<h3>Building the code</h3>
+You'll need SDL_net, SDL2, and opencv headers. As of this writing, SDL2 is in flux, so you'll want to clone the repo, and run `make viewer_stdin encoder`.
+</div>
+
+<div>
+<h3>Getting it running</h3>
+<ul>Plug in a webcam and run `./encoder | ./viewer_stdin`. This should show a small window of video from the webcam - but now you're using pipes.</ul>
+<ul>Next, identify the source and destination serial ports. I run minicom on both and see which one can type to the other.</ul>
+<ul>Now try: `cat /dev/tty[RxSerialPort] | ./viewer_stdin` - nothing should happen...until you also run `./encoder > /dev/tty[TxSerialPort]`</ul>
+</div>
+
+<div>
+<h3>More Fun</h3>
+You can play with the encoding settings in encoder.cpp, they're located just after x264_param_t, as well as config.h. Be careful though - turning up the quality or resolution will use more bandwidth. If you use more than the UARTs can move, the video will work for a short time, then gradually slow down, and eventually become corrupt, as the TX UART fifo overflows. However, you can also easily set the UARTs to 115200 or 230400 baud. I had some problems around 1mbit and higher though.
+</div>
+
+</div>
