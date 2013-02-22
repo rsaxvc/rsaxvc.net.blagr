@@ -1,0 +1,26 @@
+Title:Modifying a USB-CLA to support DCP
+Author:rsaxvc
+CreatedDateTime:2013-02-21T22:15:39
+ModifiedDateTime:2013-02-21T22:16:23
+Tag:USB
+Tag:CLA
+---
+<div>
+
+<div>
+Today I was on the highway for about three hours, trying to travel about 15 miles. While waiting for the road to clear up, I tried to charge my phone with a cigarette lighter adapter(CLA) to USB port I had purchased some time ago, but had never used - my phone refused to charge.
+</div><br/>
+
+<div>
+The device contained a few capacitors, a coil, and what appeared to be a switching regulator. When I traced the USB data pins on the PCB, I found two pull-down resistors. Each data line pulled low with a 15kOhm resistor is the normal configuration for a USB1.1 host.
+</div><br/>
+
+<div>
+My phone will charge from a PC USB port or from a USB dedicated charge port(like the wall-wart that comes with most phones, D+ and D- shorted together). However, if the host port is configured for communication, and the phone cannot enumerate, then it will not charge.
+</div><br/>
+
+<div>
+The fix for this ended up being very simple. After reassembling the CLA, I tore a gum wrapper down to a rectangle about 2.5 USB pins wide. This gum wrapper, inserted conductive-side towards D+ and D- of my USB cable, convinced my phone that the CLA was a real USB-DCP, and I was finally able to charge it.
+</div><br/>
+
+</div>
