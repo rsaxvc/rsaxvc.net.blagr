@@ -164,7 +164,19 @@ def write_tag_html( tag, posts, end_text ):
 	generate_html_end( f, end_text )
 	f.close()
 	
-def generate_post_html( f, post, path_depth ):
+def generate_next_prev_links( f, path_depth, link_prev, link_next ):
+	if( len( link_prev ) > 0 or len( link_next ) > 0 ):
+		upbuffer = ""
+		for i in range(path_depth):
+			upbuffer += "../"
+		f.write('<div class="link_text">')
+		if( len( link_prev ) > 0 ):
+			f.write('<a href="' + upbuffer + link_prev + '">prev</a> ' )
+		if( len( link_next ) > 0 ):
+			f.write('<a href="' + upbuffer + link_next + '">next</a> ' )
+		f.write('</div>')
+
+def generate_post_html( f, post, path_depth, link_prev, link_next ):
 	"makes the html for a post"
 	upbuffer = ""
 	for i in range(path_depth):
@@ -176,19 +188,21 @@ def generate_post_html( f, post, path_depth ):
 	for tag in post.tags:
 		f.write( "<a href=\"" + upbuffer + tag.path()+"\">" + tag.text + "</a>&nbsp;" )
 	f.write("</h4>\n")
+	generate_next_prev_links( f, path_depth, link_prev, link_next )
 	f.write('<div class="body_text">')
 	f.write(post.text)
 	f.write("</div>")
+	generate_next_prev_links( f, path_depth, link_prev, link_next )
 	f.write("</div>")
 
-def write_post_html( post, end_text ):
+def write_post_html( post, end_text, link_prev, link_next ):
 	"makes the file and writes the text for a post"
 	filename = post.path()
 	if( os.path.exists( os.path.dirname( filename ) ) == False ):
 		os.makedirs( os.path.dirname( filename ) )
 	f = open( filename, 'w' )
 	generate_html_start( f, post.title, 3 )
-	generate_post_html( f, post, 3 )
+	generate_post_html( f, post, 3, link_prev, link_next )
 	generate_html_end( f, end_text )
 	f.close()
 
@@ -199,7 +213,7 @@ def write_posts_html( filename, title, posts, end_text ):
 	f = open( filename, 'w' )
 	generate_html_start( f, title, 0 )
 	for post in posts:
-		generate_post_html( f, post, 0 )
+		generate_post_html( f, post, 0, "", "" )
 	generate_html_end( f, end_text )
 	f.close()
 
@@ -207,13 +221,18 @@ posts = []
 for infile in glob.glob( os.path.join(INPUT_POST_PATH, '*.blagr') ):
 	print "Parsing: " + infile
 	posts.append( parse_blagr_entry( infile ) )
-
 posts.sort()
 
 end_text = parse_inc_directory( INPUT_INC_TAIL_PATH )
 
-for post in posts:
-	write_post_html( post, end_text )
+for i in range( len( posts ) ):
+	link_next = ""
+	link_prev = ""
+	if( i != 0 ):
+		link_next = posts[ i - 1 ].path()
+	if( i != len( posts ) - 1 ):
+		link_prev = posts[ i + 1 ].path()
+	write_post_html( posts[i], end_text, link_prev, link_next )
 
 for i in range( 0, len(posts), POSTS_PER_PAGE ):
 	write_posts_html( PAGE_PATH_BASE + "page" + str(i/POSTS_PER_PAGE) + ".html", BLOG_TITLE, posts[i:i+POSTS_PER_PAGE], end_text )
