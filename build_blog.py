@@ -17,6 +17,9 @@ POST_PATH_BASE  = PATH_BASE
 TAG_PATH_BASE   = PATH_BASE + "tags/"
 CSS_PATH_BASE   = PATH_BASE + "css/"
 ATOM_PATH		= PATH_BASE + "atom.xml"
+PAGE_PATH_BASE	= PATH_BASE + "pages/"
+
+POSTS_PER_PAGE	= 10
 
 INPUT_PATH_BASE = "input/"
 INPUT_CSS_PATH  = INPUT_PATH_BASE + "css/"
@@ -211,6 +214,10 @@ end_text = parse_inc_directory( INPUT_INC_TAIL_PATH )
 
 for post in posts:
 	write_post_html( post, end_text )
+
+for i in range( 0, len(posts), POSTS_PER_PAGE ):
+	write_posts_html( PAGE_PATH_BASE + "page" + str(i/POSTS_PER_PAGE) + ".html", BLOG_TITLE, posts[i:i+POSTS_PER_PAGE], end_text )
+
 write_posts_html( POST_PATH_BASE + "index.html", BLOG_TITLE, posts, end_text )
 
 tags = globulate_tags( posts )
