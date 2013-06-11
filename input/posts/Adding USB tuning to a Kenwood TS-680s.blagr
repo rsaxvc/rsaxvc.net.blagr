@@ -1,0 +1,32 @@
+Title:Adding USB tuning support to a Kenwood TS-680s
+Author:rsaxvc
+CreatedDateTime:2013-06-10T22:10:26
+ModifiedDateTime:2013-06-10T22:10:26
+Tag:Kenwood
+Tag:FTDI
+Tag:Circuit
+Tag:Hack
+Tag:Ham Radio
+Tag:USB
+---
+<div>
+<p>So, a few weeks ago I bought a ham radio. Kenwood made a series of these radios, TS-680, TS-680s, TS-140, and several others during the late 80s and early 90s. They're mostly solid-state with tube-based final amplifiers. However, there are a few niceties missing that are available on current radios. These include the lack of a simple computer-control port.</p>
+
+<p>Kenwood did add a small expansion slot though, that can hold a card called an IF-10C. The IF-10C consists of an 8251 USART configured asynchronously, a clock generator and divider circuit, and some inverters. This must be coupled with an IF-232 device that sits outside the radio and converts the inverted logic back and then level shifts it to normal RS-232 levels. Finally, you need another device - a USB to serial adapter to connect to a legacy-free PC. Lastly, Kenwood doesn't sell the IF-10C any more, and they are around $80 used. I can do better.</p>
+
+<p>Over the last week, my TS-680s has been flipped on its back, Z80 CPU bus wired into a breadboard. Instead of wiring up a USART and level-shifter, a faster and more direct solution is to use an FTDI USB FIFO like the FT245R. However, the FT245R is not a direct replacement for the 8251 CPU interface - some external logic is required. Here's what the control lines look like when just combining the read and chip-select lines, along with the write and chip-select lines.</p>
+<p><a href="http://www.flickr.com/photos/40925843@N03/8994109768/" title="FTDI8251 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8268/8994109768_1407f2a9fa_c.jpg" width="800" height="463" alt="FTDI8251"></a></p>
+<p>Here&apos;s what happens:</p>
+	<ul>
+		<li>The RXF line goes low to signal that there is a byte available.</li>
+		<li>Nearly 40 microseconds later, the Z80 responds to the interrupt, chip-selects the UART, and reads a byte from the FIFO, clearing the RXF event</li>
+		<li>The Z80 reconfigures the 8251 interface for command/status mode, and reads the status register. It is important to note that the Z80 bus uses pull-up resistors.</li>
+		<li>Due to the lack of a status register, the Z80 sees the following: Framing error, break signal, parity error, and overrun error.
+		<li>Due to the error condition, the Z80 sends the following bytes to the UART, a byte with the reset bit set, a mode-configuration byte, and a command-byte to enable the UART</li>
+		<li>Due to the error and break signals, the Z80 ignores input</li>
+	</ul>
+<p>The proper solution would be to use a tri-state buffer, but one can also take advantage of the bus pull-ups by using simple NPN transistors to pull the lines low when needed.</p>
+<p>And after adding the transistors, here&apos;s what happens:</p>
+<p><a href="http://www.flickr.com/photos/40925843@N03/9013072290/" title="fifo_working by rsaxvc, on Flickr"><img src="http://farm6.staticflickr.com/5343/9013072290_e3dcc632a5_c.jpg" width="800" height="276" alt="fifo_working"></a></p>
+<p>And now the radio responds with IF00014249290, which is the current frequency, and some additional status text.</p>
+</div>
