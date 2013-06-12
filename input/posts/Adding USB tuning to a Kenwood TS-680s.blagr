@@ -25,7 +25,7 @@ Tag:USB
 		<li>Due to the error condition, the Z80 sends the following bytes to the UART, a byte with the reset bit set, a mode-configuration byte, and a command-byte to enable the UART</li>
 		<li>Due to the error and break signals, the Z80 ignores input</li>
 	</ul>
-<p>The proper solution would be to use a tri-state buffer, but one can also take advantage of the bus pull-ups by using simple NPN transistors to pull the lines low when needed.</p>
+<p>So it appears that an emulated status register is also required. The proper solution would be to use a tri-state buffer, but one can also take advantage of the bus pull-ups by using simple NPN transistors to pull the lines low when needed.</p>
 <p>And after adding the transistors, here&apos;s what happens:</p>
 <p><a href="http://www.flickr.com/photos/40925843@N03/9013072290/" title="fifo_working by rsaxvc, on Flickr"><img src="http://farm6.staticflickr.com/5343/9013072290_e3dcc632a5_c.jpg" width="800" height="276" alt="fifo_working"></a></p>
 <p>And now the radio responds with IF00014249290, which is the current frequency, and some additional status text.</p>
