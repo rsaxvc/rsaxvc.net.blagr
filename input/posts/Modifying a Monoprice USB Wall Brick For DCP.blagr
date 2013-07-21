@@ -1,0 +1,30 @@
+Title:Modifying a Monoprice USB Wall Brick to Support DCP
+Author:rsaxvc
+CreatedDateTime:2013-07-20T22:36:00
+ModifiedDateTime:2013-07-20T22:36:00
+Tag:Monoprice
+Tag:USB
+Tag:Charge
+Tag:DCP
+---
+<div>
+
+<div><br/>Monoprice sells a neat wall-brick that takes two sockets and provides three sockets and two USB charging sockets.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/9332440792/" title="Converting a MonoPrice Wall Brick to USB DCP by rsaxvc, on Flickr"><img src="http://farm3.staticflickr.com/2854/9332440792_d2135f1872.jpg" width="333" height="500" alt="Converting a MonoPrice Wall Brick to USB DCP"></a></div>
+
+<div><br/>However, it did not charge my phone, so I took it apart. The first step is to remove the center screw that normally attaches to the wall sockets. After that, there's a large number of plastic clips to deal with.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/9332438866/" title="Converting a MonoPrice Wall Brick to USB DCP by rsaxvc, on Flickr"><img src="http://farm8.staticflickr.com/7298/9332438866_f4dfd30fde.jpg" width="500" height="333" alt="Converting a MonoPrice Wall Brick to USB DCP"></a></div>
+
+<div><br/>Once the case is cracked all the way around, it opens up easily. The device has two separate sections - one for AC and one for USB. There is also a green LED that is driven directly from the 120 Volt input with a diode and a resistor. I cut it off because it was too bright for my bedroom.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/9329640511/" title="Converting a MonoPrice Wall Brick to USB DCP by rsaxvc, on Flickr"><img src="http://farm8.staticflickr.com/7358/9329640511_2db3cf971f.jpg" width="500" height="333" alt="Converting a MonoPrice Wall Brick to USB DCP"></a></div>
+
+<div><br/>It appears the AC-DC conversion is done by first rectifying the AC into high voltage DC pulses, which are filtered through some larger capacitors. I think that the yellow box on the right is not a transformer, but is a giant coil used for the DC-DC conversion process to generate 5 Volts.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/9332428500/" title="Converting a MonoPrice Wall Brick to USB DCP by rsaxvc, on Flickr"><img src="http://farm6.staticflickr.com/5465/9332428500_37334d7b7b.jpg" width="500" height="333" alt="Converting a MonoPrice Wall Brick to USB DCP"></a></div>
+
+<div><br/>Now to the task at hand - converting this charger to charge my phone. The USB interface is on a small daughterboard perpendicular to the AC-DC-DC converter board. It is fed 5 Volts by the headers in each corner. The two copper planes on the daughterboard are 5 Volt power and Ground. Following the 5 Volt, ground, and USB lines, we see that R19, R20, R21, R22, and R23 are resistors or at least resistor pads for the left-hand USB port. R15, R16, R17, R18, and R24 are the pads for the right side port.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/9329630665/" title="Converting a MonoPrice Wall Brick to USB DCP by rsaxvc, on Flickr"><img src="http://farm3.staticflickr.com/2829/9329630665_38f2188562.jpg" width="500" height="333" alt="Converting a MonoPrice Wall Brick to USB DCP"></a></div>
+
+<div><br/>For USB-DCP, at most one resistor is required per port. This means that this charger is using some sort of weird proprietary charger. The <a href="http://www.epanorama.net/blog/2010/08/18/apple-charger-secrets/">ePanorama Blog</a> confirms that this is an Apple compatible charger. However, Apple compatible chargers are incompatible with my phone, which requires either USB-DCP, or it must enumerate before charging. The solution is simple, remove the Apple resistors and bridge the data+ and data- lines yourself. I had a little trouble with a solder-bridge that I could not find, so instead of using R23 and R24, I soldered the data+ and data- lines directly, and cut the traces to the voltage divider network. And now my phone charges.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/9332424692/" title="Converting a MonoPrice Wall Brick to USB DCP by rsaxvc, on Flickr"><img src="http://farm3.staticflickr.com/2812/9332424692_e1d4394cba.jpg" width="500" height="333" alt="Converting a MonoPrice Wall Brick to USB DCP"></a></div>
+
+</div>
