@@ -1,0 +1,33 @@
+Title:Taking Apart the Monoprice 3G USB WiFi Router
+Author:rsaxvc
+CreatedDateTime:2013-07-28T21:25:18
+ModifiedDateTime:2013-07-28T21:25:18
+Tag:Monoprice
+Tag:Ralink
+Tag:USB
+Tag:Teardown
+Tag:Wifi
+Tag:Linux
+Tag:GPL
+Tag:Bococom
+---
+<div>Today I take apart a Monoprice 3G USB WiFi Router. Actually, it is made by Bococom.</div><br/></br>
+
+<div><a href="http://www.flickr.com/photos/40925843@N03/9336198580/" title="Front Case by rsaxvc, on Flickr"><img src="http://farm3.staticflickr.com/2869/9336198580_b30157f7dc.jpg" width="500" height="333" alt="Front Case"></a></div>
+
+<div><br/></div>
+
+<div>If you flip it over, there are two screws under the feet.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/9336192578/" title="Rear Case and Screws Exposed by rsaxvc, on Flickr"><img src="http://farm4.staticflickr.com/3821/9336192578_b0c6449862.jpg" width="500" height="333" alt="Rear Case and Screws Exposed"></a></div>
+
+<div><br/></div>
+<div>It opens pretty easily, not sure if there were any plastic catches<div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/9336189390/" title="Just sort of pops open by rsaxvc, on Flickr"><img src="http://farm6.staticflickr.com/5513/9336189390_89872380f8.jpg" width="500" height="333" alt="Just sort of pops open"></a></div>
+
+<div><br/></div>
+<div>The CPU is a Ralink RT3050, which is also used on the <a href="http://wiki.openwrt.org/toh/asus/wl-330n">Asus WL-330N3G</a>. We also see some MXIC flash, and 32MB of EtronTech SD-DRAM. There's also a 4-pin, 3.3 volt console near the CPU.</div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/9336179196/" title="PCB Front by rsaxvc, on Flickr"><img src="http://farm4.staticflickr.com/3725/9336179196_64fd849516.jpg" width="500" height="333" alt="PCB Front"></a></div>
+<div><a href="http://www.flickr.com/photos/40925843@N03/9333397529/" title="PCB Rear by rsaxvc, on Flickr"><img src="http://farm6.staticflickr.com/5542/9333397529_21b916903e.jpg" width="500" height="333" alt="PCB Rear"></a></div>
+
+<div><br/></div>
+<div>So the device is running u-boot, linux, and busybox. However, there is no reference of the GPL anywhere in the documentation. You can log into the shell, but it appears that every command is somehow blocked. It is possible to use tab-completion to explore the filesystem. Since I bought it, this unit has been discontinued by monoprice, and with the device out of production the chance of GPL source release is greatly diminished.</div>
