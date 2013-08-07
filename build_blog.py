@@ -19,7 +19,7 @@ CSS_PATH_BASE   = PATH_BASE + "css/"
 ATOM_PATH		= PATH_BASE + "atom.xml"
 PAGE_PATH_BASE	= PATH_BASE + "pages/"
 
-POSTS_PER_PAGE	= 10
+POSTS_PER_PAGE	= 5
 
 INPUT_PATH_BASE = "input/"
 INPUT_CSS_PATH  = INPUT_PATH_BASE + "css/"
@@ -141,17 +141,10 @@ def generate_html_end( f, last_body_text ):
 	f.write( last_body_text )
 	f.write( "</body></html>\n" )
 
-def generate_tag_html( f, tag, posts, path_depth ):
-	"makes the html for a tag page"
-	f.write( "<h4>Posts tagged with " + tag.text + "</h4>\n" )
-	f.write( "<ul>\n" )
-	upbuffer = ""
-	for i in range(path_depth):
-		upbuffer += "../"
-	for post in posts:
-		if( post.has_tag( tag ) ):
-			f.write( "<li><a href=\""+upbuffer+post.path()+"\">"+post.title+"</a></li>\n" )
-	f.write("</ul>\n")
+def write_line_link_to_post( f, post, path_depth ):
+	"write html to link to a post"
+	upbuffer = "../"*path_depth;
+	f.write( "<li><a href=\""+upbuffer+post.path()+"\">"+post.title+"</a></li>" )
 
 def write_tag_html( tag, posts, end_text ):
 	"makes the file and writes the text for a tag page"
@@ -160,7 +153,12 @@ def write_tag_html( tag, posts, end_text ):
 		os.makedirs( os.path.dirname( filename ) )
 	f = open(filename, 'w')
 	generate_html_start( f, "Tag listing for "+tag.text, 1 )
-	generate_tag_html( f, tag, posts, 1 )
+	f.write( "<h4>Posts tagged with " + tag.text + "</h4>\n" )
+	f.write( "<ul>\n" )
+	for post in posts:
+		if( post.has_tag( tag ) ):
+			write_line_link_to_post( f, post, 1 )
+	f.write("</ul>\n")
 	generate_html_end( f, end_text )
 	f.close()
 	
@@ -195,7 +193,7 @@ def generate_post_html( f, post, path_depth, link_prev, link_next ):
 	generate_next_prev_links( f, path_depth, link_prev, link_next )
 	f.write("</div>")
 
-def write_post_html( post, end_text, link_prev, link_next ):
+def write_post( post, end_text, link_prev, link_next ):
 	"makes the file and writes the text for a post"
 	filename = post.path()
 	if( os.path.exists( os.path.dirname( filename ) ) == False ):
@@ -206,14 +204,24 @@ def write_post_html( post, end_text, link_prev, link_next ):
 	generate_html_end( f, end_text )
 	f.close()
 
-def write_posts_html( filename, title, posts, end_text ):
+def write_posts( filename, title, full_text_posts, archive_posts, end_text ):
 	"writes all the posts"
 	if( os.path.exists( os.path.dirname( filename ) ) == False ):
 		os.makedirs( os.path.dirname( filename ) )
 	f = open( filename, 'w' )
 	generate_html_start( f, title, 0 )
-	for post in posts:
+
+	#write frontpage posts
+	for post in full_text_posts:
 		generate_post_html( f, post, 0, "", "" )
+
+	#write archive links
+	f.write('<h1 class="title">Older</h1>\n' )
+	f.write("<ul>\n");
+	for post in archive_posts:
+		write_line_link_to_post( f, post, 0 )
+		pass
+	f.write("</ul>\n");
 	generate_html_end( f, end_text )
 	f.close()
 
@@ -232,12 +240,12 @@ for i in range( len( posts ) ):
 		link_next = posts[ i - 1 ].path()
 	if( i != len( posts ) - 1 ):
 		link_prev = posts[ i + 1 ].path()
-	write_post_html( posts[i], end_text, link_prev, link_next )
+	write_post( posts[i], end_text, link_prev, link_next )
 
-for i in range( 0, len(posts), POSTS_PER_PAGE ):
-	write_posts_html( PAGE_PATH_BASE + "page" + str(i/POSTS_PER_PAGE) + ".html", BLOG_TITLE, posts[i:i+POSTS_PER_PAGE], end_text )
+index_posts = posts[:POSTS_PER_PAGE]
+archive_posts = posts[POSTS_PER_PAGE:]
+write_posts( POST_PATH_BASE + "index.html", BLOG_TITLE, index_posts, archive_posts, end_text )
 
-write_posts_html( POST_PATH_BASE + "index.html", BLOG_TITLE, posts, end_text )
 
 tags = globulate_tags( posts )
 tags.sort()
