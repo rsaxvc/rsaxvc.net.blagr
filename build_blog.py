@@ -115,9 +115,7 @@ def globulate_tags( posts ):
 
 def generate_html_start( f, title, path_depth ):
 	"Writes common header/title/css-includes/..."
-	upbuffer = ""
-	for i in range(path_depth):
-		upbuffer += "../"
+	upbuffer = "../" * path_depth
 	f.write( "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" )
 	f.write( "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">\n" )
 	f.write( "<head>\n" )
@@ -164,9 +162,7 @@ def write_tag_html( tag, posts, end_text ):
 	
 def generate_next_prev_links( f, path_depth, link_prev, link_next ):
 	if( len( link_prev ) > 0 or len( link_next ) > 0 ):
-		upbuffer = ""
-		for i in range(path_depth):
-			upbuffer += "../"
+		upbuffer = "../" * path_depth
 		f.write('<div class="link_text">')
 		if( len( link_prev ) > 0 ):
 			f.write('<a href="' + upbuffer + link_prev + '">prev</a> ' )
@@ -176,9 +172,7 @@ def generate_next_prev_links( f, path_depth, link_prev, link_next ):
 
 def generate_post_html( f, post, path_depth, link_prev, link_next ):
 	"makes the html for a post"
-	upbuffer = ""
-	for i in range(path_depth):
-		upbuffer += "../"
+	upbuffer = "../" * path_depth
 	f.write('<div class="post">')
 	f.write('<h1 class="title"><a href=\"'+upbuffer+post.path()+"\">" + post.title + "</a></h1>\n" )
 	f.write('<h4 class="post_date"> Written '+str(post.dt.date())+"</h4>\n" )
