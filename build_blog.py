@@ -32,7 +32,7 @@ shutil.rmtree(PATH_BASE,True)
 class post:
 	author = ""
 	title = ""
-	tags = []
+	tags = set()
 	text = ""
 	dt = ""
 	def __cmp__(self, other):
@@ -52,28 +52,6 @@ class post:
 	def wobpath(self):
 		return BLOG_URL + self.relpath()
 
-	def has_tag(self, search_tag):
-		for tag in self.tags:
-			if( tag == search_tag ):
-				return True
-		return False
-
-class tag:
-	text = ""
-	def __init__(self,the_text):
-		self.text = the_text
-	def __cmp__(self,other):
-		if( self.text < other.text ):
-			return -1
-		elif( self.text == other.text ):
-			return 0
-		else:
-			return 1
-	def path(self):
-		return TAG_PATH_BASE + self.text + ".html"
-	def __str__(self):
-		return self.text
-
 def parse_blagr_tophalf_line( line ):
 	(first,sep,last) = line.partition(':')
 	if( len(last) == 0 or len(sep) == 0 ):
@@ -84,7 +62,7 @@ def parse_blagr_tophalf_line( line ):
 def parse_blagr_entry( filename ):
 	"parse a blagr entry file into a structure"
 	p = post()
-	p.tags = []
+	p.tags = set()
 	post_sep_found = False
 	for line in fileinput.input(filename):
 		if( post_sep_found == False ):
@@ -93,7 +71,7 @@ def parse_blagr_entry( filename ):
 			else:
 				(chunk,text) = parse_blagr_tophalf_line( line )
 				if( chunk == "Tag" ):
-					p.tags.append( tag( text ) )
+					p.tags.add( text )
 				elif( chunk == "Author" ):
 					p.author = text
 				elif( chunk == "CreatedDateTime" ):
@@ -106,12 +84,12 @@ def parse_blagr_entry( filename ):
 
 def globulate_tags( posts ):
 	"Build a list of all tags from all posts"
-	tags = []
+	tags = set()
 	for post in posts:
 		for tag in post.tags:
-			if( tags.count( tag ) == 0 ):
-				tags.append( tag )
-	return tags
+			if tag not in tags:
+				tags.add( tag )
+	return list(tags)
 
 def generate_html_start( f, title, path_depth ):
 	"Writes common header/title/css-includes/..."
@@ -146,15 +124,15 @@ def write_line_link_to_post( f, post, path_depth ):
 
 def write_tag_html( tag, posts, end_text ):
 	"makes the file and writes the text for a tag page"
-	filename = tag.path()
+	filename = TAG_PATH_BASE + tag + ".html"
 	if( os.path.exists( os.path.dirname( filename ) ) == False ):
 		os.makedirs( os.path.dirname( filename ) )
 	f = open(filename, 'w')
-	generate_html_start( f, "Tag listing for "+tag.text, 1 )
-	f.write( "<h4>Posts tagged with " + tag.text + "</h4>\n" )
+	generate_html_start( f, "Tag listing for " + tag, 1 )
+	f.write( "<h4>Posts tagged with " + tag + "</h4>\n" )
 	f.write( "<ul>\n" )
 	for post in posts:
-		if( post.has_tag( tag ) ):
+		if tag in post.tags:
 			write_line_link_to_post( f, post, 1 )
 	f.write("</ul>\n")
 	generate_html_end( f, end_text )
@@ -178,7 +156,7 @@ def generate_post_html( f, post, path_depth, link_prev, link_next ):
 	f.write('<h4 class="post_date"> Written '+str(post.dt.date())+"</h4>\n" )
 	f.write('<h4 class="tag_list"> Tags:')
 	for tag in post.tags:
-		f.write( "<a href=\"" + upbuffer + tag.path()+"\">" + tag.text + "</a>&nbsp;" )
+		f.write( "<a href=\"" + upbuffer + TAG_PATH_BASE + tag + ".html" +"\">" + tag + "</a>&nbsp;" )
 	f.write("</h4>\n")
 	generate_next_prev_links( f, path_depth, link_prev, link_next )
 	f.write('<div class="body_text">')
