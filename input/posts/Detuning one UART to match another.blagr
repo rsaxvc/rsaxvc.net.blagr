@@ -1,0 +1,18 @@
+Title:Detuning one UART to match another
+Author:rsaxvc
+CreatedDateTime:2013-12-21T02:00:52
+ModifiedDateTime:2013-12-21T02:00:52
+Tag:UART
+---
+<div>
+Assume we need to connect two microcontrollers with at least 8kbit/s of throughput:
+<ul>
+<li>Controller A is clocked from 32.768kHz.
+<li>Controller B is clocked from 24MHz.
+</ul>
+
+9600 baud is a good baud-rate that fits our needs. Controller B can easily generate 9600 baud using a divisor of 2500. But controller A's lower-speed input clock cannot be divided cleanly to reach 9600 baud. Dividing by 3 gives 10922( 14% fast) and dividing by 4 gives 8192( 17% slow).
+
+One solution is to detune controller B to match controller A. Picking a custom baud rate of 8192 and configuring controller B's divisor to 3052 gives a UART clock of 8191.35(.008% slow relative to 8192), which is certainly close enough.
+</div>
+
