@@ -1,0 +1,212 @@
+Title:Encryption and Amateur Radio
+Author:rsaxvc
+CreatedDateTime:2014-02-01T21:08:14
+ModifiedDateTime:2014-02-01T21:08:14
+Tag:Authentication
+Tag:Encryption
+Tag:Encoding
+Tag:Ham Radio
+---
+<h2>Introduction</h2>
+<p>There's been some debate in the last ten years or so about encryption's 
+purpose in ham radio. The part 97 rules prohibit "messages encoded for the 
+purpose of obscuring their meaning, except as otherwise provided herein;".
+</p>
+
+<p>
+In <a href="http://www.broadband-hamnet.org/images/stories/DataEncryptionIsLegal.pdf">
+Data Encryption Is Legal</a>, CQ magazine, August 2006 issue, Don Rotolo, N2IRZ, 
+tries to make the case that if encryption is used to comply with another Part 
+97 rule, then the purpose of the encoding is not to obscure the meaning of the 
+message, but to secure a repeater from unauthorized use, and so the 
+encryption is incidental.
+</p>
+
+<p>
+In <a href="http://apps.fcc.gov/ecfs/document/view?id=7520928844b">the ARRL's response to RM-11699</a>,
+states, "the ability to encrypt for the purpose of authentication of users in a data network, 
+as discussed below, appears to be permissible, and the current Section 97.113(a)(4) has not been 
+determined (to date) to inhibit HSMM/ wireless broadband experimentation in the Amateur Radio Service."
+The whole document is a pretty good read, and touches on a lot of related topics.
+</p>
+
+<p>
+Although some folks say they've discussed this issue with the FCC, there hasn't been much 
+update documented from the FCC on this issue, and no recent changes
+to the Part 97 rules. What follows is an overview of the relevant technology
+and rules, as well as some of the arguments for and against, and some of my notes.
+</p>
+
+<h2>Some Terms:</h2>
+<ul>
+	<li><a href="https://en.wikipedia.org/wiki/Encoder">Encoder</a> - An encoder is a device, circuit, transducer, software program, algorithm or person that converts information from one format or code to another, for the purposes of standardization, speed, secrecy, security or compressions.</li>
+	<li><a href="https://en.wikipedia.org/wiki/Encryption">Encryption</a> - In cryptography, encryption is the process of encoding messages (or information) in such a way that only authorized parties can read it.</li>
+	<li><a href="https://en.wikipedia.org/wiki/Authentication">Authentication</a> - Authentication is the act of confirming the truth of an attribute of a datum or entity.</li>
+</ul>
+
+<h2>How is digital encryption different from digital encoding?</h2>
+<p>Mainly the presence(encryption) or absense(encoding) of variable keys. Encryption is a form of encoding,
+but many encoding schemes are not encryption.</p>
+
+<p>Encryption combines a message with a chosen key to produce its output. Given the output and the 
+key, it is easy to recover the message, but without the key, it is very difficult if not impossible.</p>
+
+<p>Digital encoding converts one digital data stream to another. We sometimes do this to improve 
+signalling in a radio protocol - NRZI is an example of this, and encoding for this purpose is known 
+as scrambling, but since the protocol is public and there are no keys, it is easily unscrambled.</p>
+
+<h2>How is authentication different from encryption</h2>
+<p>It's possible to use encyption techniques to generate a digital signature that 
+verifies a message was sent by a certain person, by appending this signature after the message.
+<a href="http://www.gnupg.org/">GNU Privacy Guard</a> supports generating these.
+
+<h2>Why do we want this stuff on amateur radio bands?</h2>
+<p>Encryption on Part 97 has and would serve many of the same purposes of encryption on Part 15. 
+Interoperability with existing well-proven and widely-deployed protocols like SSH and HTTPS would 
+be dandy, and these protocols use encryption. Additionally, authentication could be used to prevent 
+unauthorized access to resources like repeaters, radio-bbs, and parts of AMPRNet.</p>
+
+<p>
+That said, there has never been any expectation of privacy for communications under amateur license.
+</p>
+
+<h2>What are the relevant Part 97 sections?<h2>
+<h4>Prohibition of retransmission of non-amateur signals - <a href="">Title 47, Part 97.113.C</a></h4>
+<p>
+No station shall retransmit programs or signals emanating from any type of radio 
+station other than an amateur station, except propagation and weather forecast 
+information intended for use by the general public and originated from United States 
+Government stations, and communications, including incidental music, originating on 
+United States Government frequencies between a manned spacecraft and its associated Earth stations.
+</p>
+<p>
+Aside from listed exceptions, amateur operators are not allowed to retransmit non amateur signals.
+On many bands this is easy, since you can place the repeater on a part of the band not shared by other
+services. However, many 13cm band radios overlap with Part 18 and Part 15 frequency ranges.
+</p>
+
+<p>
+Although not directly related to encryption on amateur bands, this rule is often quoted as a
+loophole allowing encryption.
+</p>
+
+<h4>Telecommand of space (radio)stations - <a href="">Title 47, Part 97.211.B</a></h4>
+<p>
+"A telecommand station may transmit special codes intended to obscure 
+the meaning of telecommand messages to the station in space operation."
+</p>
+
+<p>
+Specifically, telecommand messages sent to a space station may be obscured. Sounds simple enough, but
+there are still limits, even when commanding a space station. SSH cannot be used for amateur space
+telecommand because the SSH protocol requires both ends be able to transmit encrypted data -
+but under the above, only the commanding station may obscure its messages, not the commanded station.
+</p>
+
+<h4>Telecommand of model craft - <a href="">Title 47, Part 97.215.B</a></h4>
+<p>
+"The control signals are not considered codes or ciphers intended to obscure the meaning of the communication."
+</p>
+
+<p>
+RC control signals are exempt.
+</p>
+
+<h4>Telemetry - <a href="">Title 47, Part 97.217 Telemetry.</a></h4>
+<p>
+"Telemetry transmitted by an amateur station on or within 50 km of the Earth's surface is not considered to be codes or ciphers intended to obscure the meaning of communications."
+</p>
+Most telemetry is exempt.
+
+<h4>Unspecified data emission codes - <a href="">Title 47, Part 97.309.B</a></h4>
+<p>
+"Where authorized by 97.305(c) and 97.307(f) of this part, a station may transmit a RTTY or data emission using an unspecified digital code, except to a station in a country with which the United States does not have an agreement permitting the code to be used. RTTY and data emissions using unspecified digital codes must not be transmitted for the purpose of obscuring the meaning of any communication. When deemed necessary by a District Director to assure compliance with the FCC Rules, a station must:
+<ol>
+<li>Cease the transmission using the unspecified digital code;
+<li>Restrict transmissions of any digital code to the extent instructed; 
+<li>Maintain a record, convertible to the original information, of all digital communications transmitted. 
+</ol>
+"
+</p>
+
+<p>
+The FCC authorizes unspecified(by them) digital codes under some constraints. One of those constraints 
+prohibits using unspecified digital codes for the purpose of obscuring the meaning of any communication.
+</p>
+
+<h2>What is "the meaning of the communication"?</h2>
+<p>
+To be terribly unhelpful, that's what we can't obscure, right? On HF voice, this is easy - 
+what I say and what I hear are messages. On digital systems, it gets more complicated.
+</p>
+
+<p>
+Lets take email for example. Without encryption, any other ham could read my email as it goes over 
+the air. If I used an encrypted email protocol, any other ham could see that I'm doing encrypted email, 
+but nothing inside each email - this obscures the meaning of the message, but not entirely. If I use a 
+general-purpose encryption system like HTTPS to access a webmail or if I run my email client remotely over 
+SSH, no other ham has any idea what I'm doing - the message has been entirely obscured.
+</p>
+
+<p>
+Another area of concern is passwords - without encryption anyone with a receiver would be able to hear any
+password transmitted over the air. For our example mail service, I certainly wouldn't want to let any
+other ham read my email. Not having a password is not prudent, since anyone could delete or 
+send mail from my account. A plaintext password is bad since anyone could copy it. Another 
+approach would be to sign requests to the mail station with a digital signature - the request 
+would still have all information publicly, and a new password on each message, that can only be 
+generated by the owner of the account.
+</p>
+
+<h2>Why not allow encryption on amateur radio bands?</h2>
+<p>Most often, encrypted radio signals obscure the meaning of the message. SSH and HTTPS both implement continuous end-to-end encryption, so both the initial authentication of identities and all subsequent data is encrypted. An experienced listener could capture packets holding the encrypted data, but could not be expected to recover any further information.</p>
+<p>If operators are not careful, encrypted radio signals can obscure the sender and receiver of the message. For example, unencrypted HSMM uses a ping packet containing the station callsign to identify the station, similar to how a 2-meter repeater periodically announces its callsign. But if HSMM were run with WEP encryption, those packets would be obscured, and the callsign of the station licensee could not be received by anyone without the keys. Doesn't do much good to announce your callsign in a way other operators cannot hear it.</p>
+<p>I, for one, love hearing a new digital signal, and examining waterfall plots until I can identify and decode it. With encryption, after identifying the modulation, all that remains is a bytestream of garbage.</p>
+
+<h2>Some responses to common chatter</h2>
+
+<h4>"HSMM is useless without HTTPS"</h4>
+HTTPS is a standard that adds encryption to the HTTP protocol. It obscures your connection to the server,
+and it ensures nobody is sitting in the middle changing the traffic. HSMM still offers new features 
+not found on other bands, like faster throughput than most other digital modes, cheap mass-produced 
+antennas, amplifiers, and radios, and the ability to plug a 1.5kW amplifer into a 25dbi antenna 
+to build a wireless microwave sword. Seriously though, read up on those exposure limits.
+
+<h4>"If the purpose of encryption is not to obscure meaning, then it is permitted."</h4>
+<p>This is certainly a bit fuzzy, and too large of a blanket statement. For example, a WEP or 
+WPA key is often added to a WiFi network to prevent unauthorized access, but the way that 
+adding a key prevents unauthorized access is by obscuring all messages from any stations without the key.</p>
+
+<h4>"We already have encryption with ICOM's DSTAR"</h4>
+<p>DSTAR is a digital protocol for data and voice over RF. While there are plenty of arguments against closed or patent-encumbered protocols on amateur bands, DSTAR isn't encryption, it's just encoding. Since all DSTAR receivers can decode a DSTAR transmission on the same band, the barrier to recovering the meaning of a DSTAR message is relatively low, about $200 for a Dv Dongle or $500 for a tranceiver. To contrast this with an encrypted radio, if you don't have the key, you're not going to be listening.</p>
+
+<h4>"In an emergency, we need WebEOC."</h4>
+<p>In an emergency, emergency traffic gets priority. This is not news.</p>
+
+<h4>"Encryption is fine, as long as we give out the keys"</h4>
+<p>Maybe, and even if so, that's just silly, since it would no longer protect your data or authenticate your radios.</p>
+<p>You'll still need to announce your call, although for networks operated by a single 
+operator setting the SSID to the callsign is simple enough.</p>
+
+<h4>"Without encryption, how do I prevent Part 15 and Part 18 users from communicating with my Part 97 radios?"</h4>
+<p>On VHF/UHF repeaters we try to prevent unauthorized access with CTCSS or DCS tones, but this can be cheated.</p>
+<p>One simple way would be to move down to a Part 97 channel that doesn't overlap with Part 15,
+as can easily be done with many modififed WiFi devices.</p>
+<p>Another method would be to program a list of all the devices allowed to connect into the radio, but this isn't any fun, since you could only connect with known operators</p>
+<p>Another solution would be open WiFi devices, but with an authenticated+open VPN 
+running on top. With this setup, we can prevent unauthorized users from using the devices, 
+and we only end up encrypting a very small part of the message - the signature, which
+itself doesn't contain any part of the meaning of the message. The downside is that it adds another layer of complexity and configuration.</p>
+
+<h2>Closing</h2>
+<p>
+There's yet to be demonstrated a real need for encryption on amateur radio.
+The legality still seems a little fuzzy to me. Perhaps the FCC will see fit
+to update the rules to make this more clear-cut, but for me, amateur radio
+has always been about talking to new people and playing with electronics,
+and encryption isn't required for either. As always, proper operation of
+an amateur stations is the reponsibility of both station owner and control operator.
+</p>
+
+73's,<br/>
+KD0LIX
