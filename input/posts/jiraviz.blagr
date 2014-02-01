@@ -1,7 +1,7 @@
 Title:Introducing JiraViz
 Author:rsaxvc
 CreatedDateTime:2014-01-14T21:36:51
-ModifiedDateTime:2014-01-14T21:36:51
+ModifiedDateTime:2014-02-1T13:26:11
 ---
 <p>
 <a href="https://github.com/rsaxvc/jiraviz">JiraViz</a> is a simple python scraper for JIRA servers that will generate a graph of blockers between issues.
@@ -10,3 +10,9 @@ ModifiedDateTime:2014-01-14T21:36:51
 <p>
 Primarily, the inputs are the Jira server and a list of projects and/or issues to start from. From these issues, the tool walks backward collecting more issues that block those you care about, building a graph as it goes. Finally, the graph is serialized to an SVG or other image file. SVG files also have links from each node directly to the JIRA issue page for that node.
 </p>
+
+<a href="http://rsaxvc.net/data/jiraviz_example.svg">
+<img src="http://rsaxvc.net/data/jiraviz_example.svg"/>
+</a>
+
+<p>Above is an example generated from some issues on Atlassian's servers. The graph nodes are links to the individual issues, but I couldn't get them to link properly while the SVG is embedded in an HTML document, so you'll have to click the diagram to bring up the SVG first</p>
