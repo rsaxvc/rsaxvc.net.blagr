@@ -1,0 +1,66 @@
+Title:Inside the EDUP EP-AB003 2.4GHz Amplifier
+Author:rsaxvc
+CreatedDateTime:2014-02-01T23:08:14
+ModifiedDateTime:2014-02-01T23:08:14
+Tag:Amplifier
+Tag:Ham Radio
+Tag:WiFi
+Tag:HSMM
+---
+<h2>Introduction</h2>
+<p>
+EDUP makes a powerful, but cheap WiFi amplifier - the <a href="http://www.szedup.com/show.aspx?id=1755">EP-AB003</a>. These can be found on eBay or Amazon, with direct shipping from Shenzen. They're around $50.
+</p>
+
+<h2>Assembled unit</h2>
+<iframe src="https://www.flickr.com/photos/40925843@N03/12262260025/player/16a5179fab" height="534" width="800"  frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+<h2>Disassembled unit</2>
+<p>
+<iframe src="https://www.flickr.com/photos/40925843@N03/12262265995/player/f237d96d42" height="534" width="800"  frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+</p>
+
+<h2>Analysis</h2>
+
+<h3>Overview</h3>
+<p>
+There's a single PCB. Additionally, it looks like the amplifier is using the case 
+as ground, as the coaxial connectors are not soldered directly to the PCB. The coax port on the left-side 
+goes to the <a href="http://en.wikipedia.org/wiki/Wireless_access_point">access point</a>, and the coax port
+on the right-side go to and from the antenna.
+</p>
+
+<h3>Power section</h3>
+<p>
+Amplifiers are notoriously sensitive to power supply fluctuations. Externally, the amplifier is fed 
+by a 12v 2amp wall wart. Internally, the AP003 uses a DC-DC switching regulator to convert the 
+external voltage down to something lower. Power is fed to the amplifier at the top-right corner
+of the PCB through a barrel-connector. The power supply subsection takes up approximately 
+the top 1/4 of the PCB. The power supply consists of a few front-end capacitors, and inductor, 
+a switching-controller that pulses current through the inductor, and some back-end capacitors to 
+filter the output. This means that the amplifier operates on voltage lower than the 12-volt input,
+but also that it may be sensitive to the quality of capacitors used in the power supply, as
+lower-quality(high ESR) capacitors, may let noise slip through.
+</p>
+
+<h3>Amplification</h3>
+<p>Following the center-conductor from the left coax-port, the signal splits through an RF
+switch between the middle section and the lower section.</p>
+
+<p>
+The middle section appears to be the transmitter amplifier. Amplification is done in two parallel stages, 
+then combined in the chip just left of the right coax-port.
+</p>
+
+<p>
+The lower section appears to be the recieve amplifier, as well as the detector that 
+automatically switches the amplifier direction.
+</p>
+
+<h3>Thermal Dissipation</h3>
+<p>
+At a few spots on the PCB, especially near the right coax-port's combiner, 
+silicone heatsink putty is leaking through some of the vias 
+on the board. So the heat goes out of the back of the PCB, which is the front of the 
+amplifier. If I ever need more cooling, I know where to add the heatsink.
+</p>
