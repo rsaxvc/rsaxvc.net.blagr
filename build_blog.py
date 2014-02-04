@@ -27,8 +27,6 @@ INPUT_CSS_PATH  = INPUT_PATH_BASE + "css/"
 INPUT_POST_PATH = INPUT_PATH_BASE + "posts/"
 INPUT_INC_TAIL_PATH = INPUT_PATH_BASE + "inc/tail/"
 
-shutil.rmtree(PATH_BASE,True)
-
 #Contains a single post
 class post:
 	author = ""
@@ -203,6 +201,8 @@ for infile in glob.glob( os.path.join(INPUT_POST_PATH, '*.blagr') ):
 	print "Parsing: " + infile
 	posts.append( parse_blagr_entry( infile ) )
 posts.sort()
+
+shutil.rmtree(PATH_BASE,True)
 
 end_text = parse_inc_directory( INPUT_INC_TAIL_PATH )
 
