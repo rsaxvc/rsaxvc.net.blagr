@@ -1,0 +1,140 @@
+Title:Power Supplies for a Remote HSMM Node
+Author:rsaxvc
+CreatedDateTime:2014-02-03T03:12:14
+ModifiedDateTime:2014-02-03T03:12:14
+Tag:HSMM
+Tag:Ham Radio
+Tag:SLA
+Tag:Battery
+---
+<h2>Introduction</h2>
+<p>Recently, I've been looking for power supply solutions that fit the following needs:
+<ul>
+<li>Relatively small(small as or smaller than a lunchbox)</li>
+<li>Accept 120v input</li>
+<li>Charge and maintain a 12v Sealed-Lead-Acid(SLA) battery</li>
+<li>Drive a variable-load of .5 to 3 amperes while charging the battery</li>
+<li>Not goof up while sitting in the sun in Kansas summer temperatures</li>
+<li>Leak little power from the 12v side when 120v supply is disconnected</li>
+</ul>
+
+Together, this supply will drive an 
+<a href="http://www.broadband-hamnet.org/">HSMM</a> 
+node with the following:
+<ul>
+	<li>Linksys <a href="http://wiki.openwrt.org/toh/linksys/wrt54g">WRT54G</a> wireless router, 8 Watts consumption, 1 Amp max</li>
+	<li>EDUP <a href="http://www.szedup.com/show.aspx?id=1755">AB-003</a> 8 Watt amplifier output, 2 Amp max</li>
+	<li>Ventilation Fan, 4 Watt, .33 Amps</li>
+</ul>
+<p>I want to set up this power supply in a remote urban location, so it needs to maintain itself as much
+as possible. I ask what members of the popular Kansas City Amateur Radio 
+<a href="http://www.larryslist.info">Larry's List</a>, 
+and here are some notes from the responses.</p>
+
+<h2>Smart Charger</h2>
+<p>
+One Larry's List member suggested the 
+<a href="http://duracomm.com/siteresources/apps/catalog/shop/prodView.asp?idproduct=302">Duracomm SC-12</a>. 
+DuraComm is a local Kansas City company. I considered this, but I worry that a battery and variable load
+in parallel might confuse a charger into not properly floating the battery. On the good side, the SC-12
+can run from -20 to 50 Centigrade. It also takes up nearly all of the reserved space.
+</p>
+
+<h2>Small UPSs, or a lighting backup</h2>
+<p>
+Another suggestion was to use a small UPS, like an 
+<a href="http://www.apc.com/resource/include/techspec_index.cfm?base_sku=bk500">APC BackUPS 500</a>, 
+and run the radio equipment directly from the 12v supply, or maybe less-efficiently use the radio 
+equipment's wall-warts from the 120v output. This was actually my original plan, but the BackUPS 500 I
+had for the task was too long to fit. However, I will be reusing the battery. Also, the APC BackUPS 500 
+is only rated for 0 to 40 Centigrade.
+</p>
+
+<h2>AC->DC and DC battery switch</h2>
+This solution uses two components - an AC to DC converter, followed by a DC driven battery maintainer.
+
+<h3>AC->DC converter</h3>
+For this stage, a switching supply is preferred, since this unit will be outdoor, and switching supplies 
+can offer high efficiencies than linears.
+<ul>
+	<li>
+		<a href="http://www.amazon.com/Pyramid-PS12KX-13-8V-Power-Supply/dp/B0002JTD1Q">Pyramid PS12KX-13-8</a> - 
+		$57.83, 12 Amp - more current than needed, but also take up nearly all the space reserved for the power section of the installation.
+	</li>
+	<li>
+		<a href="http://www.onlinecomponents.com/mean-well-psc100ac.html?p=44339434">MeanWell PSC-100A-C</a> - 
+		$38.63, 86% efficient, 7 Amps at -20-50 Centigrade, 3.5 Amps at 70 Centigrade.
+		<a href="http://www.meanwell.com/search/PSC-100/PSC-100-spec.pdf">Link to datasheet.</a>
+	</li>
+	<li>
+		<a href="http://www.bravoelectro.com/s-60-12.html?gclid=CIu22dPHsbwCFRAS7AodghcA5A">MeanWell S-60-12</a> - 
+		$22.30, 73% efficient, 5 Amps at -10-45 Centigrade, 3 Amps at 60 Centigrade. 
+		<a href="http://www.meanwell.com/search/S-60/S-60-spec.pdf">Link to datasheet.</a>
+	</li>
+</ul>
+
+<h3>DC battery switch</h3>
+The DC battery switch serves to charge and maintain the SLA while power is present, 
+and drive the load from the SLA once power has disappeared.
+<ul>
+	<li>
+		<a href="http://www.dxengineering.com/parts/wmt-58403-1048">West Mountain Radio PG40SCR</a> - 
+		$156.95, 40 Amps out, charge rates selectable from 1,4,7,10 Amps - Physically a bit on the large 
+		side, this device is overkill for my purposes.
+	</li>
+
+	<li>
+		<a href="http://ki0bk.no-ip.com/~pwrgate/LLPG/Site/Welcome.html">KI0BK Low Loss PWRgate</a> - 
+		$49.00, 25 Amps out, charge rate of 3 Amps - Made by KI0BK, all things being equal this is the 
+		best amperage/$ of the bunch, but still more than I need. The PWRgate also has a anderson power 
+		pole connectors and a nice insulated case - since my enclosure is conductive, the insulated 
+		case would be nice.
+	</li>
+
+	<li>
+		<a href="http://www.mini-box.com/picoUPS-100-12V-DC-micro-UPS-system-battery-backup-system">Mini-box PicoUPS-100</a> - 
+		$29.95, 10 Amps out, charge rate of 1.2 Amps - This is the cheapest option, although picoUPS 
+		makes a 12 Amp version as well.
+	</li>
+</ul>
+
+<h2>Special thanks</h2>
+Thanks to the following folks for helping me out with this:
+<ul>
+	<li>KI0BK, Jim</li>
+	<li>W0NQX, Bob</li>
+	<li>K0EQH, Rod</li>
+	<li>W0AIB, Larry</li>
+	<li>W0JRT, Jerome</li>
+	<li>W5GZT, Rod</li>
+</ul>
+
+<h2>First design</h2>
+For my first remote HSMM node, here's the shopping list for the power supply:
+<ul>
+	<li>S-60-12 120v->13.8v Power Supply</li>
+	<li>PicoUPS-100 controller</li>
+	<li>7Amp-hour SLA</li>
+</ul>
+
+Total load maxes out at 3 amps. Below 45C(115F), the supply can put out 5 amps. Worst case consumption(including spikes) follows:
+<table border="1">
+	<tr>
+		<td>Status</td>
+		<td>Charger Draw</td>
+		<td>Fan Draw</td>
+		<td>Router Draw</td>
+		<td>Amplifier Draw</td>
+		<td>Total Draw</td>
+		<td>Utilization</td>
+	</tr>
+	<tr>
+		<td>Charging and Transmitting</td>
+		<td>1.2 Amps</td>
+		<td>.33 Amps</td>
+		<td>1 Amp</td>
+		<td>2 Amps</td>
+		<td>4.53 Amps</td>
+		<td>90%</td>
+	</tr>
+</table>
