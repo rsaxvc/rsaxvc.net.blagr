@@ -36,11 +36,11 @@ Amplifiers are notoriously sensitive to power supply fluctuations. Externally, t
 by a 12v 2amp wall wart. Internally, the AP003 uses a DC-DC switching regulator to convert the 
 external voltage down to something lower. Power is fed to the amplifier at the top-right corner
 of the PCB through a barrel-connector. The power supply subsection takes up approximately 
-the top 1/4 of the PCB. The power supply consists of a few front-end capacitors, and inductor, 
+the top 1/4 of the PCB. The power supply consists of a few front-end capacitors, an inductor, 
 a switching-controller that pulses current through the inductor, and some back-end capacitors to 
 filter the output. This means that the amplifier operates on voltage lower than the 12-volt input,
 but also that it may be sensitive to the quality of capacitors used in the power supply, as
-lower-quality(high ESR) capacitors, may let noise slip through.
+lower-quality(high ESR) capacitors may let noise slip through.
 </p>
 
 <h3>Amplification</h3>
