@@ -1,0 +1,14 @@
+Title:HexTerm
+Author:Richard Allen
+CreatedDateTime:2014-02-11T20:26:13
+Tag:Serial
+Tag:UART
+Tag:Hexadecimal
+---
+Several times now I've needed to interact with a serial device that doesn't speak 
+<a href="http://en.wikipedia.org/wiki/ASCII">ASCII</a>. I usually end up writing code to
+talk to it, and add enough logging to figure out what's going on. But last night I wrote
+a simple hex-console. To write, you type in a hex string, and data received is printed
+in hex as well. Afterwards I found <a href="https://github.com/hackndev/tools/tree/master/hexterm">
+another implementation</a>, so I'm not the first to want to do this. Anyhow, my code is 
+<a href="https://github.com/rsaxvc/hexterm">here</a>
