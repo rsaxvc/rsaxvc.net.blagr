@@ -1,0 +1,83 @@
+Title:Reversing the IT-24 USB Protocol
+Author:rsaxvc
+CreatedDateTime:2014-03-02T20:08:44
+ModifiedDateTime:2014-03-02T20:08:44
+Tag:USB
+Tag:UART
+Tag:Hardware
+Tag:Universal Serial Bus
+Tag:RLE
+Tag:RigExpert
+---
+<h2>Figuring it out</h2>
+
+<h3>Introduction</h3>
+<div>RigExpert makes a handheld 13cm band antenna analyzer, the IT-24. It is 
+small, lightweight, and both measures and graphs SWR. However, until today, 
+the IT-24 required a Windows tool called LCD2CLIP, which is used to copy the 
+current analyzer frame to the windows clipboard. The image transfer is started 
+by pressing the button labeled with a rectangle on the analyzer.</div>
+
+<h3>Drivers</h3>
+<div>I started by examining the USB drivers - inside the IT-24 is a USB-FTDI 
+interface. These show up under /dev/ttyUSB in Linux. The baud-rate is 115200. 
+Pressing the screencapture button sends a newline,carriage-return,"screencomp", 
+resolution,and then a compressed bytestream terminated with another newline and 
+carriage return.</div>
+
+<h3>Gathering data and initial guesses</h3>
+<div>To verify the link quality, I recorded a few captures of the main menu 
+using dd on the USB-emulated serial port device, and all captures of the main 
+menu were the same. Changing the menu selection changed the capture data.
+The menu images were 4 to 5 pixels per byte. Captures of the graph page were 7 
+to 8 pixels per byte. This indicated that some form of compression was in use. 
+Next I captured an SWR-sweep graph of the same antenna twice. Because they were 
+different sweeps, the images were similar but not identical. Converting both 
+dumps to hexadecimal and comparing in meld showed that the differences in 
+binary dumps were similar to where the graphs would be different. Also 
+suspicious was the fact that after subtracting the header and footer, the 
+dump size was always a multiple of 3 bytes.</div>
+
+<h3>Statistics</h3>
+<div>The next step was building a simple parser and gathering statistics. 
+For each three-byte packet, the first and second bytes had a limited number
+of possible values. Additionally, when the first and second bytes are combined,
+the values line up, so this appeared to be a 16-bit integer. The third byte of 
+all packets has the interesting property, when added together, of equalling the 
+total number of pixels in the image, which is known from the ASCII header. This 
+pretty much nails it down as 
+<a href="http://en.wikipedia.org/wiki/Run-length_encoding">
+Run-Length-Encoding
+</a>.</div>
+
+<h2>Documented Format</h2>
+<h3>Header-ASCII</h3>
+<ol>
+<li>CarriageReturn</li>
+<li>NewLine</li>
+<li>"screencomp"</li>
+<li>width</li>
+<li>"x"</li>
+<li>height</li>
+</ol>
+
+<h3>Data</h3>
+RLE encoded, 3 bytes per packet representing between 1 and 255 pixels. 
+Per packet:
+<ol>
+<li>2 bytes RGB565.</li>
+<li>1 byte repeat-count.</li>
+</ol>
+
+<h3>Footer-ASCII</h3>
+<ol>
+<li>CarriageReturn</li>
+<li>NewLine</li>
+</ol>
+
+<h2>Code and closing</h2>
+I wrote <a href="https://github.com/rsaxvc/it24-image-capture">a python tool
+to scrape images from the IT-24</a> and posted it to github. A few revisions 
+back you can find an earlier parser written in 'C' that was just enough 
+to work out the rest of the format. Using the above program, it's perfectly 
+reasonable to record a few graphs per minute to a PC using the IT-24 from RigExpert.
