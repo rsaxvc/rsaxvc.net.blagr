@@ -1,0 +1,3 @@
+[submodule "blagr"]
+	path = blagr
+	url = git@github.com:rsaxvc/blagr.git
