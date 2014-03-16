@@ -1,0 +1,39 @@
+Title:Inside the IT-24 Antenna Analyzer
+Author:rsaxvc
+CreatedDateTime:2014-03-14T23:08:14
+ModifiedDateTime:2014-03-14T23:08:14
+Tag:Ham Radio
+Tag:WiFi
+Tag:HSMM
+Tag:Antenna
+---
+<h2>Introduction</h2>
+<p>
+RigExpert makes an affordable 2.4GHz analyzer. In an earlier post 
+I documented the image transfer protocol. Today I take it apart.
+</p>
+
+<h2>First Remove the Six Screws From the Rear of the Unit</h2>
+<iframe src="https://www.flickr.com/photos/40925843@N03/13180388293/player/ffe6d92c14" height="534" width="800"  frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+<h2>Pop Off the Rear Case</h2>
+<iframe src="https://www.flickr.com/photos/40925843@N03/13180395813/player/cc6be8542a" height="534" width="800"  frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+<h2>Remove Four More Screws to Free PCB</h2>
+<iframe src="https://www.flickr.com/photos/40925843@N03/13180549994/player/3f0ffa3cb9" height="800" width="534"  frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+<h2>Flip PCB into Rear Case to See Front of PCB</h2>
+<iframe src="https://www.flickr.com/photos/40925843@N03/13180414663/player/ba423f6ae9" height="534" width="800"  frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+<h2>Overview</h2>
+<p>
+Although RigExpert hasn't yet published repair diagrams or schematics for the IT-24, the design 
+seems fairly simple
+and easy to repair. The main sections are RF(back of PCB near top), display(front of PCB near top), 
+power(front of PCB near bottom), and digital/micro(back of PCB near bottom). There's a JTAG header to 
+the ATMEGA128A, and except for the micro and FTDI converter, the other components are large enough to be 
+manipulated with an iron. It would've been nice if the battery pack were attached with a connector 
+instead of soldering. Coax-connectors are a standard part, which is great, since SMA and RP-SMA 
+connectors are only rated for around 500 insertions. At one insertion per workday, they'll need 
+replacement around every two years.
+</p>
