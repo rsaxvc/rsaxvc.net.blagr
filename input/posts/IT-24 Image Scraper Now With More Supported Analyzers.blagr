@@ -1,0 +1,25 @@
+Title:IT-24 Image Scraper Now Supports More Analyzers
+Author:rsaxvc
+CreatedDateTime:2014-03-16T23:08:14
+ModifiedDateTime:2014-03-16T23:08:14
+Tag:Ham Radio
+Tag:WiFi
+Tag:HSMM
+Tag:RigExpert
+Tag:Antenna
+Tag:IT-24
+Tag:AA-170
+---
+<p>
+The <a href="https://github.com/rsaxvc/it24-image-capture">IT-24 Image Capture</a>
+tool has been updated to support AA-170 analyzers as well. The AA-170 analyzer
+uses a 128x64 1-bit display, a simpler image transfer protocol, and a slower
+baud-rate. The new baud-rate must be specified on the command-line.
+</p>
+
+<p>
+Additionally, this software should work on several other RigExpert
+analyzers like the AA-30 and AA-54, and may work with AA-230 and AA-520
+as well. If you have one of the above analyzers, I'd love to hear if
+it works.
+</p>
