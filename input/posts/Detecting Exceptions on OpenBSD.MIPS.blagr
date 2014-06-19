@@ -1,0 +1,17 @@
+Title:Detecting Exceptions on OpenBSD and MIPS
+Author:rsaxvc
+CreatedDateTime:2014-06-18T21:08:14
+ModifiedDateTime:2014-06-18T21:08:14
+Tag:OpenBSD
+Tag:MIPS
+Tag:Interrupt
+Tag:Exception
+---
+The MIPS processor exception handling sequence uses two reserved
+general-purpose registers, k0 and k1. When the exception occurs, the
+core jumps to the exception handler address, then using only k0 and k1, the
+handler must save enough state to handle the exception. To prevent
+information leakage from kernel-space to user-space, OpenBSD clears k0
+and k1 to zero near the end of the exception handler. By populating k0
+or k1 with a non-zero value, we simply need to poll one to detect when
+an exception occurs.
