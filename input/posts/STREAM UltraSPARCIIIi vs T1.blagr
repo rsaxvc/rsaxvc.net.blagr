@@ -1,0 +1,97 @@
+Title:STREAM:UltraSPARC IIIi vs UltraSPARC T1
+Author:rsaxvc
+CreatedDateTime:2014-06-21T23:13:50
+ModifiedDateTime:2014-06-21T23:15:28
+Tag:SPARC
+Tag:STREAM
+Tag:computing
+Tag:benchmark
+---
+<div>
+Today, I ran STREAM on my old router(Sun V210, 2x UltraSPARC IIIi) and my new one(Sun T2000, 1xNiagara T1).
+</div>
+
+<div>
+<h3>Benchmark Overview</h3>
+<a href="http://www.cs.virginia.edu/stream/">STREAM</a> is a simple memory bandwidth benchmark.
+It conducts a series of operations on large vectors of variables and reports back on how
+long the operations took, as well as a double-check to ensure the results are correct. The tests are:
+<ul>
+	<li>Copy:  Y[] = X[]</li>
+	<li>Scale: Y[] = X[]*n</li>
+	<li>Add:   Y[] = X[]+Z[]</li>
+	<li>Triad: Y[] = X[]*n+Z[]</li>
+</ul>
+The Copy test almost always gets optimized to a memcpy, which serves as a
+good reference for systems with weak FPU performance, or with no FPU at all.
+All other tests tend to make heavy use of any available FPU.
+</div>
+
+<div>
+<h3>System Overview</h3>
+<h4>V210</h4>
+The V210 uses two UltraSPARC IIIi CPUs attached to DDR memory. Each IIIi supports a single
+core with FPU.
+<h4>T2000</h4>
+The T2000 uses a single UltraSPARC T1 CPU attached to DDR2 memory. The T1 supports
+four cores each with eight threads, but with only a single FPU. Effectively up to 32
+independently schedulable threads. The T1 is also known for slow single-threaded
+performance, a design corrected in the T4 and newer CPUs.
+</div>
+
+<br/>
+
+<div>
+<h3>STREAM Results in Megabytes/Second</h3>
+<table border="1">
+	<tr><td>Box:</td>  <td>V210x1</td><td>V210x2</td><td>T2000x1</td><td>T2000x32</td></tr>
+	<tr><td>Copy:</td> <td>496.7</td> <td>577.5</td> <td>429.6</td>  <td>3492.9</td></tr>
+	<tr><td>Scale:</td><td>498.3</td> <td>568.0</td> <td>261.2</td>  <td>1558.7</td></tr>
+	<tr><td>Add:</td>  <td>494.1</td> <td>597.1</td> <td>282.8</td>  <td>2133.4</td></tr>
+	<tr><td>Triad:</td><td>419.3</td> <td>579.5</td> <td>220.9</td>  <td>1176.8</td></tr>
+</table>
+</div>
+
+<br/>
+
+<div>
+<h3>Single-Threaded Results</h3>
+<h4>V210</h4>
+What can I say? This router is getting old.
+<h4>T2000</h4>
+The T1's single-threaded results are bad - even worse than the IIIi(a 4 year older design).
+This could prove to be a problem, as in addition to routing, I'll need it to run a few
+mostly single-threaded game servers as well. More measurements required.
+</div>
+
+<div>
+<h3>Relative Multi-Threading Improvement over Single-Threading</h3>
+<table border="1">
+	<tr><td>Box:</td>  <td>V210x2</td><td>T2000x32</td></tr>
+	<tr><td>Copy:</td> <td>1.16</td>  <td>8.13</td></tr>
+	<tr><td>Scale:</td><td>1.14</td>  <td>5.97</td></tr>
+	<tr><td>Add:</td>  <td>1.21</td>  <td>7.54</td></tr>
+	<tr><td>Triad:</td><td>1.38</td>  <td>5.33</td></tr>
+</table>
+</div>
+
+<br/>
+
+<div>
+<h3>Multi-Threaded Results</h3>
+<h4>V210</h4>
+A little bit faster, but not a whole lot. This usually means that one thread
+is capable of nearly saturating the memory bus/controller, which is good - it
+implies that the penalty for the extra multithreading hardware is relatively
+cheap, although it could also mean your memory controller or cache just isn't
+very good.
+
+<h4>T2000</h4>
+This is where the T1 shines, with between 5.3x and 8.1x more bandwidth usage
+spread over 32 threads. What's interesting here, is that the overall
+improvement was greater than 4x(number of cores). This means that a
+hardware thread isn't capable of saturating the bandwidth for the
+local core, and so 8 or more threads will be required for saturating
+the chip's bandwidth and that may only occur if the kernel schedules
+them 2-to-a-core.
+</div>
