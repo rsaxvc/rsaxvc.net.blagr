@@ -9,7 +9,7 @@ Tag:n-Ball
 Tag:Math
 ---
 
-<div>As James Jolly said(approximately) to me, as the number of dimensions goes up, a normally-distributed dataset's points become closer together. This wasn't intuitively apparent to me, so I plotted it out.</div>
+<div>As James Jolly said(approximately) to me, as the number of dimensions goes up, a normally-distributed dataset's points become closer together. To approximate it, draw a circle in a square, followed by a sphere in a cube, followed by a hypersphere in a hypercube. This relationship wasn't intuitively apparent to me, so I plotted it out.</div>
 
 <div><a href="https://www.flickr.com/photos/40925843@N03/14607891693" title="polydimrat output by rsaxvc, on Flickr"><img src="https://farm4.staticflickr.com/3885/14607891693_62b1db9346_o.png" width="640" height="480" alt="polydimrat output"></a></div>
 
