@@ -1,0 +1,31 @@
+Title:Volume of Spheres to Cubes Over Varying Dimensions.
+Author:rsaxvc
+CreatedDateTime:2014-07-06T22:10:52
+ModifiedDateTime:2014-07-06T22:10:52
+Tag:Dimension
+Tag:Hypercube
+Tag:Hypersphere
+Tag:n-Ball
+Tag:Math
+---
+
+<div>As James Jolly said(approximately) to me, as the number of dimensions goes up, a normally-distributed dataset's points become closer together. This wasn't intuitively apparent to me, so I plotted it out.</div>
+
+<div><a href="https://www.flickr.com/photos/40925843@N03/14607891693" title="polydimrat output by rsaxvc, on Flickr"><img src="https://farm4.staticflickr.com/3885/14607891693_62b1db9346_o.png" width="640" height="480" alt="polydimrat output"></a></div>
+
+<h3>Some Intuition</h3>
+<div>
+To think recursively, each next-higher dimension contains an infinitely thin slice of the current dimension. For example, in three dimensions, a the area of a circle cut through a unit sphere by a plane of z=0 is the same area as a 2-dimesional unit circle. This is true all the way down - a 1-dimensional circle fills the 1-dimensional space from the leftmost to the righmost points on the 2-dimensional circle.
+</div>
+
+<h4>Intuition at the Equator</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/14587922432" title="plot_3d by rsaxvc, on Flickr"><img src="https://farm6.staticflickr.com/5509/14587922432_10aee8521c_o.png" width="548" height="366" alt="plot_3d"></a>
+
+<h4>Intuition at z=-0.75</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/14402015028" title="plot_3d_threeQuarters by rsaxvc, on Flickr"><img src="https://farm3.staticflickr.com/2895/14402015028_bf7646a7e2_o.png" width="548" height="336" alt="plot_3d_threeQuarters"></a>
+
+<div><br/></div>
+
+<div>
+But, we may notice that the ratio of circle-to-square in our slice is highest only in the middle(z=0). By varying from the center of our dimension-splitting subregion that ratio in the slice is always smaller. This is also true for the ratio of sphere-to-square in any two neighboring dimension sets(n->n+1). By approximating an integral, if the highest ratio in a dimensional space is the ratio in the lower dimensional space, and our integral averages over all the current space, then the ratio in the current space must go down, as being an average of ranges between 0 and the ratio of the previous space.
+</div>
