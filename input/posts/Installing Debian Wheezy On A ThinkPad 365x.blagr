@@ -1,0 +1,131 @@
+Title:Debian Wheezy on a ThinkPad 365X
+Author:rsaxvc
+CreatedDateTime:2014-08-06T21:48:20
+ModifiedDateTime:2014-08-06T21:48:20
+Tag:ThinkPad
+Tag:Linux
+Tag:Open source
+Tag:Debian
+---
+<div>
+<h3>Intro</h3>
+
+I've had this old ThinkPad for quite a while. I used to run Linux 2.6.8, but after the libata rewrite,
+debian wouldn't boot due to a missing root partition. Until today. Today I run debian stable.
+
+<h3>Prerequisites</h3>
+<h4>Hardware - Thinkpad 365X</h4>
+	<ul>
+		<li>Intel Pentium@120MHz(f00f bug and everything)</li>
+		<li>8MB Integrated RAM(This can't do it alone)</li>
+		<li>64MB expansion RAM(32MB should also work, 16MB would be sketchy)</li>
+		<li>35MB total RAM recognized(try bios upgrade?)</li>
+		<li>2GB CF card(super-cheap, much faster than contemporary spinny-disks)</li>
+		<li>IDE44<->CF adapter, approx $5 from Shenzen</li>
+	</ul>
+
+<h4>Hardware - Other</h4>
+	<ul>
+		<li>USB<->CF adapter or USB<->IDE44 adapter, approx $5 from Shenzen</li>
+		<li>Computer with kvm/qemu</li>
+	</ul>
+
+<h4>Software</h4>
+	<ul>
+		<li><a href="https://www.debian.org/releases/wheezy/debian-installer/">Debian Wheezy CD ISO</a></li>
+	</ul>
+
+<h3>Inserting the Disk in the VM Host</h3>
+Since we're going to be working with raw disk IO, you'll need to unmount any
+automounting done when you connect the disk over USB to the VM host. Simply
+put, we don't want two OS kernels fighting for the same block device.
+
+<h3>Creating a Virtual Machine image(optional, but recommended)</h3>
+First, create a VM image of exactly the same size as your CF card or target hard disk. For QEMU/KVM, a file
+full of garbage is fine, or you can just rip the disk with dd using `dd if=/dev/sdX of=~/vmfilename.img bs=1M`.
+
+<h3>Installing Debian in a Virtual Machine</h3>
+KVM(or QEMU in a pinch) can be used to simulate a classic Pentium system, but not directly the one in the Thinkpad.
+`sudo {qemu or kvm} -hda {path to VM image or /dev/sdX} -cdrom {path to debian} -boot d -m 1024 -cpu pentium`
+
+Breaking it down:
+<ul>
+	<li>sudo - run the command as root to allow qemu raw disk access. May also be needed for KVM(but not QEMU). Skip if using VM image with QEMU.</li>
+	<li>kvm - run a kernel-virtual-machine. Basically QEMU + hardware virtualization</li>
+	<li>qemu - run the old-school cpu emulator. Slower, but works on any host CPU, doesn't require root access</li>
+	<li>-hda - tell qemu/kvm where to find the disk image.</li>
+	<li>-cdrom - tell qemu/kvm where to find the CD image.</li>
+	<li>-boot d - tell qemu/kvm to boot from CDROM this time.</li>
+	<li>-m - Set VM RAM. In my case I used 1GB because it makes the installer a bit faster, but default also works.</li>
+	<li>-cpu - Set VM core type. In my case I set it to Pentium. This will cause the Wheezy installer to pick an i486-compatible kernel+libc</li>
+</ul>
+
+While working through the normal installer, here are some things to consider:
+<ul>
+	<li>Old spinning disks are slow. Mounting partitions with 'noatime' or 'relatime' is quite helpful for this.</li>
+	<li>If you are low on disk space / ram, you will likely wish to install zero additional packages; I unchecked all the boxes. The complete desktop environment isn't really an option here either.</li>
+</ul>
+
+A note - if you use the advanced installer, we're going to rebuild an initrd anyways, and since qemu/kvm won't emulate the
+ThinkPad's IDE chipset, it doesn't make sense to strip it down in the installer because the virtualized installer will pick
+the wrong hardware.
+
+Once the install is complete, you may need to restart kvm/qemu, but changing "-boot d" to "-boot c", which will now boot
+from the emulated or USB disk.
+
+<h3>Removing The Extras</h3>
+This topic is <a href="https://wiki.debian.org/ReduceDebian">best handled elsewhere</a>. Removing daemons will
+save RAM, removing things in general will save disk space. The 365X is very limited by today's standards.
+
+<h3>Install Your Favorite Packages</h3>
+Now(while we have an emulated ethernet connection) is a good time to pull down any WiFi firmware
+you might need, as well as the pcmciautils package, and any other tools. Here's my
+list(455MB used/2GB total), less than 9MB RAM used after bootup:
+
+<ul>
+	<li>sudo</li>
+	<li>cupt</li>
+	<li>htop</li>
+	<li>nload</li>
+	<li>hexedit</li>
+	<li>pcmciautils</li>
+	<li>linux-firmware-free</li>
+	<li>linux-firmware-nonfree</li>
+	<li>linux-wlan-ng</li>
+	<li>openssh-client</li>
+</ul>
+
+After installing everything, use "sudo apt-cache clean" to remove downloaded package installer files.
+
+<h3>Building a New, Smaller Initrd</h3>
+At least with 35MB of usable RAM, the default initrd won't fit. You might be able to do it with bios support for
+a 64MB stick. The last time debian had an initrd that did fit, it no longer contained the required ATA drivers for
+the 365X. So, to rebuild:
+
+<ol>
+	<li>Copy+rename the existing initrd alongside the current one. You'll find it in /boot/initrd-{somethingorother}</li>
+	<li>edit /etc/initramfs-tools/modules to add "pata_legacy"</li>
+	<li>edit /etc/initramfs-tools/initramfs.conf to set "MODULES" to "dep"</li>
+	<li>sudo update-initramfs -u</li>
+</ol>
+
+A word of warning for upgrades - the Jessie i686 kernel doesn't seem to have pata_legacy module, and I suspect the i486 kernel may not either.
+
+<h3>Burning the Image to Target(required if using VM image, otherwise skip)</h3>
+Burning the image back to the disk is just the reverse of ripping it. Flip the arguments on dd, taking care
+not to use the partition number.
+
+<h3>Ejecting the Disk</h3>
+Just run `sync`, then `eject /dev/sdX`, then wait for any lights to stop blinking, then unplug.
+
+<h3>Booting up the 365X</h3>
+Unplug power and battery, click the power button to make sure the board is drained, insert the card, replug power, hit switch.
+<br/>
+It <i>should</i> just work. However, here's some of the problems I had along the way, in the order I had them, that should've been fixed by following the above instructions:
+<ol>
+	<li>Hung up in Grub - turns out Grub is just really slow on this box.</li>
+	<li>Hung up loading initramfs - caused by initramfs too large for current RAM. The kernel used to give a nicer message about this. Fixed by removing unused modules in initramfs rebuild above.</li>
+	<li>Hung up in (initramfs) prompt - caused by missing ATA driver pata_legacy. Fixed by initramfs rebuild above.</li>
+<ol>
+
+</div>
