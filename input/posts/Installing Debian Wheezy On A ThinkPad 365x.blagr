@@ -104,7 +104,7 @@ the 365X. So, to rebuild:
 
 <ol>
 	<li>Copy+rename the existing initrd alongside the current one. You'll find it in /boot/initrd-{somethingorother}</li>
-	<li>edit /etc/initramfs-tools/modules to add "pata_legacy"</li>
+	<li>edit /etc/initramfs-tools/modules to add "pata_legacy". If you want to be able to reboot in the VM, also add ata_piix.</li>
 	<li>edit /etc/initramfs-tools/initramfs.conf to set "MODULES" to "dep"</li>
 	<li>sudo update-initramfs -u</li>
 </ol>
