@@ -1,0 +1,29 @@
+Title:Apple Laptop LED PWM Frequencies
+Author:rsaxvc
+CreatedDateTime:2014-12-07T22:10:52
+ModifiedDateTime:2014-12-07T22:10:52
+Tag:MacBook
+Tag:PowerBook
+Tag:PWM
+Tag:LED
+---
+
+<p>Although the LED on the lid latch of an Apple Laptop is a simple device, there's a little more complexity than would be expected.
+Since the LED is lit while the laptop is suspended, it is important that it be efficient to avoid draining the battery unneccessarily
+while suspended.</p>
+
+<p>One trick to driving LEDs more efficiently is to use <a href="http://en.wikipedia.org/wiki/Pulse-width_modulation">
+pulse-width modulation(PWM)</a> to temporarily overdrive the LED for a short
+period of time, then underdrive or not drive it at all for another period of time. This works due to something called the
+<a href="http://en.wikipedia.org/wiki/Flicker_fusion_threshold">flicker fusion</a>, where you perceive small enough pulses
+of light to be a single, continuous light.</p>
+
+<p>But, it's possible to see behind the curtain. When you move a PWM'd light source, the human vision system tends to
+<a href="http://en.wikipedia.org/wiki/Stroboscopic_effect">see each strobe individually</a>, like a stroboscope, but
+only if the light is being moved fast enough for the strobes to occur at different locations - otherwise you won't see
+the strobes and the pulses will blur together.</p>
+
+<p>It turns out, if you move a PowerBook(6,8) and a MacBook together, you'll see that the strobes from the PowerBook LED
+are further apart than the MacBook LED. This indicates that the PowerBook strobes its LED at a lower frequency than
+the MacBook's LED. If both laptops used the same led it would be possible to estimate the duty cycle by comparing the
+perceived length of each strobe, but since the MacBook has a much smaller LED, the results would be skewed.</p>
