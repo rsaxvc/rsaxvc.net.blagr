@@ -1,0 +1,129 @@
+Title:Rebuilding an Astatic D104 Microphone
+Author:rsaxvc
+CreatedDateTime:2014-12-07T23:50:52
+ModifiedDateTime:2014-12-07T23:50:52
+Tag:Microphone
+Tag:Astatic
+Tag:Ham Radio
+Tag:Electret
+---
+
+<h4>Introduction</h4>
+At a recent <a href="http://en.wikipedia.org/wiki/Hamfest">Hamfest</a>, I picked up an
+<a href="http://en.wikipedia.org/wiki/Astatic_Corporation#D-104_microphone">Astatic D104</a> microphone. As it
+turns out, there are two main models of these microphones - those with an internal amplifier and those without it.
+Internally the crystal microphone module has an impedance around 500k to some megaohms, which works well with
+older vacuum-tube radios, but for newer transistor radios a lower output impedance is desired. This is where
+the amplifier is useful. However, my crystal module appeared broken, so I needed a replacement and opted
+for a modern, low-impedance electret condenser.
+
+<h4>Parts List</h4>
+<ul>
+<li>Twinax cable to go from your radio to the microphone, plus a little extra for inside of it and stripping. Thinner twinax is better for this application.</li>
+<li>2-pin control cable. Add two more pins if you modify the base to add frequency up/down buttons.</li>
+<li>Electret condenser module. I used a <a href="http://www.digikey.com/product-detail/en/CMA-6542PF/102-1720-ND/1869980">CMA-6542PF</a> from <a href="http://www.cui.com/">CUI</a>, but you should pick one with a lower bass response as this one is a little tinny.</li>
+<li>Connector to attach to the radio. <a href="http://www.universal-radio.com/catalog/parts/2112.html">Here's mine</a>.</li>
+<li>Vibration-isolating padding. I used part of an old wool sock.</li>
+</ul>
+
+<h4>Tools List</h4>
+<ul>
+<li>Several flathead screwdrivers.</li>
+<li>Small steel pick.</li>
+<li>Soldering iron. A variable power model is nice as you'll be soldering some small pins and some large solder tabs.</li>
+<li>3.5mm audio plug pigtail. Useful for testing.</li>
+<li>Alligator clip wires. Useful for testing.</li>
+<li>Audio recorder. You can use a PC or a tape-recorder.</li>
+<li>Ohmmeter or beeper meter.</li>
+</ul>
+
+<h4>Disposables List</h4>
+<ul>
+<li>solder</li>
+<li>solding flux</li>
+</ul>
+
+<h4>Component Testing</h4>
+Before starting, verify each component works.
+<ol>
+<li>Test the audio recorder using the internal or a known good microphone.</li>
+<li>Attach electret condenser to computer, referring to the manufacturer's datasheet for the wiring diagram.
+Use the alligator clips to connect it to the 3.5mm pigtail. Use your audio recorder to test it.</li>
+<li>Double check twinax and PTT wire using the ohmmeter</li>
+</ol>
+
+<h4>Replace wiring on the head</h4>
+The D104 comes in two main parts - the head and the stand. The head contains the microphone element.
+
+<ol>
+<li>Unscrew the head from the stand.</li>
+<li>Remove 4 head plate screws to reveal the crystal module. You'll need two screwdrivers, one at each end, to do so. If you're a little OCD, remove each screw at a time, and reinsert it into the bolt so that the screws and bolts remain paired.</li>
+<li>Desolder the two wires from the crystal module</li>
+<li>(Optional)remove hidden screw from neck, and clean it. This screw will connect the twinax shield to the conductive body of the microphone.</li>
+<li>Solder in new condenser. For now, make sure you connect the condenser ground to the common microphone ground.</li>
+<li>Pack with sound-insulating material.</li>
+<li>Replace screws.</li>
+</ol>
+
+<h4>Choose your own Adventure</h4>
+At this point, you <i>could</i> trace out the wiring through the stand, add your microphone connector, and be done. Or,
+you could entirely rewire the stand yielding superior shielding and noise immunity over the original design. Up to you,
+but plenty of these microphones work without differential shielded audio feeds. Also, rewiring the base will give you
+the opportunity to clean the PTT switch, but I suspect it rarely gets dirty.
+
+<h4>Rewiring the stand</h4>
+Since my radio supports a separate audio ground than the digital one, and my existing base wiring only had
+one ground, I went ahead and rewired the base.
+
+<ol>
+<li>Open up microphone base by removing three screws.</li>
+<li>Desolder all wires from wiring hub.</li>
+<li>Remove existing wire going outside of the mic.</li>
+<li>Remove flathead screw at top of tube</li>
+<li>Desolder 3-pin connector at top of tube.</li>
+<li>Remove two flathead screws from base of tube to remove lever.</li>
+<li>Remove two smaller flatheads from tube. This disconnects the switch.</li>
+<li>Remove last screw from base of tube.</li>
+<li>Remove stand tube, may be a little sticky on the base. Pull the switch out the base.</li>
+<li>Remove existing wire going up the tube.</li>
+<li>Solder control cable to normally-open pins of switch.</li>
+<li>Install twinax+switch into tube. Slide twinax and switch into base of tube. Install two small flathead screws.</li>
+<li>Install connector on twinax.</li>
+	<ol>
+	<li>Strip insulation from twinax.</li>
+	<li>Lay tube on side, so you don't drop any metal into it.</li>
+	<li>Use pick to unwrap shielding from twinax.</li>
+	<li>Solder twinax shield to head connector.</li>
+	<li>Solder two audio lines. Take note of which go to which pins noted in head rework.</li>
+	</ol>
+<li>Pull slack twinax back through tube, screw head connector in place, double-check PTT.</li>
+<li>Route wires into base, place tube on base, install lever and opposite screw.</li>
+</ol>
+
+<h4>Assembly Testing</h4>
+
+<h5>Testing PTT</h5>
+<ol>
+<li>Connect PTT and PTT ground to an ohm/beeper meter.</li>
+<li>Press and hold button. Beeper should beep or meter should read close to zero.</li>
+<li>Hold button down while moving wires, reading should not change.</li>
+<li>Give them a bit of a tug, reading should not change.</li>
+<li>Release button. Beeper should stop or meter should read open circuit.</li>
+</ol>
+
+<h5>Testing Audio</h5>
+<ol>
+<li>Connect Ohmmeter from mic pins. Mic should measure part of an ohm to a few ohms.</li>
+<li>Connect mic pins to 3.5mm pigtail with alligator jumpers, test with computer or walkman.</li>
+</ol>
+
+<h5>Testing Crosstalk</h5>
+<ol>
+<li>Use ohmmeter to verify mic ground and PTT ground are disconnected.</li>
+<li>Use ohmmeter to verify the only two non-open pins are the mic pins.</li>
+<li>Using audio recorder, start recording. Press and release PTT several times.
+You should only hear the mechanical sound of the switch closing and not any pops or crackles.</li>
+</ol>
+
+<h4>Attach a radio connector</h4>
+Connect up the connector corresponding to your radio. You may also need a transistor or resistor added to your PTT lines, but this is specific to your radio, not to the mic.
