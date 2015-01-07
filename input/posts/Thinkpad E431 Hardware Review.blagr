@@ -1,0 +1,71 @@
+Title:Thinkpad E431 Hardware Review
+Author:rsaxvc
+CreatedDateTime:2015-01-06T21:34:26
+ModifiedDateTime:2015-01-06T21:34:26
+Tag:Thinkpad
+Tag:Lenovo
+Tag:Intel
+Tag:CDROM
+---
+<h4>The Display</h4>
+Unless the display gamut can't be calibrated out, I'm not particularly picky, but get the HD model.
+</p>
+<p>
+
+<h4>The Upgradeability</h4>
+<p>
+The upgradeability is great! You can move from a socketed low-end Sandy Bridge i3 all the way to a high
+end quad-core Ivy Bridge i7. However, the separate video chipset isn't socketed, so you're stuck with
+either what came on your motherboard or the integrated Intel integrated HD3000 or HD4000. With
+an Ivy Bridge chip, you can move from 1333MHz DDR3 to 1600MHz DDR3L. With two slots, you can seat
+between 1GB and 32GB, although 32GB seems to require and Ivy Bridge. Also, there's a dedicated M.2(NGFF)
+SSD socket for providing cache, in addition to the 2.5mm SATA 3(6gbps) port.
+</p>
+
+<h4>The Pointing Interfaces</h4>
+<p>
+The E431 provides a trackpad and IBM red-dot mouse. The red-dot mouse works exactly as expected, except
+that the mouse buttons usually located between spacebar and the trackpad are missing. This means reaching
+to the bottom of the trackpad, or leaving tap-to-click enabled.
+</p><p>
+I'm unsure what to think of the trackpad. It has both tap-to-click and depress-to-click. It reminds me of the
+early core-i macbooks, except someone forgot to disable tap-to-click. Luckily, it is highly configurable.
+</p>
+
+<h4>The CDROM</h4>
+<p>
+The CDROM is so bad it gets its own section. It starts with what I believe is some sort of nonstandard
+integrated tray. Once ejected, the tray flops around like a pancake, with at least a half-inch of slop.
+It is so loose I don't feel like I can insert a cd safely into it without holding the far end up with
+another hand.
+</p><p>
+The axle usually only engages one or two teeth. The solution here is to spin the disk, and if it scratches
+itself on the tray, you need to take it out and try again.
+</p><p>
+When running, it shakes my coffee table so hard that the my X60's LCD shakes.
+</p><p>
+Overall, optical disks will be dead once everyone has fast enough internet; I only need this one to reinstall
+windows.
+</p>
+
+<h4>Hard Drive Tray</h4>
+<p>
+Another design anomaly is that the hard disk tray is mostly clear plastic. Also, the plastic comes glued to the disk.
+</p><p>
+Also, the scant bits of metal on the hard drive tray are barely grounded by two strips of EMI cloth that appear
+to be added as an afterthought. The metal of the tray directly drags on the EMI cloth, which will likely wear it
+or the underlying glue out after a handful of insertions. <a href="http://support.lenovo.com/en/documents/pd027146">
+Lenovo even has a note about this</a>.
+</p><p>
+Finally, the difference between the 7mm disk and 9.5mm disk slot is spent with three pieces of foam. This is a neat idea,
+and the only improvement I could think of would be EMI foam to better conduct and disk heat to the metal on the other side
+of the bay. The foam also may cut down on noise, although it will be hard to replace if ever removed, although
+some disk manufacturers ship a thin matching shim with their disks that serves the same purpose.
+</p>
+
+<h4>Conclusions</h4>
+<p>
+I'm not particularly enthused with the build quality - there's a distinct lack of IBM sheet-metal making up the case - more
+like a Toshiba than my previous IBM Thinkpad. Also, the bloatware is strong with this one, but the price was right, and I
+know I can drop in a newer quad-core if it ever bogs down. Mousability is my only remaining serious concern.
+</p>
