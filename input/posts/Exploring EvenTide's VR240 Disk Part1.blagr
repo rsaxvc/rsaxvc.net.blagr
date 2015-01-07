@@ -1,0 +1,68 @@
+Title:Exploring Eventide's VR240 Filesystem, Part1
+Author:rsaxvc
+CreatedDateTime:2015-01-06T23:34:26
+ModifiedDateTime:2015-01-06T23:34:26
+Tag:Eventide
+Tag:filesystem
+Tag:VR240
+Tag:Audio
+---
+<p>
+<h4>The VR240</h4>
+Eventide has been producing and updating their 24-channel audio recorder, the VR240, for ages.
+Common use-cases would be logging support calls or recording radio traffic. Two units eventually
+made it to my home without any tapes. One of them eventually got tore down at the hackerspace.
+Luckily, these units use a large(at the time) SCSI disk as a giant FIFO to buffer the tape writes.
+I've always been curious where mine came from, but perhaps they'll actually be able to tell me.
+</p>
+
+<p>
+<h4>Disk Format</h4>
+It seems the SCSI disk inside the VR240 was never meant to be removed and placed into a desktop.
+The disk does not actually have an MBR, but is instead divided into 1KB blocks. The first two blocks appear
+to be used as headers or indexing, the rest appear to have a 32-byte header and probably contain the audio.
+The header for the data-blocks appears to be:
+<ul>
+<li>3 bytes of block-counter, increments by 4 each block.</li>
+<li>2 bytes of padding</li>
+<li>3 bytes of walking bitfield. Starts at bit0, shifts left once per block, wraps every 24 blocks.</li>
+<li>2 bytes: 0x2269</li>
+<li>2 bytes: a very slow counter. Appears to increment every 40-50 blocks?</li>
+<li>2 bytes: A few different values spotted here: 0xAA9C, 0x7FF1, 0x73D9, 0xAADF. More digging required.
+<li>6 bytes: 0x000700081418</li>
+<li>12 bytes: unknown, could be the start of audio</li>
+</ul>
+</p>
+
+<p>
+<h4>Audio Formats</h4>
+The VR240 supports three different formats. The manual describes them quite well, and there's some important bits
+of knowledge we're going to need later about the encoding in there too. Of note, independent of encoder output rate, the sampling
+rate is always 8kHz.
+<ul>
+<li>64kbps - This appears to be a raw mono 8kHz at the native ADC's 8-bit sampling.
+<li>
+32kbps - The manual mentions the DSP does some compression, but then explains that there are 4-bits per sample. This sounds
+suspiciously like analog-domain audio compression followed by quantization(or log-encoding, something like a-law or u-law).
+</li>
+<li>16kbps - Similar to 32kbps, 8kHz sampling with 2 bits per sample.</li>
+</ul>
+
+Another note from the manual: "The 8-bit samples used in the VR240 actually have a dynamic range
+equivalent to 13-bit linear samples, but the 13-bit values are especially coded into 8-bit quantities."
+86 pages in - it's G.726 u-law. So if we can organize the bytes, we should be able to snag somewhere between
+16 hours and 3 days of audio.
+</p>
+
+<p>
+<h4>Where is the Audio?</h4>
+Assuming the disk is written end-to-end, it should be possible to play it with a raw audio player by skipping the periodic headers. But, there are some variables:
+<ul>
+<li>Encoder bitrate - 64/32/16 kbps</li>
+<li>Bit-endian-ness - in 32 and 16 kbps modes, need to guess the ordering</li>
+<li>Sample signed-ness - could be signed or unsigned</li>
+<li>compander - although this should match, it should be possible to hear a distorted version with the wrong curve.</li>
+<li>Header noise/size - need to listen past the 8Hz(64kbps)/16Hz(32kbps)/32Hz(16kbps) glitch of the header playing</li>
+</ul>
+So there are 20 different ways the audio could be encoded, assuming we can guess the header size, and probably 10 of them need checking by ear. Additionally, RFC2422 states "No header information shall be included as part of the audio data.", so we're on our own as far as finding out how much audio is present per 1kB block.
+</p>
