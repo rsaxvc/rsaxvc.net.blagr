@@ -1,0 +1,36 @@
+Title:Amateur Radio Operator Map
+Author:rsaxvc
+CreatedDateTime:2015-02-12T20:44:54
+ModifiedDateTime:2015-02-12T20:44:54
+---
+<p>
+I wrote a map of amateur radio operators in the United States of America
+and related territories. <a href="http://rsaxvc.net/radiomap/opmap.html">See it here!</a>.
+</p>
+
+<p>
+Tools:
+<ul>
+	<li>
+		<a href="http://www.sqlite.org/">sqlite3</a>
+		<a href="https://docs.python.org/2/library/sqlite3.html">python bindings</a>
+		with <a href="https://www.sqlite.org/rtree.html">rtree support</a> - Rtrees are one of the family of spatial trees. Particularly, they handle range-queries on large amounts of points efficiently.
+	</li>
+	<li><a href="http://webpy.org/">web.py</a> - turn your python program into a web server!</li>
+	<li><a href="https://hpneo.github.io/gmaps/">gmaps.js</a> - This looked like a simpler introduction than the raw Google maps APIs</li>
+	<li><a href="https://pypi.python.org/pypi/geopy">geopy</a> - Geopy converts addresses into latitudes and longitudes</li>
+</ul>
+</p>
+
+<p>
+The general flow is first pull down a copy of the amateur radio section of the ULS. Extract it, and feed it into simple a sqlite3 table.
+Next, geocode all the addresses into an R-Tree(This is actually still in progress). Finally, serve them up with a web.py JSON API to generate
+a bunch of gmaps.js markers.
+</p>
+
+<p>
+Code is <a href="https://github.com/rsaxvc/opmap">available on github</a>. A major rewrite is in order to fully parse all the data available on the ULS, like licensure and expiration dates, FCC registration numbers, and other information. Additionally,
+a versioning scheme needs to be implemented so that only differences between ULS dumps will be processed. Also, geocoding the 1.2 million addresses
+will take a long time unless I use a paid service or distribute the queries. Additionally, running JSON servers on port 8080 tends to confuse
+proxy servers, so that'll probably need a more advanced deployment.
+</p>
