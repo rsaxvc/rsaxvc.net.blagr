@@ -1,0 +1,53 @@
+Title:Installing Google Earth on 64 bit Debian Jessie
+Author:rsaxvc
+CreatedDateTime:2015-02-14T21:36:51
+ModifiedDateTime:2015-02-14T21:36:51
+Tag:Google
+Tag:GoogleEarth
+Tag:Debian
+---
+<div>
+
+<div>
+<h3>Overview</h3>
+Due to the multiarch transition, a package, ia32-libs, is no longer included
+with Debian-Jessie. Google-Earth depends on this package. This post will show
+you how to remove the dependency and produce your own deb file without it.
+Interestingly, Google-Earth appears to be built in 64-bit mode, so ia32-libs
+shouldn't be needed.
+</div>
+
+<div>
+<h3>Patching</h3>
+<ol>
+<li>Pull down the latest <a href="http://www.google.com/earth/download/ge/agree.html">direct from Google.</a></li>
+<li>Extract it with "ar vx google-earth-stable_current_amd64.deb". This should produce the following files:
+	<ul>
+		<li>debian-binary</li>
+		<li>control.tar.gz</li>
+		<li>data.tar.lzma</li>
+	</ul>
+</li>
+<li>extract control.tar.gz with: "tar xvf control.tar.gz". This should unpack the following:
+	<ul>
+		<li>prerm</li>
+		<li>postinst</li>
+		<li>postrm</li>
+		<li>control</li>
+	</ul>
+</li>
+<li>Open control in an editor and remove ", ia32-libs" from the Depends:" list</li>
+<li>Repack control.tar.gz with: "tar cvf control.tar prerm postinst postrm control && gzip control.tar"</li>
+<li>Repack the deb file with "ar cr ge-noia32.deb debian-binary control.tar.gz data.tar.lzma"</li>
+<li>Install the deb file with dpkg: "dpkg --install ge-noia32.deb"</li>
+<li>Run google-earth from a command-line to make sure you aren't missing any dependencies. If launching reports an error about finding a library, you'll need to install the corresponding debian version</li>
+</ol>
+</div>
+
+<div>
+<h3>Updating</h3>
+Until google updates their package or someone adds an ia32-libs to Debian Jessie,
+you'll have to uninstall google earth, then pull down the latest, then patch it
+for each revision.
+</div>
+</div>
