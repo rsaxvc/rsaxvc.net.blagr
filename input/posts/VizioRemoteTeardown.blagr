@@ -1,0 +1,37 @@
+Title:Vizio Remote Teardown
+Author:rsaxvc
+CreatedDateTime:2015-03-31T21:46:19
+ModifiedDateTime:2015-03-31T21:46:19
+Tag:Vizio
+Tag:Television
+Tag:Teardown
+Tag:Remote
+---
+<div>
+<p>One day, my friend genpfault came over to build some model aircraft, and for various reasons we decided to teardown my television remote.</p>
+
+<p>
+The external frame consists of a front and back face, a battery door, and two button grids. The front and back faces are held together with snap clips that are easily opened with a plastic butter knife or a spudger.
+<br/>
+<a href="https://www.flickr.com/photos/40925843@N03/16802015539" title="Vizio Keyboard Remote by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8737/16802015539_22b7fe2b27_z.jpg" width="480" height="640" alt="Vizio Keyboard Remote"></a>
+</p>
+
+<p>
+Inside we find two PCBs connected with a single power cable. each PCB has its own power filtering capacitor, but as we shall see in a few photos, this is a very simple design.
+<br/>
+<a href="https://www.flickr.com/photos/40925843@N03/16780821347" title="Vizio Keyboard Remote by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7646/16780821347_3e06196449_z.jpg" width="640" height="480" alt="Vizio Keyboard Remote"></a>
+</p>
+
+<p>
+Remote PCB. I suspect this may be shared with my non-keyboard remote.
+<br/>
+<a href="https://www.flickr.com/photos/40925843@N03/16962255766" title="Vizio Keyboard Remote by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7650/16962255766_a10001a347_z.jpg" width="640" height="480" alt="Vizio Keyboard Remote"></a>
+</p>
+
+<p>
+Keyboard PCB. This circuit is entirely separate from the remote PCB, except for two wires providing power.
+<br/>
+<a href="https://www.flickr.com/photos/40925843@N03/16988199815" title="Vizio Keyboard Remote by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7634/16988199815_723b73c7cd_z.jpg" width="640" height="480" alt="Vizio Keyboard Remote"></a>
+</p>
+
+</div>
