@@ -1,0 +1,46 @@
+Title:Taking Apart the Monoprice Wireless-N Router
+Author:rsaxvc
+CreatedDateTime:2015-04-13T21:25:18
+ModifiedDateTime:2015-04-13T21:25:18
+Tag:Monoprice
+Tag:Realtek
+Tag:Teardown
+Tag:Wifi
+---
+<div>Today I take apart a Monoprice Wireless-N WiFi Router.</div>
+
+<br/>
+
+<div>Here's the packaging</div>
+<div><a href="https://www.flickr.com/photos/40925843@N03/16519683054" title="Monoprice Wireless-N Router by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7688/16519683054_61eb6cd5ac_z.jpg" width="640" height="394" alt="Monoprice Wireless-N Router"></a></div>
+
+<br/>
+
+<div>What's in the box?</div>
+<div><a href="https://www.flickr.com/photos/40925843@N03/16934717397" title="Monoprice Wireless-N Router by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7611/16934717397_14244c0dec_z.jpg" width="640" height="621" alt="Monoprice Wireless-N Router"></a></div>
+
+<br/>
+
+<div>If you flip it over, there are four screws under the feet.</div> <div></div>
+<div><a href="https://www.flickr.com/photos/40925843@N03/16934716247" title="Monoprice Wireless-N Router by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7616/16934716247_88eff8a75e_z.jpg" width="473" height="640" alt="Monoprice Wireless-N Router"></a></div>
+
+<br/>
+
+<div>After removing the screws, the rear case flips off easily - no plastic catches to be found.<div>
+<div><a href="https://www.flickr.com/photos/40925843@N03/16955924859" title="Monoprice Wireless-N Router by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7616/16955924859_c567c97cc5_z.jpg" width="640" height="480" alt="Monoprice Wireless-N Router"></a></div>
+
+<br/>
+
+<div>
+Here's the PCB. It has
+	<ul>
+		<li>RTL8196C MIPS-like microprocessor. <a href="https://forum.openwrt.org/viewtopic.php?id=31551&p=2">Some reports about it.</a></li>
+		<li><a href="http://www.realtek.com.tw/products/productsView.aspx?Langid=1&PFid=48&Level=5&Conn=4&ProdID=278">RTL8192CE WiFi Controller</a></li>
+		<li><a href="http://www.essi.com.tw/upfile/p201161515829.pdf">EON 16 megabit serial flash</a></li>
+		<li><a href="http://www.esmt.com.tw/DB/manager/upload/M12L128168A.pdf">ESMT 16 megabyte DRAM</a></li>
+	</ul>
+Seems like the console is J15, just northwest of the CPU. From pin 1, the pinout goes power, ground, serial, serial.
+</div>
+
+<div><a href="https://www.flickr.com/photos/40925843@N03/17116165366" title="Monoprice Wireless-N Router by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7627/17116165366_5b08a840f0_z.jpg" width="640" height="435" alt="Monoprice Wireless-N Router"></a></div>
+
