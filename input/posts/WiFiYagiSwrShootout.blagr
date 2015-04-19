@@ -1,0 +1,169 @@
+Title:WiFi Yagi SWR Shootout
+Author:rsaxvc
+CreatedDateTime:2015-04-19T21:08:14
+ModifiedDateTime:2015-04-19T21:08:14
+Tag:WiFi
+Tag:RigExpert
+Tag:HSMM
+Tag:IT-24
+Tag:Ham Radio
+---
+<div>
+Today I traveled down to Heritage Park. With a pond and trails, it is the nearest public space without much RFI I can use for testing antennas.
+Also, I managed to acquire quite a few cheap 2.4GHz yagi antennas from China. These
+<a href="http://www.ebay.com/sch/i.html?_from=R40&_trksid=p2050601.m570.l1311.R1.TR3.TRC1.A0.H0.Xyagi+2.4.TRS0&_nkw=2.4ghz+yagi+antenna&_sacat=0">
+can be found on eBay</a> for between 8 and 20 USD.
+
+<h3>The Setup</h3>
+<p>
+Without an anechoic chamber, I'm a little limited to how I can do my testing. The antenna under test is mounted at the end of a wooden 1x1 beam.
+The beam is mounted to a picnic table with clamps, holding the antenna 16 inches away from the table and parallel with the table.
+</p>
+
+<a href="https://www.flickr.com/photos/40925843@N03/16582410933" title="The Setup by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7620/16582410933_1c1d9ef28d_z.jpg" width="640" height="480" alt="The Setup"></a>
+
+<p>
+Measurements are provided by my RigExpert IT-24, using the python image scraper I reverse engineered earlier. The self-calibration was executed a few minutes before
+beginning the test.
+</p>
+<a href="https://www.flickr.com/photos/40925843@N03/16580177304" title="The Meter by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7656/16580177304_abaf219ce7_z.jpg" width="480" height="640" alt="The Meter"></a>
+
+<h3>The Competitors</h3>
+<p>
+I have three styles of antennas, labeled A, B, and C.
+</p>
+<a href="https://www.flickr.com/photos/40925843@N03/16580193194" title="The Competition by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8762/16580193194_5425af37fd_z.jpg" width="640" height="371" alt="The Competition"></a>
+<ul><li>
+	Type A consists of a short coax pigtail, running into a plastic enclosure with a small metal dipole. I suppose they hoped it would
+	resonate with the other elements on the boom.
+</li><li>
+	Type B consists of a longer coax pigtail, running into a cylindrical plastic housing, with a loop around the body of the antenna,
+	and some component heat-shrinked inside the loop. My assumption is that whatever components are inside the heatshrink provide an
+	<a href="http://en.wikipedia.org/wiki/Impedance_matching">impedance match</a>.</li>
+</li><li>
+	Type C consists of a longer coax pigtail, running into a cylindrical plastic housing, with a loop around the body of the antenna, but no
+	components under heatshrink.
+</li></ul>
+
+<h3>The SWR</h3>
+<p>
+<a href=http://en.wikipedia.org/wiki/Standing_wave_ratio>Standing-Wave-Ratio</a>, or SWR, is the ratio of
+either voltage(VSWR) or power(PSWR) transmitted into an antenna to that emitted.
+SWR can vary wildly between different frequencies, so the IT-24 includes a feature to plot the SWR
+of an antenna across a range, specifically between 2.3GHz and 2.6GHz, or some subsets of that range.
+</p><p>
+High SWR can come from a variety of sources, from bad cables, to poorly designed antennas,
+to poorly controlled component part tolerances, to a bird nest. Antenna design is a system
+problem that tends to affect every antenna of that design. Part to part variances tend to indicate
+production, supply, or quality-control problems. Bird nests will be an ever-present installation location hazard.
+</p><p>
+Additionally, good SWR can
+come both from the antenna efficiently transforming electrical signals to radio signals, but
+it can also come from high-loss cable, where the transmitted power is simply eaten by the
+cable before it hits the antenna.
+</p>
+
+<table border="1">
+<tr><td>Wide(2.3-2.6)</td><td>Narrow(2.4-2.5)</td><td>Antenna</td></tr>
+<tr>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17202198231" title="a1_wide by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7727/17202198231_322d4153e3_m.jpg" width="240" height="182" alt="a1_wide"></a></td>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17016626709" title="a1_narrow by rsaxvc, on Flickr"><img src="https://farm6.staticflickr.com/5461/17016626709_b1735884e8_m.jpg" width="240" height="182" alt="a1_narrow"></a></td>
+	<td>A1</td>
+</tr><tr>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17016626759" title="a2_wide by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8788/17016626759_07ede43ef2_m.jpg" width="240" height="182" alt="a2_wide"></a></td>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17016626779" title="a2_narrow by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7660/17016626779_2c26a30c68_m.jpg" width="240" height="182" alt="a2_narrow"></a></td>
+	<td>A2</td>
+</tr><tr>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17202198361" title="b1_wide by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7644/17202198361_a1924c5322_m.jpg" width="240" height="182" alt="b1_wide"></a></td>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/16580340874" title="b1_narrow by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7597/16580340874_9554eacc24_m.jpg" width="240" height="182" alt="b1_narrow"></a></td>
+	<td>B1</td>
+</tr><tr>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17201118202" title="b2_wide by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8711/17201118202_d9749141d9_m.jpg" width="240" height="182" alt="b2_wide"></a></td>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17202198461" title="b2_narrow by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7655/17202198461_609d4c7363_m.jpg" width="240" height="182" alt="b2_narrow"></a></td>
+	<td>B2</td>
+</tr><tr>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17015242890" title="c1_wide by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7653/17015242890_a538aa646e_m.jpg" width="240" height="182" alt="c1_wide"></a></td>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17176840696" title="c1_narrow by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8747/17176840696_6f423407ea_m.jpg" width="240" height="182" alt="c1_narrow"></a></td>
+	<td>C1</td>
+</tr><tr>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/16580341004" title="c2_wide by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8715/16580341004_03214626af_m.jpg" width="240" height="182" alt="c2_wide"></a></td>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/16995346027" title="c2_narrow by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8775/16995346027_a6bbfac6ba_m.jpg" width="240" height="182" alt="c2_narrow"></a></td>
+	<td>C2</td>
+</tr><tr>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17201118332" title="c3_wide by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8824/17201118332_f934fb18c8_m.jpg" width="240" height="182" alt="c3_wide"></a></td>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/16995346077" title="c3_narrow by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7619/16995346077_3587ef6199_m.jpg" width="240" height="182" alt="c3_narrow"></a></td>
+	<td>C3</td>
+</tr><tr>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17201118392" title="c4_wide by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7650/17201118392_9fcc89e664_m.jpg" width="240" height="182" alt="c4_wide"></a></td>
+	<td><a href="https://www.flickr.com/photos/40925843@N03/17015243010" title="c4_narrow by rsaxvc, on Flickr"><img src="https://farm6.staticflickr.com/5441/17015243010_947287accb_m.jpg" width="240" height="182" alt="c4_narrow"></a></td>
+	<td>C4</td>
+</tr>
+</table>
+
+<h3>The Results</h3>
+...are surprising. The three designs vary wildly, but none are very stable over frequency.
+<h4>Type A</h4>
+<p>
+Ick.
+</p><p>
+This is just not a good antenna - the SWR meter was pegged, so this antenna will
+always reflect at least 80 percent of the signal instead of transmitting it to the air.
+This also means it will receive less than 20 percent of any signal. The IT-24 can measure
+SWR up to 10:1, but this antenna is so bad I won't even try. I do notice that the coax is
+secured with a zip-tie, that seems to crush the coax. If there coax were crushed to the
+point where the shield and center conductor touched, it would certainly return a bad match,
+but anywhere in-between good coax and crushed coax will likely increase SWR somewhat.
+</p><p>
+Anyhow, these are garbage and will be discarded.
+</p>
+
+<h4>Type B</h4>
+<p>
+We have a winner, but I think they could be better.
+</p><p>
+Antennas B1 and B2 both have 2 to 1 SWR or better across the WiFi range.
+</p><p>
+However, averaged over frequency, B1 is noticeably better than B2. Good quality antennas will perform similarly in similar circumstances.
+</p><p>
+Also, the frequencies with low SWR are different between the two samples, which indicates some tolerance or variability in the design, or perhaps in the test.
+</p><p>
+I am very curious what magic lurks inside the heatshrink, although with only two samples, it is unlikely one will be sacrificed.
+</p>
+
+<h4>Type C</h4>
+<p>
+Welcome to funkytown. These antennas are odd.
+</p><p>
+First, the cable is 75 ohm, but the IT-24 is a 50 ohm device. It is possible
+this was a design choice, as 75 ohm cable tends to have lower loss than the equivalent 50 ohm cable,
+and if the cable is long enough, you can come out ahead by eating a single mismatch loss, but saving
+on the loss of the cable itself. It is also possible 75 ohm was chosen because it tends to be cheaper.
+</p><p>
+Next, we see high variance in SWR over frequency. This isn't necessarily bad, as long as the
+high SWR frequencies are outside of our operating range. But in this case, they do impact
+the 2.4GHz band.
+</p><p>
+And, just like the Type B antennas, the variance in SWR is not stable from one antenna
+to another. But unlike the Type B, where frequency varied SWR between 1 to 1 and 2 to 1, the
+Type C varies between over 5 to 1 and 1 to 1. This means that each of the four Type C antennas
+tested will have very different efficiencies on different channels of WiFi.
+</p>
+
+<h3>Conclusions</h3>
+<p>
+The three designs tested have very different operating characteristics. Although
+the eight antennas tested are not enough to be statistically significant, I will
+likely select Type B for future usage and testing. Type A will be discarded, and Type C
+may be used based on the channel needed.
+</p>
+
+<h3>Future Work</h3>
+<p>
+The next thing to test is how well each antenna can receive signals from a known test transmitter.
+Since I don't have a calibrated antenna, all tests would be relative to the gain of the antenna
+used on the transmitter and would have no use outside of comparing the yagis to each other. However,
+there are storms approaching, so there will not be time to do this test today.
+</p>
+</div>
+
+
