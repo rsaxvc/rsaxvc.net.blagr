@@ -43,6 +43,7 @@ is a small antenna. The rest of the PCB is covered by the frame.</p>
 	<li>CDBC C28 ceramic discriminator</li>
 	<li>4 pin header going to the main PCB</li>
 	<li>USB mini connector although it is not routed for USB</li>
+	<li>ta31149 FSK detector</li>
 </ul>
 With the above parts list, this has got to be our radio.
 
