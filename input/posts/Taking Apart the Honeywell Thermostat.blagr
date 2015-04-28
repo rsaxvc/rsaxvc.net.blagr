@@ -1,0 +1,74 @@
+Title:Taking Apart the Honeywell Thermostat
+Author:rsaxvc
+CreatedDateTime:2015-04-27T21:46:19
+ModifiedDateTime:2015-04-27T21:46:19
+Tag:Atmel
+Tag:Atmega
+Tag:KCPL
+Tag:Honeywell
+---
+<div>
+
+<h3>I have a thermostat</h3>
+<p>It was made by Honeywell, and it came with my house. It is also in daily service without
+a hot spare, so I have been waiting since last fall to do this teardown.</p>
+
+<h3>What is an energy optimizer?</h3>
+<p>My electricity provider <a href="http://www.kcpl.com/save-energy-and-money/for-home/programmable-thermostat/mo/programmable-thermostat-instruction-guide">
+offers a sweet deal where they give you a free programmable thermostat</a>,
+in exchange for their gentle adjustment of your temperature during peak usage.
+This implies some sort of communication link between my house and their systems.</p>
+
+<h3>What is inside?</h3>
+<h4>One assembled thermostat, front</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/17109367359" title="Honeywell Thermostat Teardown by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8708/17109367359_511f3866b7_z.jpg" width="640" height="500" alt="Honeywell Thermostat Teardown"></a>
+
+<h4>One assembled thermostat, back</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/17269625816" title="Honeywell Thermostat Teardown by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7725/17269625816_e561e9bfcc_z.jpg" width="640" height="475" alt="Honeywell Thermostat Teardown"></a>
+<p>We can see three subsection of the device. In the center is the umbilical to the home. On the left
+is a small antenna. The rest of the PCB is covered by the frame.</p>
+
+<h4>What is under panel number one?</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/17108017010" title="Honeywell Thermostat Teardown by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8751/17108017010_12852ebc95_z.jpg" width="488" height="640" alt="Honeywell Thermostat Teardown"></a>
+<p>Under a pair of plastic clips we find a small PCB fitted to the main PCB</p>
+
+<h4>What could it be?</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/17295081591" title="Honeywell Thermostat Teardown by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7719/17295081591_ce5526e2ac_z.jpg" width="640" height="451" alt="Honeywell Thermostat Teardown"></a>
+<p>Interestingly, this appears to be the radio section of the device. We find
+<ul>
+	<li>at least four crystals or oscillators</li>
+	<li>a seemingly unused 10 pin header, possibly for initial programming</li>
+	<li><a href="http://www.st.com/web/catalog/mmc/FM76/CL1276/SC112/PF63759">ST M24256 EEPROM</a></li>
+	<li>LTWC455E six-element ceramic filter</li>
+	<li>CDBC C28 ceramic discriminator</li>
+	<li>4 pin header going to the main PCB</li>
+	<li>USB mini connector although it is not routed for USB</li>
+</ul>
+With the above parts list, this has got to be our radio.
+
+<h4>Where does it go?</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/16675318423" title="Honeywell Thermostat Teardown by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7688/16675318423_5520a9edcf_z.jpg" width="480" height="640" alt="Honeywell Thermostat Teardown"></a>
+<p>Simple enough.</p>
+
+<h4>Seven more clips to go</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/17295567195" title="Honeywell Thermostat Teardown by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7711/17295567195_6c356fe2cd_z.jpg" width="480" height="640" alt="Honeywell Thermostat Teardown"></a>
+<p>Five clips hold the front bezel on.</p>
+
+<h4>Last two clips unclipped</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/17295566755" title="Honeywell Thermostat Teardown by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7716/17295566755_27ff56e7c0_z.jpg" width="640" height="480" alt="Honeywell Thermostat Teardown"></a>
+<p>Here is the full rear PCB</p>
+
+<h4>Anything under the LCD?</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/17108006730" title="Honeywell Thermostat Teardown by rsaxvc, on Flickr"><img src="https://farm9.staticflickr.com/8813/17108006730_519421ce97_z.jpg" width="640" height="454" alt="Honeywell Thermostat Teardown"></a>
+<p>No, not really, just a light-spreader.</p>
+<a href="https://www.flickr.com/photos/40925843@N03/17295564185" title="Back of the LCD by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7724/17295564185_51ed71f68e_z.jpg" width="480" height="640" alt="Back of the LCD"></a>
+
+<h4>Will it run without the radio?</h4>
+<a href="https://www.flickr.com/photos/40925843@N03/17088112647" title="Installed by rsaxvc, on Flickr"><img src="https://farm8.staticflickr.com/7690/17088112647_d93c3d408c_z.jpg" width="640" height="417" alt="Installed"></a>
+<p>Yes, yes it does.</p>
+
+<h3>What is next?</h3>
+<p>Next would definitely be tracing out the connectors on the radio PCB. Honeywell also makes a WiFi
+version of this unit, which I suspect is the same but with a different radio PCB. The four-pin connector
+appears to carry power and ground, leaving two signals for a data bus.</p>
+</div>
