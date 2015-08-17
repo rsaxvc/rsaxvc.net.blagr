@@ -1,0 +1,26 @@
+Title:Ethanol is Free
+Author:rsaxvc
+CreatedDateTime:2015-08-17T00:13:50
+ModifiedDateTime:2015-08-17T00:15:28
+Tag:Gasoline
+Tag:Ethanol
+Tag:Nebraska
+---
+<div>
+<p>This weekend, while traveling through Nebraska, I found an interesting anomaly.
+At a Caseys filling station, both E10($2.60/gallon) and standard($3.00/gallon) were available. E10 is a blend of 10% ethanon with 90% gasoline.
+While calculating the cost of ethanol(denoted e) by removing the cost of gasoline(denoted g) from E10, an interesting thing happens.
+We can model the costs like so:
+<ul>
+	<li> g = 3.00 </li>
+	<li> .10 * e + .90 * g = 2.60 </li>
+</ul>
+Solving for e
+<ul>
+	<li> .10 * e + 2.70 = 2.60 </li>
+	<li> .10 * e = -.10 </li>
+	<li> e = -1.00 </li>
+</ul>
+This means that the ethanol in E10 must cost about $-1.00/gallon compared to standard gasoline.
+</p>
+</div>
