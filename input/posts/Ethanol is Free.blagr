@@ -8,7 +8,7 @@ Tag:Nebraska
 ---
 <div>
 <p>This weekend, while traveling through Nebraska, I found an interesting anomaly.
-At a Caseys filling station, both E10($2.60/gallon) and standard($3.00/gallon) were available. E10 is a blend of 10% ethanon with 90% gasoline.
+At a Caseys filling station, both E10($2.60/gallon) and standard($3.00/gallon) were available. E10 is a blend of 10% ethanol with 90% gasoline.
 While calculating the cost of ethanol(denoted e) by removing the cost of gasoline(denoted g) from E10, an interesting thing happens.
 We can model the costs like so:
 <ul>
