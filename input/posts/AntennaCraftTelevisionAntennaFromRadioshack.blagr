@@ -1,0 +1,60 @@
+Title:AntennaCraft Television Antenna Teardown
+Author:rsaxvc
+CreatedDateTime:2015-08-29T21:46:19
+ModifiedDateTime:2015-08-29T21:46:19
+Tag:Television
+Tag:Analog
+Tag:Amplifier
+Tag:Antenna
+Tag:Teardown
+---
+<div>
+	<h2>A Short Story</h2>
+	<p>
+	Several RadioShack stores were closing earlier this year. One store
+	had paper tokens describing an antenna, on sale for about ten dollars,
+	that could be purchased by taking the paper token to the cash register.
+	After purchasing, the cashier would exchange the token for the antenna.
+	Once the cashier returned from the back, I came to realize this antenna
+	is massive, nearly two feet in diameter, and not something that would sit
+	nicely behind my television. But, all sales are final at a store closing
+	sale.
+	</p>
+
+	<h2>Packaging</h2>
+	<p>
+	The antenna comes in a large, flat box. Inside you will find the antenna, a
+	short run of 75 ohm coax, a DC wall adapter, and a power injector.
+	</p>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/20796280680/in/dateposted-public/" title="TV antenna on sale from RadioShack"><img src="https://farm6.staticflickr.com/5787/20796280680_0c2cf5f6a7_n.jpg" width="320" height="307" alt="TV antenna on sale from RadioShack"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/20363286063/in/dateposted-public/" title="TV antenna on sale from RadioShack"><img src="https://farm1.staticflickr.com/698/20363286063_fe4f2c2cae_n.jpg" width="240" height="320" alt="TV antenna on sale from RadioShack"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+
+	<h2>Inside the Antenna</h2>
+	<p>
+	Twelve plastic-tapped screws hold the front and back of the antenna togther.
+	Some of the screws also hold antenna elements together, which makes reassembly
+	take a big of alignment. At this stage, removing the nut from the coax port
+	is not required. The antenna elements almost appear to form a quad-helix,
+	even though each elements is a bubble-lettered T.
+	</p>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/20991831161/in/dateposted-public/" title="TV antenna on sale from RadioShack"><img src="https://farm1.staticflickr.com/722/20991831161_0f2d8f884e_n.jpg" width="240" height="320" alt="TV antenna on sale from RadioShack"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/20991841621/in/dateposted-public/" title="TV antenna on sale from RadioShack"><img src="https://farm6.staticflickr.com/5805/20991841621_47e42e701a_n.jpg" width="240" height="320" alt="TV antenna on sale from RadioShack"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/20796428638/in/dateposted-public/" title="TV antenna on sale from RadioShack"><img src="https://farm1.staticflickr.com/615/20796428638_d47abd21ea_n.jpg" width="320" height="240" alt="TV antenna on sale from RadioShack"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+	
+
+	<h2>RF Amplifier</h2>
+	<p>
+	To remove the RF amplifier, the coax port nut most first be removed.
+	This single PCB is responsible for wideband amplification. Power is supplied
+	through the coax by a DC wall brick and power injector, runs the amplifier
+	which pushes the boosted RF down the cable, and then past the power injector
+	towards the television. Additionally, the unpopulated 5-pin port appears to
+	support unbalanced coax to unbalanced coax amplification, although this
+	configuration feeds in the balanced antenna directly.
+	</p>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/20991831521/in/dateposted-public/" title="TV antenna on sale from RadioShack"><img src="https://farm1.staticflickr.com/691/20991831521_53822111b3_n.jpg" width="240" height="320" alt="TV antenna on sale from RadioShack"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/20984366205/in/dateposted-public/" title="TV antenna on sale from RadioShack"><img src="https://farm6.staticflickr.com/5755/20984366205_9bcc3a83d4_n.jpg" width="240" height="320" alt="TV antenna on sale from RadioShack"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+
+</div>
+
+
