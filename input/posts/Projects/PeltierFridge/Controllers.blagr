@@ -1,0 +1,136 @@
+Title:PeltierControllerOverview
+Author:rsaxvc
+Tags: Peltier, Fridge, PWM, SMPS
+CreatedDateTime:2016-01-03T20:44:54
+ModifiedDateTime:2016-01-03T20:44:54
+---
+
+<div>
+	<h2>Introduction To Peltier Controllers</h2>
+	Peltier coolers have some interesting operating characteristics.
+	For controllers, there's a tradeoff between efficiency,
+	cost, simplicity and lifetime.
+
+	<h2>Tradeoffs</h2>
+
+	<h3>Peltier Self-heating</h3>
+	Outside of the Peltier effect, these devices heat themselves according to
+	I<sup>2</sup>R, or current-squared time effective-resistance - the same as
+	the power equation of a resistor. However, cooling is linearly related
+	to current.
+
+	<h3>Thermal Expansion</h3>
+	As peltier junctions heat or cool, the hot side expands and the
+	cold side contracts. This <a href=https://en.wikipedia.org/wiki/Thermal_expansion">
+	thermal expansion</a> creates mechanical stress, which will eventually destroy the device.
+
+	<h2>Design Guidelines</h2>
+	<h3>Overdriving is inefficient</h3>
+	The ratio of useful work to wasted self-heat is improved if the Peltier
+	is driven close to the target voltage, rather than toggled between max
+	cooling and off.
+	<h3>Minimize heat/cool cycles</h3>
+	Each peltier has a limited number of heat/cool cycles before mechanical failure.
+
+	<h2>Existing Controller Designs</h2>
+	<h3>Overview</h3>
+	<table border="1">
+		<tr>
+			<td>Control System</td>
+			<td>Lifetime</td>
+			<td>Complexity</td>
+			<td>Cost</td>
+			<td>Efficiency Limiter</td>
+		</tr><tr>
+			<td>Bang-Bang</td>
+			<td>Shorter, due to thermal stress.</td>
+			<td>Simple</td>
+			<td>Cheap</td>
+			<td>Peltier Self Heating</td>
+		</tr><tr>
+			<td>Linear-Regulator</td>
+			<td>Long</td>
+			<td>Medium</td>
+			<td>Medium</td>
+			<td>Regulator efficiency</td>
+		</tr><tr>
+			<td>PWM</td>
+			<td>Long, if high enough frequency</td>
+			<td>Simple</td>
+			<td>Medium</td>
+			<td>Peltier Self Heating</td>
+		</tr><tr>
+			<td>DC-DC</td>
+			<td>Long</td>
+			<td>High</td>
+			<td>High</td>
+			<td>Regulator efficiency</td>
+		</tr>
+	</table>
+	<h3><a href="https://en.wikipedia.org/wiki/Bang%E2%80%93bang_control">Bang-Bang</a></h3>
+	A <a href="http://www.newegg.com/Product/Product.aspx?Item=9SIA4391EA6699"bang-bang thermostat</a> is a simple controller consisting of some threshold
+	triggers and bit of <a href="https://en.wikipedia.org/wiki/Hysteresis">hysteresis</a> between them.
+	Below a certain temperature, one state is triggered. Above another
+	temperature, a different state is triggered. This hysteresis prevents
+	overly rapid on-and-off cycling of the peltier, but when engaged, the
+	controller is running the peltiers faster than needed, and wasting power.
+
+	<h3><a href="https://en.wikipedia.org/wiki/Pulse-width_modulation">Pulse-Width Modulation(PWM)</a></h3>
+	A PWM controller is related to a bang-bang, but operates on
+	a much higher frequency, so that it can emulate an analog wave.
+	The ratio of time on to time off over a period of time gives
+	you the average voltage. However, these designs still tend
+	to give the Peltier a varying voltage, and although thermal stresses are
+	minimized as the frequency increases, filtering is needed on the
+	output to minimize self-heating of the peltier junction.
+
+	<h3><a href="https://en.wikipedia.org/wiki/Voltage_regulator">Linear Regulator</a></h3>
+	<p>
+	A linear regulator is useful to convert from a 12-volt supply to a lower
+	output, varying according to how much heating or cooling is needed.
+	</p><p>
+	The peltier voltage is controlled by a comparator that scales the
+	output acccording to the difference between the target temperature
+	and the current temperature, and that difference fed to a transistor
+	that limits the current through the peltier.
+	</p><p>
+	The lower voltage drives the Peltier efficiently, at the cost
+	of the regulator's efficiency,	which is directly related to
+	the difference from the supply voltage to the output voltage
+	(a 12v->3v has ~75% loss, a 12v->9v has ~25% loss).
+	</p>
+	<h3><a href="https://en.wikipedia.org/wiki/DC-to-DC_converter">DC-DC Controllers</a></h3>
+	The highest efficiency, but also most complex design, a DC-DC converter
+	is used to produce an output voltage according to the amount required
+	by a feedback circuit. This requires all the complexity of the linear
+	regulator, except that the output transistor is replaced with a
+	switched-mode power-supply(SMPS). One
+	<a href="http://www.ti.com/lit/ds/symlink/lm2596.pdf">
+	commonly available SMPS chip</a> has an efficiency ranging
+	from 67% to 93%, depending on input voltage, output voltage, and
+	output current.
+
+	<h2>Efficiencies</h2>
+	<p>
+	Modeling a 1 Ohm Peltier(to make the math simple) with a 12V nominal
+	supply, and skipping over things like SMPS quiescent current,
+	relay driver current, and fully-on transistor resistance:
+	</p><p><table border="1">
+	<tr><td>Controller\Load</td><td>33%(4A Eq)</td><td>66%(8A Eq)</td><td>100%(12A Eq)</td><td>Loss Location</td></tr>
+	<tr><td>BangBang</td><td>33%</td><td>66%</td><td>100%</td><td>Peltier</td></tr>
+	<tr><td>PWM</tb><td>>33%</td><td>>66%</td><td>100%</td><td>Peltier</td></tr>
+	<tr><td>Linear</td><td>33%</td><td>66%</td><td>100%</td><td>Transistor</td></tr>
+	<tr><td>SMPS</td><td>76%</td><td>87%</td><td>100%</td><td>DCDC</td></tr>
+	</table></p><p>
+	By increasing the PWM frequency and filtering the output, it may be
+	possible to get somewhere between PWM and SMPS efficiency, as the filter
+	will smear the voltages from 12 and 0 to maybe 2 and 6 for a 4 amp
+	average load, but the 6 amp peaks are still less efficient than SMPS.
+	</p><p>
+	Although the linear regulator has the same efficiency as the BangBang,
+	we can easily improve the design by moving the transistor heatsink as
+	far as possible from the Peltiers - with the BangBang and PWM, we are
+	heating the cooling circuits, but with a Linear we can move that waste
+	away from the fridge.
+	</p>
+</div>

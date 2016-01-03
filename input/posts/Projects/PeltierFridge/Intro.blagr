@@ -1,0 +1,42 @@
+Title:PeltierFridgeIntro
+Author:rsaxvc
+Tags: Peltier, Fridge
+CreatedDateTime:2016-01-03T16:44:54
+ModifiedDateTime:2016-01-03T16:44:54
+---
+
+<div>
+	<h2>Intro</h2>
+	My friend Jeff had a fridge. It broke. Now I have a broken fridge.
+
+	<h2>Peltiers</h2>
+	This is a peltier fridge. Meaning it uses <a href="https://en.wikipedia.org/wiki/Thermoelectric_effect"/>
+	the thermoelectric effect</a> to <a href="https://en.wikipedia.org/wiki/Thermoelectric_cooling">
+	to cool</a>. We will get into driving Peltier junctions later.
+
+	<h2>Fridge Design Overview</h2>
+	The basic design is an insulated box, with one or more cooling units
+	(this one has two), driven	by a control board. The cooling units
+	consist of a small heatsink and fan on the inside of the box,
+	a large heatsink and fan on the outside of the box, and a
+	Peltier junction between them. The control board converts
+	utility power, commonly at 100 to 240 volts AC, to DC voltage
+	to drive the Peltiers.
+
+	<h2>Brokenness</h2>
+	Peltier fridges can fail in a few different ways.
+	<ul>
+		<li>Fans can jam with dust - this prevents removing heat from the Peltier junctions</li>
+		<li>Peltier junctions can fail, commonly from <a href="https://en.wikipedia.org/wiki/Thermal_expansion">
+			thermal stress</a></li>
+		<li>Control board can wear out</li>
+	</ul>
+	In this case, the control board produces 12V for the fans, but
+	no longer converts the 12V down to drive the Peltiers, so the control board
+	is bad.
+
+	<h2>Fixing</h2>
+	A new control board is required. I'll likely be moving to a simple
+	Bang-Bang controller, although more advanced and efficient designs
+	are available.
+</div>
