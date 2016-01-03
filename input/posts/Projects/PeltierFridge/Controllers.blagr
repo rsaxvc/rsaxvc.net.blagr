@@ -136,4 +136,13 @@ ModifiedDateTime:2016-01-03T20:44:54
 	heating the cooling circuits, but with a Linear we can move that waste
 	away from the fridge.
 	</p>
+
+	<h2>Current Design</h2>
+	The current design uses a differential op-amp to compare the target
+	temparture to the current temperature. That difference is fed as the
+	input to a PWM controller, which then fires a giant transistor or FET,
+	and the output then drives the Peltiers. However, there's quite a bit
+	of filters on the PCB, so it likely gets better efficiency than a
+	base PWM design. Since it is currently not operational, and I will
+	not be fixing it, I am unable to measure the output voltage waveform.
 </div>
