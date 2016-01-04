@@ -10,9 +10,12 @@ ModifiedDateTime:2016-01-03T20:44:54
 
 <div>
 	<h2>Introduction To Peltier Controllers</h2>
-	Peltier coolers have some interesting operating characteristics.
-	For controllers, there's a tradeoff between efficiency,
-	cost, simplicity and lifetime.
+	A Peltier controller's job is to push electrical current through
+	a Peltier junction(which acts as a heat pump), in order to achieve
+	a specific temperature on one side of the Peltier.
+
+	Peltier coolers have some interesting operating characteristics, so
+	for controllers, there's a tradeoff between efficiency, cost, simplicity and lifetime.
 
 	<h2>Tradeoffs</h2>
 
