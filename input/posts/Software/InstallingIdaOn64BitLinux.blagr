@@ -1,0 +1,20 @@
+Title:IDA on 64-bit Debian Dependencies 
+Author:rsaxvc
+CreatedDateTime:2016-01-04T20:33:40
+ModifiedDateTime:2016-01-04T20:33:40
+Tag:Linux
+Tag:AMD64
+Tag:IDA
+---
+<div>
+	Dependencies required for running 32-bit <a href="https://www.hex-rays.com/products/ida/6.8/">IDA6.8</a> on Debian Stretch:
+	<ul>
+	<li>libxext6</li>
+	<li>libfontconfig1</li>
+	<li>libxrender1</li>
+	<li>libsm6</li>
+	<li>libfreetype6</li>
+	<li>libglib2.0-0</li>
+	</ul>
+	If using AMD64, append &quot;:i386&quot; to each package name after enabling <a href="https://wiki.debian.org/Multiarch/HOWTO">multiarch support</a>.
+</div>
