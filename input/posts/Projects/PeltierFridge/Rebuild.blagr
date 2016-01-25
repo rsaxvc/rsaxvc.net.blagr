@@ -1,0 +1,66 @@
+Title:PeltierFridgeWorking
+Author:rsaxvc
+Tag:Peltier
+Tag:Fridge
+CreatedDateTime:2016-01-24T18:44:54
+ModifiedDateTime:2016-01-24T18:44:54
+---
+
+<div>
+	<h2>Rationale</h2>
+	<p>
+	By converting from a standup to a chest configuration, I hoped
+	to stop losing so much cold air every time the door opened.
+	Since I needed to pull the cooling units to replace them anyways,
+	it seemed easy enough to do it all in one go. And, since I want
+	to run the fridge direct from 12 volts, I tossed the broken control board.
+	<br/>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24483659172/in/album-72157661584430773/" title="Peltier chest fridge"><img src="https://farm2.staticflickr.com/1651/24483659172_64b46e0405.jpg" width="375" height="500" alt="Peltier chest fridge"></a>
+	</p>
+
+	<h2>Heatsink Positioning</h2>
+	<p>
+	In the current iteration, the heatsinks are mounted to the door.
+	While I belive this the most efficient location, the usability
+	is not ideal, as there are fans spinning on what could instead
+	be a usable surface. If I do this again, they will move to the
+	top of the back wall.
+	</p>
+
+	<h2>Additional Insulation</h2>
+	<p>
+	I added an inch of foam insulation to the back-now-bottom of the
+	inside of the fridge and filled the space behind it with insulating
+	foam. Finally, some silicone seals it in.
+	<br/>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24591981675/in/album-72157661584430773/" title="2016-01-24_05-21-55"><img src="https://farm2.staticflickr.com/1653/24591981675_93c28ffc13.jpg" width="500" height="375" alt="2016-01-24_05-21-55"></a>
+	</p><p>
+	The exterior received the same treatment, but with two layers,
+	as I had some remaining space.<br/>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24591992025/in/album-72157661584430773/" title="2016-01-24_05-22-35"><img src="https://farm2.staticflickr.com/1515/24591992025_18a4fb9c29.jpg" width="375" height="500" alt="2016-01-24_05-22-35"></a>
+	</p>
+
+	<h2>Door Gasket Installation</h2>
+	<p>
+	Originally I wanted to move the door gasket from the door side
+	to the bucket side, but after doing so, there were clearance problems
+	with the hinges, so I had to move it back.<br/>
+	<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24591975945/in/album-72157661584430773/" title="2016-01-24_05-21-40"><img src="https://farm2.staticflickr.com/1707/24591975945_ac576ba536.jpg" width="500" height="375" alt="2016-01-24_05-21-40"></a>
+	</p>
+
+	<h2>Performance</h2>
+	<p>
+	Over a few hours, the fridge reached 37 Fahrenheit(2.8 Celsius),
+	and seemed to be holding well. Opening and closing the door did
+	not trigger a large loss of cooling, which is what I was going for.
+	</p>
+
+	<h2>Future thoughts</h2>
+	<ul>
+		<li>Usability-wise, the heatsinks should be on the top of the rear wall instead of on the door</li>
+		<li>Peltiers tend to be less efficient than compression coolers for the sorts of temperatures I want to hit. It may be better to buy a compression mini-fridge and convert to a 12-volt compressor.</li>
+		<li>Running about 9 amps from my motorola power supply makes it very hot, but does not quite blow the mains fuse</li>
+		<li>An extra layer of insulation around the outside might help as well</li>
+		<li>Might want to move to 4 peltiers in a 2x2 configuration. Peltiers in series can reach lower temperatures, but in parallel can cool faster. Current configuration is 2x parallel.</li>
+	</ul>
+</div>
