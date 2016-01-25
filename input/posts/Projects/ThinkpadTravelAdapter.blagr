@@ -1,0 +1,102 @@
+Title:ThinkPadTravelAdapter
+Author:rsaxvc
+CreatedDateTime:2016-01-24T20:44:54
+ModifiedDateTime:2016-01-24T20:44:54
+Tag:ThinkPad
+Tag:IBM
+Tag:Lenovo
+Tag:DCDC
+Tag:BoostConverter
+---
+
+<h2>Problem</h2>
+<p>
+ThinkPads come with
+an adapter that converts 100VAC-240VAC to 20VDC, but the
+<a href="http://www.amazon.com/Lenovo-Ultraslim-Combo-Adapter-41R4493/dp/B002VY6NRM">
+ThinkPad travel adapter</a> is $115. Additionally, I
+would like to be able to hardwire my supply instead of using a
+cigarette lighter adapter.
+</p>
+
+<h2>Design</h2>
+<p>
+To charge a ThinkPad from a 12+/-3VDC, a converter is needed
+to generate the 20V required by the ThinkPad. Recently,
+mass produced modules from China have become available, so
+it is no longer necessary to design and build a PCB for most
+DCDC conversion applications. In my case, I can use a 150W
+DCDC converter kit, with some wiring to specify that the adapter
+can supply 90W.
+</p>
+
+<h2>Wattage Identification Table</h2>
+<p>
+IBM/Lenovo uses a third pin located in the center of the barrel
+connector to indicate how much power can be supplied. This table
+can be found at
+<a href="http://www.thinkwiki.org/wiki/Power_Connector#Signal_Pin">
+ThinkWiki</a>. This is much simpler than
+<a href="http://hackaday.com/2014/03/03/hacking-dell-laptop-charger-identification/">
+the Dell system</a>.
+<table border="1">
+<tr><td>Power Rating</td><td>Resistance to Ground</td></tr>
+<tr><td>65W</td><td>10 kOhm</td></tr>
+<tr><td>90W</td><td>No Connect</td></tr>
+<tr><td>135W</td><td>0 Ohm</td></tr>
+<tr><td>170W</td><td>1.5 kOhm</td></tr>
+</table>
+</p>
+
+<h2>Parts List</h2>
+<ul>
+	<li><a href="http://www.amazon.com/dp/B001JT3O0O/">Fuxed Cigaretta Lighter Adpater - $5.63</a></li>
+	<li><a href="http://www.amazon.com/dp/B00V9YB5M8/ref=sr_ph?ie=UTF8&qid=1453696030&sr=1">150W Boost Converter - $7.28</a></li>
+	<li><a href="http://www.ebay.com/itm/DC-Power-Tip-Plug-Connector-Cord-Cable-For-IBM-Lenovo-ThinkPad-T60-T61-Z61t-R61-/261025753043?hash=item3cc658e7d3:g:blsAAOxyY3ZRw-CL">Thinkpad DC Plug - $4.80</a></li>
+</ul>
+
+<h2>Assembly</h2>
+<ol>
+<li>Connect Supply-Side(Cigarette Lighter Adapter or hardwiring).</li>
+<li>Adjustments
+	<ol>
+	<li>Attach a voltage meter to the output terminals of the converter.</li>
+	<li>Energize the supply-side and note the voltage.</li>
+	<li>Slowly turn the potentiometer until the output voltage is 20VDC.</li>
+	</ol>
+</li>
+<li>Connect Output-Side(ThinkPad connector).</li>
+<li>Preflight
+	<ol>
+	<li>Make sure laptop is disconnected.</li>
+	<li>Energize adapter with 12V supply.</li>
+	<li>Measure 20VDC on inner shield to outer shield of ThinkPad connector.</li>
+	<li>Measure 0VDC on center pin to outer shield of ThinkPad connector.</li>
+	</ol>
+</li>
+</ol>
+
+<h2>Completed</h2>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24515053351/in/dateposted-public/" title="Thinkpad travel adapter."><img src="https://farm2.staticflickr.com/1559/24515053351_663c3ed96c_b.jpg" width="768" height="1024" alt="Thinkpad travel adapter."></a>
+
+<h2>Design Notes for Derivatives</h2>
+<p>
+<h3>Power Capacity</h3>
+My x220 only needs 65W. However, the 150W converter is a standard part,
+and smaller converters were not any smaller or cheaper. The converter
+could supply any of the 65W/90W/135W, however to save a little money,
+I ordered a two-pin power cable instead of a three-pin. With a two-pin,
+I was not sure if the signal pin would be grounded or open, but in my
+case it was open, so the supply registers as 90W. If 135W is required,
+use a three-pin power cable so that the signal pin can be grounded. If
+170W is required, the next step up in converter modules
+<a href=http://www.amazon.com/dp/B00E8D7XYG">is 600W</a>.
+</p><p>
+<h3>Converter Build Quality</h3>
+While listed as a 150W part, one of the transistors on mine is soldered
+in slopily, leading to poor heatsink contact. I plan to fix this, but
+until then I wouldn't expect the converter module to be able to hit
+the rated wattage. Also, DROK makes
+<a href="http://www.amazon.com/dp/B00LJXGHC2">a slightly more
+expensived fused model</a>.
+</p>
