@@ -1,0 +1,123 @@
+Title:Graphical Analysis of Collision Rates of Various CRCs
+Author:rsaxvc
+CreatedDateTime:2016-02-07T22:10:52
+ModifiedDateTime:2016-02-07T22:10:52
+Tag:Checksum
+Tag:Adler32
+Tag:CRC16
+Tag:CRC32
+Tag:CRC
+Tag:Math
+---
+
+<h3>Introduction</h3>
+<p>CRCs, or Cyclic-Redundancy-Check, are a simple sort of hash
+function commonly used to detect accidental changes in data.
+Recently, I took a few English-language word-lists,
+and plotted the collision rates of various CRC and
+related checksum algorithms. Wikipedia lists 48 different
+CRCs, but this graph will show collision rates of several 16-bit
+functions and two 32-bit functions.
+</p>
+
+<h3>Purpose of CRCs</h3>
+CRCs are commonly used for two purposes. They are often
+used as a redundant(data added without information) few bytes
+added to a packet to evaluate integrity, but they can also
+be used as a hash function to give a fixed-length integer
+value as a summary or index for various-length inputs. Today
+we will look at them purely as hash functions.
+
+<h3>Data Set</h3>
+For today, we will be using a combination of two
+wordlists, with repetitions filtered out. The file
+is 3904690 bytes long with 374009 words. The average
+word is 9.4 letters long.
+
+One weakness in this dataset is the lack of long
+inputs - word lists contain many short records but some
+functions perform poorly on short records and require a
+certain minimum input before performing well.
+
+<h3>How to read the graph</h3>
+<p>
+On this graph, collisions are binned into groups. All collisions
+over the file where exactly three items collided into the same hash
+slot, are drawn over bin three.
+</p><p>
+On the X-Axis this graph shows the number of records per collision,
+and on the Y-Axis it shows how many records were in each collision.
+So, the number of records in X-collision slot 1 represents the
+number of records without any collisions, and the number of records
+in slot 46 shows that there were 46 records in that collision slot
+for CRC16SICK.
+</p><p>
+Finally, the Y-Axis of this graph is scaled on a log-curve. This allows
+us to plot CRC32, which has very few collisions, on the same graph as
+CRC16SICK, which has many collisions, and make sense of it. On  a linear
+graph, CRC32 would blow everything else out of the scale.
+</p><p>
+It is also possible to redraw this graph plotting on the Y-Axis the
+number of times each collision bin was counted - for the same dataset,
+that graph would have a Y-Axis value of one in slot 46. But, this graph
+has the advantage that if rendered on a linear graph, the area under each
+curve would be the same.
+</p>
+
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24580188830/in/dateposted-public/" title="CRC Collision Rates"><img src="https://farm2.staticflickr.com/1537/24580188830_f78599e595_b.jpg" width="814" height="416" alt="CRC Collision Rates"></a>
+
+<h3>What does a good function look like?</h3>
+On this graph, a good function will have as few collisions as possible,
+so it'll be centered toward the left. However, if the output space
+is constrained smaller than the number of inputs, the center will
+necessarily be shifted to the right. Under these conditions, good
+functions will keep the collision distribution close to a perfect one,
+which is a narrow bar centered on the number of inputs divided by
+the number of outputs.
+
+<h3>16-Bit Functions</h3>
+16-bit functions have an output space of 65536 slots, so
+a perfect hash function modulo 65536 would yield collisions of either 5 or 6
+for every collided value. These hashes are two bytes long.
+
+<h4>Mod16</h4>
+Mod16 represents a minimal perfect hash mod 65536. Although
+functions like this can be designed for known input spaces,
+CRCs are designed to work on general-purpose inputs, so
+consider this curve just a reference for the best a 16-bit
+function could do.
+
+<h4>True 16-bit CRCs: Kermit, CRC16, CRC16DNP, XMODEM</h4>
+These are all 16-bit CRCs with possibly varying polynomials. They
+all form curves approximately peaked near the expected values
+of either 5 or 6 with lesser amounts of records in larger and
+smaller bins. These make good use of their limited 16-bit
+output spaces.
+
+<h4>CRC16SICK</h4>
+<a href="https://www.sick.com/">SICK</a> is a sensor company
+known for Lidar and other optical sensors. They use a 16-bit
+CRC-like function, seemingly optimized for speed. However,
+on this dataset, it performs poorly as a hash function with
+46 inputs mapped to the same output in some cases, and nearly
+10,000 inputs uniquely mapped. This is the least balanced hash
+function, although it likely was not design for hash function
+usage.
+
+<h3>32-Bit Functions</h3>
+32-bit hash functions have an expected output space of approximately
+4 billion records, so a perfect hash function would have no collisions
+on data sets of this size. Also, these hashes take 4 bytes to store.
+
+<h4>CRC32</h4>
+CRC32 does a great job on this input set; however, it does
+have a significantly larger output space to work in. At the cost
+of 4-byte hashes, this is the best function evaluated.
+
+<h4>Adler32</h4>
+Adler32 is a particular derivation of Fletcher32, which attempts
+to perform close to CRC32 for error detection while being simpler
+and faster to calculate. However, Adler32 does not perform
+well on short inputs, which this dataset consists of. While simpler
+to calculate than CRC32, as a hash Adler32 seems better than all
+16-bit functions, but still comes with the cost of 32-bit output hashes.
