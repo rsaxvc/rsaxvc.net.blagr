@@ -5,7 +5,7 @@ ModifiedDateTime:2010-12-05T06:10:59
 Tag:64 bit
 Tag:Jupiter
 Tag:Universe
-Tag:fixed-point
-Tag:math
+Tag:Fixed-point
+Tag:Math
 ---
 Often times in programming, fixed point numbers are used. For example, a 32 bit representation of angle(0:1) using fixed point provides much greater accuracy than the same 32 bits used for a floating point representation. The resolution of the circumference of the earth in 32 bit fixed point is about a centimeter, but 10 feet or so in 32 bit floating point.<div><br /></div><div>But what if we expand this same idea? The approximate diameter of the known universe is about 156 billion light years. There are&nbsp;18446744073709551616 unique 64 bit integers. Thus, the resolution of a 64 bit scaled representation would be about 80,000 kilometers, or the radius of Jupiter. That is to say that the known universe is about 2^63 Jupiters wide.</div>
