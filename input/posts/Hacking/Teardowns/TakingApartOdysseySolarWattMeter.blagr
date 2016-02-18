@@ -1,0 +1,50 @@
+Title:What's in a WattMeter?
+Author:rsaxvc
+CreatedDateTime:2016-02-17T21:25:19
+ModifiedDateTime:2016-02-17T21:25:19
+Tag:Renogy
+Tag:Odyssey
+Tag:Woodsman
+Tag:Solar
+Tag:WattMeter
+Tag:Tools
+---
+<h2>The Meter</h2>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/25100986845/in/dateposted-public/" title="IMG_0195"><img src="https://farm2.staticflickr.com/1452/25100986845_9858f4e0e6.jpg" width="500" height="333" alt="IMG_0195"></a>
+<p>
+Amazon has <a href="http://www.amazon.com/dp/B00J93FGYE">this handy DC wattmeter</a>
+for sale. Similar to a Kill-A-Watt, but for DC, a three-terminal meter
+like this is invaluable for measuring power at varying voltages, which is a
+common occurrence with solar grids. This sort of meter is normally useful
+for measuring efficiences of DC-DC converters; however, due to the design
+using the circuit under load for lighting, some accuracy is lost due to the
+power consumption of the meter itself.
+</p>
+
+<h2>The Display</h2>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24470290994/in/dateposted-public/" title="IMG_0199"><img src="https://farm2.staticflickr.com/1467/24470290994_38ee40b467.jpg" width="500" height="333" alt="IMG_0199"></a>
+<p>
+The LCD is a
+<a href="https://www.openhacks.com/uploadsproductos/eone-1602a1.pdf">1602
+display</a>, a common part with 2 lines of 16 characters each. Interestingly,
+in one of my photos, it is barely possible to see the microscopic wires
+run inside the display itself. They are easier to spot with a human eye,
+but can be seen between the overexposed reflection of the lamp bulb and
+the reflection of the lamp shade.
+</p>
+
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/25100974615/in/dateposted-public/" title="IMG_0206"><img src="https://farm2.staticflickr.com/1707/25100974615_3f8e2992fe.jpg" width="500" height="333" alt="IMG_0206"></a>
+
+<h2>The Test Circuit</h2>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/25007682701/in/dateposted-public/" title="IMG_0201"><img src="https://farm2.staticflickr.com/1601/25007682701_3c4882b757.jpg" width="500" height="333" alt="IMG_0201"></a>
+<p>
+The test ciruit is a power resistor on the ground path, while the positive
+lines are connected together. By soldering the wire sideways the manufacturer
+cuts down on the number of large solder joints although this one may be harder
+to make than two fully stripped joints. Also in this way additional,
+less controlled, resistance to the load is minimized. The voltage difference
+from the ground resistor is measured and fed to what appears to be a
+microcontroller that then renders the display. Since the two boards are soldered
+together I could not get a good shot of the chip.
+</p>
+
