@@ -1,0 +1,30 @@
+Title:Taking Apart the Victron Cyrix Battery Combiner
+Author:rsaxvc
+CreatedDateTime:2016-02-17T21:25:18
+ModifiedDateTime:2016-02-17T21:25:18
+Tag:Victron
+Tag:Teardown
+Tag:Woodsman
+Tag:Solar
+---
+<p>Victron Energy makes <a href="https://www.victronenergy.com/battery-isolators-and-combiners/cyrix-battery-combiners">
+a special sort of relay</a>.</p>
+
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/25007562721/in/dateposted-public/" title="Victron Cyrix"><img src="https://farm2.staticflickr.com/1493/25007562721_838d6f970c.jpg" width="500" height="333" alt="Victron Cyrix"></a>
+
+<p>Used for joining two battery grids, this relay
+will engage when the voltage of either grid exceeds a threshold. This enables
+connecting the battery and alternator on a vehicle to another battery with a
+hardline or solar charger.</p>
+
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24982671122/in/dateposted-public/" title="Victron Cyrix"><img src="https://farm2.staticflickr.com/1582/24982671122_bdf5fe4d2c.jpg" width="500" height="333" alt="Victron Cyrix"></a>
+
+<p>
+Inside we find a giant solenoid responsible for shorting the positive lines
+of each battery system together, as well as a PCB with what appears to be
+some protection diodes, a large transistor for switching the relay, some
+voltage sensing logic, as well as a large cap on the back of the PCB not
+pictured here.
+</p>
+
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24470162844/in/dateposted-public/" title="Victron Cyrix"><img src="https://farm2.staticflickr.com/1526/24470162844_207eede499.jpg" width="500" height="333" alt="Victron Cyrix"></a>
