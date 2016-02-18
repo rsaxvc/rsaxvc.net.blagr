@@ -1,0 +1,64 @@
+Title:12V Accessory Power Leakage
+Author:rsaxvc
+CreatedDateTime:2016-02-17T23:44:54
+ModifiedDateTime:2016-02-17T23:44:54
+Tag:DCDC
+Tag:USB
+Tag:Tools
+Tag:Meter
+Tag:ThinkPad
+Tag:BoostConverter
+---
+
+<h2>Problem</h2>
+<p>
+Anything you add to a vehicle's electrical system will leak current.
+Over time, this can drain your battery, or at least take a little juice
+from your solar system that could otherwise be conserved. Today I look
+at which accessories can be left on, and which must be switched.
+</p>
+
+<h2>ThinkPad Adapter</h2>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24805598100/in/dateposted-public/" title="IMG_0207"><img src="https://farm2.staticflickr.com/1513/24805598100_38a8e57b3f.jpg" width="500" height="333" alt="IMG_0207"></a>
+<p>
+First up is my custom DC-DC ThinkPad charger. At only 20mA of leakage,
+my 7.2Ah bench test battery would last 14 days with only this load.
+</p>
+
+<h2>Twin USB Regulator with LED Indicator</h2>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/25074869456/in/dateposted-public/" title="IMG_0211"><img src="https://farm2.staticflickr.com/1455/25074869456_eec6ca4cb6.jpg" width="500" height="333" alt="IMG_0211"></a>
+<p>
+Next up is a twin USB regulator capable of charging my tablet. While the
+LED could probably be removed to save a little current, the
+total idle current is a bit under 30mA. The initial current was quite a
+bit higher, but only for a short while, likely while any internal
+capacitors charged.
+<p>
+
+<h2>LED Voltmeter</h2>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24474341793/in/dateposted-public/" title="IMG_0208"><img src="https://farm2.staticflickr.com/1536/24474341793_7ed7f98c49.jpg" width="500" height="333" alt="IMG_0208"></a>
+<p>
+Handily fitting under 10 milliamps, this voltmeter actually strobes
+the LEDs, possibly to present a steady brightness over varying voltages.
+The current does scale with the number of LED segments lit, so perhaps
+it is best to estimate 15 milliamps.
+</p>
+
+<h2>1kW Inverter</h2>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24474490893/in/dateposted-public/" title="IMG_20160217_233832"><img src="https://farm2.staticflickr.com/1544/24474490893_5ce61e741a.jpg" width="500" height="375" alt="IMG_20160217_233832"></a>
+<p>
+I knew something was amiss when the inverter pegged my meter with the
+power switch off. As it turns out, the capacitors for this device
+are on the supply-side of the switch. While this means the load-side of
+the switch is cut from power immediately upon switching, the leakage
+of the capacitors is ever-present. However, after letting the capacitors
+charge for a few minutes, the leakage was well under a milliampere.
+</p>
+
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/24474489813/in/dateposted-public/" title="IMG_20160217_234158"><img src="https://farm2.staticflickr.com/1515/24474489813_89e882c9ba.jpg" width="500" height="375" alt="IMG_20160217_234158"></a>
+<p>
+Switching on the inverter is another story. My analog meter was pegged
+on the 250 milliamp setting, but the 1 amp fuse did not blow.
+Idling, this inverter consumes a massive 700 milliamps, loading the
+test battery down by 1.5 volts. Handily, it already has a power switch.
+</p>
