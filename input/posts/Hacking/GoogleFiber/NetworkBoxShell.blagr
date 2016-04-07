@@ -1,0 +1,15 @@
+Title:GoogleFiberNetworkBoxShell
+Author:rsaxvc
+CreatedDateTime:2016-04-06T12:02:34
+ModifiedDateTime:2016-04-06T16:55:24
+Tag:UART
+Tag:Google
+Tag:U-Boot
+Tag:Shell
+---
+Very early in booting, the fiber box prompts you to press
+ESC to enter a separate boot shell. This is a very early environment
+running CRAMFS, with a prompt of system&gt; . To enter a shell,
+use exec sh. cat /proc/version yields
+Linux version 2.6.21.5 #1 Thu May 7 21:02:00 PDT 2015
+
