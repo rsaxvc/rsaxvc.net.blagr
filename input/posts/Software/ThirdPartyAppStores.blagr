@@ -1,0 +1,68 @@
+Title:Third Party Android App Store Validation Gaps
+Author:rsaxvc
+CreatedDateTime:2016-07-03T20:33:40
+ModifiedDateTime:2016-07-03T20:33:40
+Tag:Android
+Tag:Signatures
+Tag:RootOfTrust
+---
+<div>
+
+Android has a robust system of application authenticity provided by digital signatures, usually terminating in a single root-of-trust,
+either the Google App store, or in some cases the OEM app store. Today I will discuss some problems crossing those lines and possible solutions,
+using Google and Amazon as examples.
+
+<h2>How this works for Google Apps on Google Devices</h2>
+
+Application signatures work the same for most app store vendors but Google serves as the most common example.
+
+<h3>Developer</h3><ol>
+	<li>Applications are signed by the developer</li>
+	<li>Upon upload to the <a href="https://play.google.com/store?hl=en">Play Store</a>, they are signed again into a Google PKI.</li>
+</ol>
+
+<h3>User</h3><ol>
+	<li>Upon download to a device, the Android OS validates that the application installer, or APK, was signed by Google. There is some later use of the developer signature, but mostly for upgrades so we shall gloss over it today</li>
+	<li>The Android platform normally requires apps be installed through a PKI. This is set up by a list of trusted root certificates. Most applications ship with the Google public app store certificates, verifying applications came through the app store.</li>
+	<li>The enforcement of this PKI is not done by the App Store, but at a lower level. It also impacts APKs downloaded manually and pushed over ADB. This is a good thing.</li>
+	<li>Unless something is wrong, the above steps are transparent to end-users</li>
+</ol>
+
+<h2>How this works for adding <a href="www.amazon.com/getappstore">Amazon</a> apps to a non-Amazon device.</h2>
+
+<h3>Developer</h3><ol>
+	<li>Applications are signed by the developer</li>
+	<li>Upon upload to a store, they may signed again into a different PKI.</li>
+</ol>
+
+<h3>User</h3><ol>
+	<li>The Amazon App store includes an App, but it seems Google does not want to sign other app stores into the Play Store, probably to limit fragmentation.</li>
+	<li>So, <a href="http://www.amazon.com/gp/help/customer/display.html?nodeId=201482620">users must first enable installing apps from unknown sources</a></li>
+	<li>Then they install the new app store</li>
+	<li>Now they can install apps from the new store. But, since apps from the new store are not signed by Google, the Unknown Sources option must stay enabled.</li>
+	<li>The lowest level of signature enforcement, locked to the developer signature, is still enforced, usually transparent to the user.</li>
+</ol>
+
+<h2>What is wrong with this</h2>
+<p>
+Ideally, the Unknown Sources option would never be used on end-user devices, it would only be used for developers. The Unknown Sources option makes
+it very easy to click a bad link and download malware, leaving the only defence the user not installing it. This is best not left to end-users.
+</p><p>
+Worse yet, Unknown Sources must be enabled for the duration of 3rd party store usage, or must be manually enabled before installing each application then
+disabled once done. This tedium impacts the user-experience and forces us into a usability-security trade-off that is not present when utilizing a custom
+app store. Generically, we should be providing users with both, and trying to avoid manual steps like this almost entirely.
+</p>
+
+<h2>How can it be improved</h2>
+<p>The current options for app stores, either using the vendor-provided app store or requiring Unknown Sources, are two very different ends of a spectrum.
+I would not suggest that Google sign the Amazon store into Google Play and provide it with a permission to verify other applications - the decision to
+extend or wield such power should not come lightly.
+</p><p>
+I propose that 3rd party app stores be allowed to install a second root-of-trust. Similarly to how applications are already sandboxed by the developer signature,
+apps installed by different stores would not be allowed to upgrade or replace each other, except through complete destruction of the sandbox. Roots of trust in this
+system would need to be revokable in case of a store compromise, possibly with a signature-upgrade path for known good applications. In one way, multiple
+roots of trust increases the exposure for malware to be signed by a trusted root, as we now trust each app store to verify its own applications. But without this,
+the requirement to enable Unknown Sources exposes most users to a much wider risk, in that there is no usually no verification at all unless the user remembers to
+manually adjust the special settings hidden in the developer menu.
+</p>
+</div>
