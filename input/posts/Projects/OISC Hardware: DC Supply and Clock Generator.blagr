@@ -1,11 +1,30 @@
 Title:OISC Hardware: DC Supply and Clock Generator
 Author:rsaxvc
 CreatedDateTime:2009-10-24T21:43:49
-ModifiedDateTime:2009-10-24T21:43:49
+ModifiedDateTime:2016-07-03T21:43:49
 Tag:555 timer IC
 Tag:Breadboard
 Tag:Clock generator
 Tag:Integrated circuit
 Tag:Solder
 ---
-<span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">Although this is nothing special, and likely won't drive the final project, I took some pictures anyways just to keep the documentation complete.</span><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><img alt="DC.ClockGen.jpg" src="http://208.53.181.144/blog/OISC/DC.ClockGen.jpg" width="640" height="480" class="mt-image-none" style="" /></span></div><div><br /></div><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><br /></span><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">It contains:</span><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><br /></span><ul style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><li>78T05 CT 3A <a class="zem_slink" href="http://en.wikipedia.org/wiki/Voltage_regulator" title="Voltage regulator" rel="wikipedia">Regulator</a></li><li>2x 25V, 3300uF regulation caps( one input, one output)</li><li>1 <a class="zem_slink" href="http://en.wikipedia.org/wiki/555_timer_IC" title="555 timer IC" rel="wikipedia">555 Timer</a> as a <a class="zem_slink" href="http://en.wikipedia.org/wiki/Clock_generator" title="Clock generator" rel="wikipedia">clock generator</a> producing 9.346 kHz.</li><li>1 fairly sketchy capacitor of unknown capacitance and age.</li><li>2 47kOhm 20% Precision<br /></li><li>4x1 Header for power input( DC+, GND, GND, DC+ )</li><li>2x( 3x1 Headers) for output ( Ground, Clock, Power )</li><li>12-611B Datek 21-110 CIC ( Small Solder <a class="zem_slink" href="http://en.wikipedia.org/wiki/Breadboard" title="Breadboard" rel="wikipedia">Protoboard</a>)</li><li>Two pennies. By the way, if you use older, copper pennies, instead of these zinc ones I happened to have in my pocket, you'll get way better heat dissipation. Whatever you do, don't use steel pennies.</li></ul><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">Side Profile Shot:</span></div><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><img alt="DC.ClockGen.Profile.jpg" src="http://208.53.181.144/blog/OISC/DC.ClockGen.Profile.jpg" width="640" height="480" class="mt-image-none" style="" /></span>On second thought, maybe those caps are just a little overkill.</div>
+<div>
+<p>Although this is nothing special, and likely won't drive the final project, I took some pictures anyways just to keep the documentation complete.</p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/27441419193/in/dateposted-public/" title="DC.ClockGen"><img src="https://c2.staticflickr.com/8/7424/27441419193_bbddfa8753.jpg" width="500" height="375" alt="DC.ClockGen"></a>
+<p>It contains:</p>
+<ul>
+	<li>78T05 CT 3A <a href="http://en.wikipedia.org/wiki/Voltage_regulator" title="Voltage regulator" rel="wikipedia">Regulator</a></li>
+	<li>2x 25V, 3300uF regulation caps( one input, one output)</li>
+	<li>1 <a href="http://en.wikipedia.org/wiki/555_timer_IC" title="555 timer IC" rel="wikipedia">555 Timer</a> as a <a href="http://en.wikipedia.org/wiki/Clock_generator" title="Clock generator" rel="wikipedia">clock generator</a> producing 9.346 kHz.</li>
+	<li>1 fairly sketchy capacitor of unknown capacitance and age.</li>
+	<li>2 47kOhm 20% Precision<br /></li>
+	<li>4x1 Header for power input( DC+, GND, GND, DC+ )</li>
+	<li>2x( 3x1 Headers) for output ( Ground, Clock, Power )</li>
+	<li>12-611B Datek 21-110 CIC ( Small Solder <a href="http://en.wikipedia.org/wiki/Breadboard" title="Breadboard" rel="wikipedia">Protoboard</a>)</li>
+	<li>Two pennies. By the way, if you use older, copper pennies, instead of these zinc ones I happened to have in my pocket, you'll get way better heat dissipation. Whatever you do, don't use steel pennies.</li>
+</ul>
+
+<p>Side Profile Shot:</p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28055398995/in/dateposted-public/" title="DC.ClockGen.Profile"><img src="https://c4.staticflickr.com/8/7392/28055398995_c77f309467.jpg" width="500" height="375" alt="DC.ClockGen.Profile"></a>
+<p>On second thought, maybe those caps are just a little overkill.</p>
+</div>

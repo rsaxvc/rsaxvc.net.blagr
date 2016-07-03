@@ -1,11 +1,54 @@
 Title:Attach a DC Utility Port For Extra Peripheral Power
 Author:rsaxvc
 CreatedDateTime:2009-09-14T21:28:55
-ModifiedDateTime:2009-09-14T21:28:55
+ModifiedDateTime:2016-07-03T21:28:55
 Tag:Hardware
 Tag:Personal computer
 Tag:Serial port
 Tag:Universal Serial Bus
 Tag:power
 ---
-<span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><div>So, I'm building a computer for my car. I'm trying to make a <a class="zem_slink" href="http://en.wikipedia.org/wiki/Universal_Serial_Bus" title="Universal Serial Bus" rel="wikipedia">USB</a> interface for all of my peripherals. Mostly this involves embedding a USB-&gt;<a class="zem_slink" href="http://en.wikipedia.org/wiki/Serial_port" title="Serial port" rel="wikipedia">Serial</a> Adapter in a few things. However, some of my devices require a little more power than USB can supply, or they require just under the limit, and I'm hesitant to attach too many of them to the computer, especially since some of the USB cables may be around 15 feet long.</div></span><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><br /></span><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">Enter the utility port. By adding a DC Barrel plug socket to my devices, I can run a two wire power line along with my usb cables. The Power line takes the current of the peripheral, while USB still supplies power to the USB-&gt;Serial or USB-&gt;Can/SPI/I2C converters.</span><div style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><br /></div><div style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">First you'll need a spare back plate.</div><div style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><img alt="CoverPlate.jpg" src="http://208.53.181.144/blog/PCUtilityPower/CoverPlate.jpg" width="640" height="480" class="mt-image-none" style="" /></div><div><br /></div><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">Now you'll need some banana posts/terminals. I ordered some from digikey.</span></div><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><img alt="BananaPostSide.jpg" src="http://208.53.181.144/blog/PCUtilityPower/BananaPostSide.jpg" width="640" height="640" class="mt-image-none" style="" /></span></div><div><img alt="BananaConnector.jpg" src="http://208.53.181.144/blog/PCUtilityPower/BananaConnector.jpg" width="640" height="480" class="mt-image-none" style="" /></div><div><br /></div><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">Drill some 1/4 inch holes in the back cover plate for the banana plugs. Add as many as you like. I went with four holes, 2 red posts with 5 Volts, and 2 Black Posts for grounding, because I'm only running 5 Volt gear on this machine. Use the nut provided with the <a class="zem_slink" href="http://en.wikipedia.org/wiki/Banana_connector" title="Banana connector" rel="wikipedia">banana plug</a> to attach it to the cover plate. Be Careful: make sure to put the 2.18mm hole facing away from the other banana connectors. I used some gorilla glue to make them stronger.</span></div><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><img alt="FinishedPlate.jpg" src="http://208.53.181.144/blog/PCUtilityPower/FinishedPlate.jpg" width="640" height="480" class="mt-image-none" style="" /></span></div><div><br /></div><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">Next you need some Ring Connectors, and a molex socket. I got these ring connectors from the <a class="zem_slink" href="http://www.acehardware.com/" title="Ace Hardware" rel="homepage">ACE hardware</a> up the street. I forget what size you need, but they were ACE's smallest blue collar connector. You can also just bring a banana socket in for sizing. For a molex socket, I used an old <a class="zem_slink" href="http://en.wikipedia.org/wiki/Computer_fan" title="Computer fan" rel="wikipedia">cpu fan</a> connector from a 486 I was throwing away.</span></div><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><img alt="RingConnector.jpg" src="http://208.53.181.144/blog/PCUtilityPower/RingConnector.jpg" width="640" height="480" class="mt-image-none" style="" /></span></div><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; ">Assemble the molex and ring connectors in whichever configuration you like. I have both grounds connected, and connected to both black terminals and the molex socket. I have both red terminals connected together, then connected to the molex socket.</span></div><div><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; "><img alt="FinishedProduct-Back.jpg" src="http://208.53.181.144/blog/PCUtilityPower/FinishedProduct-Back.jpg" width="640" height="480" class="mt-image-none" style="" /></span></div><div><br /></div>
+<div>
+
+<p>
+So, I'm building a computer for my car. I'm trying to make a 
+<a href="http://en.wikipedia.org/wiki/Universal_Serial_Bus" title="Universal Serial Bus" rel="wikipedia">USB</a> 
+interface for all of my peripherals. Mostly this involves embedding a USB-&gt;
+<a href="http://en.wikipedia.org/wiki/Serial_port" title="Serial port" rel="wikipedia">Serial</a> 
+Adapter in a few things. However, some of my devices require a little more power than USB can supply, 
+or they require just under the limit, and I'm hesitant to attach too many of them to the computer, 
+especially since some of the USB cables may be around 15 feet long.
+
+</p><p>
+
+Enter the utility port. By adding a DC Barrel plug socket to my devices, I can run a two wire power line along with my usb cables.
+The Power line takes the current of the peripheral, while USB still supplies power to the USB-&gt;Serial or USB-&gt;Can/SPI/I2C converters.
+
+</p><p>
+
+First you'll need a spare back plate.
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/27953804142/in/dateposted-public/" title="CoverPlate"><img src="https://c7.staticflickr.com/8/7593/27953804142_a5ef43b5bb.jpg" width="500" height="375" alt="CoverPlate"></a>
+</p><p>
+Now you'll need some banana posts/terminals. I ordered some from digikey.
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/27953804772/in/dateposted-public/" title="BananaPostSide"><img src="https://c5.staticflickr.com/8/7658/27953804772_0415dce572.jpg" width="500" height="500" alt="BananaPostSide"></a>
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28022011656/in/dateposted-public/" title="BananaPostEnd"><img src="https://c1.staticflickr.com/8/7325/28022011656_7cd8627abe.jpg" width="500" height="500" alt="BananaPostEnd"></a>
+</p><p>
+Drill some 1/4 inch holes in the back cover plate for the banana plugs. Add as many as you like. I went with four holes, 2 red posts with 5 Volts, and 2 Black Posts for grounding, because I'm only running 5 Volt gear on this machine. Use the nut provided with the <a href="http://en.wikipedia.org/wiki/Banana_connector" title="Banana connector" rel="wikipedia">banana plug</a> to attach it to the cover plate. Be Careful: make sure to put the 2.18mm hole facing away from the other banana connectors. I used some gorilla glue to make them stronger.
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28022010466/in/dateposted-public/" title="FinishedPlate"><img src="https://c3.staticflickr.com/8/7112/28022010466_5edc8d6ea3.jpg" width="500" height="375" alt="FinishedPlate"></a>
+</p><p>
+Next you need some Ring Connectors, and a molex socket. I got these ring connectors from the <a href="http://www.acehardware.com/" title="Ace Hardware" rel="homepage">ACE hardware</a> up the street. I forget what size you need, but they were ACE's smallest blue collar connector. You can also just bring a banana socket in for sizing. For a molex socket, I used an old <a href="http://en.wikipedia.org/wiki/Computer_fan" title="Computer fan" rel="wikipedia">cpu fan</a> connector from a 486 I was throwing away.
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28022010066/in/dateposted-public/" title="RingConnector"><img src="https://c3.staticflickr.com/8/7560/28022010066_09b9e7260d.jpg" width="500" height="375" alt="RingConnector"></a>
+</p><p>
+Assemble the molex and ring connectors in whichever configuration you like. I have both grounds connected, and connected to both black terminals and the molex socket. I have both red terminals connected together, then connected to the molex socket.
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/27953803712/in/dateposted-public/" title="FinishedProduct-Back"><img src="https://c1.staticflickr.com/8/7605/27953803712_0b31339d61.jpg" width="500" height="375" alt="FinishedProduct-Back"></a>
+
+</p>
+</div>
+
+

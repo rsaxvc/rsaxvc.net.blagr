@@ -1,11 +1,35 @@
 Title:How to stop AutoBoot on the Samsung SCS-26UC4
 Author:rsaxvc
 CreatedDateTime:2010-12-11T12:02:32
-ModifiedDateTime:2010-12-11T16:55:22
+ModifiedDateTime:2016-07-03T16:55:22
 Tag:Diff
 Tag:JTAG
 Tag:Programming
 Tag:Samsung
 Tag:U-Boot
+Tag:password
 ---
-After downloading the <a class="zem_slink" href="http://en.wikipedia.org/wiki/Samsung_Group" title="Samsung Group" rel="wikipedia">Samsung</a> source code, you may try to find differences between the stock sources, and the ones Samsung provides. This results in a list of the changes Samsung had to make to the stock sources to get their product going. After you build a <a class="zem_slink" href="http://en.wikipedia.org/wiki/Serial_cable" title="Serial cable" rel="wikipedia">serial cable</a> for the femtocell, you also might've noticed the message 'Hit any key to stop autoboot', tried hitting a key, and the boot proceeded anyhow. Here's why.<div><br /></div><div>Performing a difference between the u-boot 1.1.1 source from Samsung and the stock source from sourceforge.net, reveals a few key differences:</div><div><ol><li>MDOC filesystem support. This is a type of flash +&nbsp;<meta http-equiv="content-type" content="text/html; charset=utf-8">smart&nbsp;flash controller.</li><li>OMAP1710 support(&nbsp;<meta http-equiv="content-type" content="text/html; charset=utf-8"><a href="http://linux.omap.com/pub/documentation/omap_1710v1.4.txt">http://linux.omap.com/pub/documentation/omap_1710v1.4.txt</a>, read the u-boot section&nbsp;)</li><li>NFS boot timeout went from 10 seconds (stock) to 60 seconds(Samsung)</li><li>This tidbit in the autoboot/console code:</li></ol><div><a href="http://rsaxvc.net/blog/assets_c/2010/12/SamsungDiff1-28.html" onclick="window.open('http://rsaxvc.net/blog/assets_c/2010/12/SamsungDiff1-28.html','popup','width=1022,height=750,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=0,top=0'); return false"><img src="http://rsaxvc.net/blog/assets_c/2010/12/SamsungDiff1-thumb-480x352-28.png" width="480" height="352" alt="SamsungDiff1.png" class="mt-image-none" style="" /></a></div></div><div><br /></div><div><a href="http://rsaxvc.net/blog/assets_c/2010/12/SamsungDiff2-31.html" onclick="window.open('http://rsaxvc.net/blog/assets_c/2010/12/SamsungDiff2-31.html','popup','width=1022,height=750,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=0,top=0'); return false"><img src="http://rsaxvc.net/blog/assets_c/2010/12/SamsungDiff2-thumb-480x352-31.png" width="480" height="352" alt="SamsungDiff2.png" class="mt-image-none" style="" /></a></div><div><br /></div><div><br /></div>
+<p>
+After downloading the <a href="http://en.wikipedia.org/wiki/Samsung_Group" title="Samsung Group" rel="wikipedia">Samsung</a> 
+source code, you may try to find differences between the stock sources, and the ones Samsung provides. This results in a list 
+of the changes Samsung had to make to the stock sources to get their product going. After you build a 
+<a href="http://en.wikipedia.org/wiki/Serial_cable" title="Serial cable" rel="wikipedia">serial cable</a> 
+for the femtocell, you also might've noticed the message 'Hit any key to stop autoboot', tried hitting a key, and the boot 
+proceeded anyhow. Here's why.
+</p><p>
+Performing a difference between the u-boot 1.1.1 source from Samsung and the stock source from sourceforge.net, reveals a few key differences:
+<ol>
+	<li>MDOC filesystem support. This is a type of flash combined with a flash controller.</li>
+	<li>OMAP1710 support(<a href="http://linux.omap.com/pub/documentation/omap_1710v1.4.txt">http://linux.omap.com/pub/documentation/omap_1710v1.4.txt</a>, read the u-boot section)</li>
+	<li>NFS boot timeout went from 10 seconds (stock) to 60 seconds(Samsung)</li>
+	<li>These little gems in the autoboot/console code:</li>
+</ol>
+
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/27953427682/in/dateposted-public/" title="SamsungDiff1"><img src="https://c3.staticflickr.com/8/7420/27953427682_ded259aca7.jpg" width="500" height="367" alt="SamsungDiff1"></a>
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28021583156/in/dateposted-public/" title="SamsungDiff2"><img src="https://c5.staticflickr.com/8/7552/28021583156_7db09fc9c4.jpg" width="500" height="367" alt="SamsungDiff2"></a>
+</p><p>
+This code adds a 4-byte password of s, y, s, followed by newline or carriage return.
+</p>
+</div>
