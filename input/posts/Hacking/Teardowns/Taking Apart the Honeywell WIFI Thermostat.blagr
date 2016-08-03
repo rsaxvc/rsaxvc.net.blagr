@@ -1,0 +1,53 @@
+Title:Taking Apart the WiFi Honeywell Thermostat
+Author:rsaxvc
+CreatedDateTime:2016-08-02T21:46:19
+ModifiedDateTime:2016-08-02T21:46:19
+Tag:Atmel
+Tag:Atmega
+Tag:Honeywell
+---
+<div>
+
+<h3>I have another thermostat</h3>
+<p>It was made by Honeywell, and I found it at the store. This one uses WiFi and
+is pin-compatible with my existing one.</p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28734689345/in/dateposted-public/" title="IMG_1219"><img src="https://c2.staticflickr.com/9/8064/28734689345_6ccf7f1720.jpg" width="333" height="500" alt="IMG_1219"></a>
+</p>
+
+<h3>What is in the box?</h3>
+<p>Another Box</p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28117034944/in/dateposted-public/" title="IMG_1220"><img src="https://c1.staticflickr.com/9/8794/28117034944_68b12b7a07.jpg" width="500" height="333" alt="IMG_1220"></a>
+
+<h3>What is inside?</h3>
+<h4>One assembled thermostat, front</h4>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28119272343/in/dateposted-public/" title="IMG_1221"><img src="https://c8.staticflickr.com/9/8612/28119272343_2424d4633a.jpg" width="500" height="333" alt="IMG_1221"></a>
+
+<h4>One assembled thermostat, back</h4>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28116990994/in/dateposted-public/" title="IMG_1224"><img src="https://c3.staticflickr.com/9/8899/28116990994_2f8df5382c.jpg" width="500" height="333" alt="IMG_1224"></a>
+<p>We can see three subsection of the device. In the center is the umbilical to the home. On the left
+is the WiFi section. The rest of the PCB is covered by the frame.</p>
+
+<h4>What is under panel number one?</h4>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28450259580/in/dateposted-public/" title="IMG_1230"><img src="https://c5.staticflickr.com/9/8522/28450259580_53943de330.jpg" width="500" height="333" alt="IMG_1230"></a>
+<p>Under a pair of plastic clips we find a small PCB fitted
+to the main PCB. In this shot I have actually removed the main PCB
+already.</p>
+
+<h4>What could it be?</h4>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28450206000/in/dateposted-public/" title="IMG_1236"><img src="https://c1.staticflickr.com/8/7777/28450206000_d521c637e5.jpg" width="500" height="333" alt="IMG_1236"></a>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28450217750/in/dateposted-public/" title="IMG_1235"><img src="https://c7.staticflickr.com/9/8861/28450217750_d3ba3aeaa8.jpg" width="500" height="333" alt="IMG_1235"></a>
+
+<p>It is a 
+<a href="http://images.mjdic.com/Attachments/product/201406/539fd11742408.pdf">
+USI SiP WiFi WM-N-BM-01 radio module</a> with an 
+<a href="http://www.atmel.com/devices/ATSAM4S16B.aspx">Atmel ATSAM4S16B</a>
+microcontroller for interfacing to the thermostat.</p>
+
+<h4>Where does it go?</h4>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28702362046/in/dateposted-public/" title="IMG_1227"><img src="https://c7.staticflickr.com/9/8517/28702362046_e59b530736.jpg" width="500" height="333" alt="IMG_1227"></a>
+<p>Right to the same 4-pin serial connector we saw last time.</p>
+
+<h4>Any other changes from last time?</h4>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28116884014/in/dateposted-public/" title="IMG_1243"><img src="https://c7.staticflickr.com/9/8291/28116884014_6214305458.jpg" width="500" height="333" alt="IMG_1243"></a>
+<p>Thermostat microcontroller is now an AVR XMEGA256 instead of the ATMEGA645V. This upgrades the codespace and horsepower available while staying in the same family.</p>
+</div>
