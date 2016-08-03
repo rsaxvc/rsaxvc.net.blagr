@@ -1,0 +1,21 @@
+Title:Honeywell WiFi Packet Captures
+Author:rsaxvc
+CreatedDateTime:2016-08-02T22:46:19
+ModifiedDateTime:2016-08-02T22:46:19
+Tag:Honeywell
+---
+<div>
+<h3>Data headed to the cloud</h3>
+<p>Do you see the problem?</p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28629688082/in/dateposted-public/" title="defo_not_tls"><img src="https://c3.staticflickr.com/8/7665/28629688082_ea0fc79667.jpg" width="500" height="281" alt="defo_not_tls"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<p>
+	TCP port 443 is reserved for HTTPS, which consists of HTTP
+	tunneled over a secured SSL or TLS pipe. However, Honeywell
+	uses something...else. We can plainly see there is no
+	SSL/TLS handshake here, only what appears to be a request
+	to the server and immediate response.
+</p>
+<h3>Data coming back from the cloud</h3>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/28702833856/in/dateposted-public/" title="defo_not_tls2"><img src="https://c1.staticflickr.com/9/8651/28702833856_5fd1a350f6.jpg" width="500" height="281" alt="defo_not_tls2"></a>
+<p>Perhaps they hoped nobody would look if they used port 443.</p>
+</div>
