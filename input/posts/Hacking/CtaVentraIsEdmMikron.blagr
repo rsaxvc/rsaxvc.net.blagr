@@ -1,0 +1,35 @@
+Title:CTA Ventra Is EDM Mikron
+Author:rsaxvc
+CreatedDateTime:2016-10-30T22:10:52
+ModifiedDateTime:2016-10-30T22:10:52
+Tag:NFC
+Tag:Chicago
+Tag:CTA
+Tag:Mikron
+Tag:EDM
+---
+
+<p>
+After washing my travelling pants, I made a sad discovery.
+My ticket-pocket, where I store all used tickets for decoration, 
+had been washed while full of tickets. And my CTA day-pass started
+to disintegrate.
+</p><p>
+Inside, we find an A181 card from <a href="http://www.mikron.ru/en/">Mikron</a>.
+Sadly, post washing-machine I could not receive any data from my card using a
+Sony Z1 Compact as a reader.
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/30554971552/in/dateposted-public/" title="Ventra Ticket Teardown"><img src="https://c1.staticflickr.com/6/5683/30554971552_40f1ee1149_n.jpg" width="320" height="202" alt="Ventra Ticket Teardown"></a>
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/30554971032/in/dateposted-public/" title="Ventra Ticket Teardown"><img src="https://c1.staticflickr.com/6/5733/30554971032_ab01c16ea9_n.jpg" width="320" height="188" alt="Ventra Ticket Teardown"></a>
+</p><p>
+This leaves us with a few possible options:
+<ul>
+	<li><a href="http://www.mikron.ru/en/products/rfid-chip-inlays-maps/rfid-tags-and-inlays/m-pass/">M-Pass</a></li>
+	<li><a href="http://www.mikron.ru/en/products/rfid-chip-inlays-maps/rfid-tags-and-inlays/NFC-PASS/">NFC-PASS</a></li>
+	<li><a href="http://www.mikron.ru/en/products/rfid-chip-inlays-maps/rfid-tags-and-inlays/m-book/">M-BOOK</a></li>
+</ul>
+But without a working example, this is probably the end of exploration
+until I visit Chicago again. Interestingly, I cannot seem to find an A181 on
+the Mikron website.
+</p>
