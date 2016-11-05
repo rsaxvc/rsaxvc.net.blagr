@@ -6,9 +6,13 @@ ModifiedDateTime:2016-11-04T22:35:39
 <p>
 Google Fiber requires a slightly esoteric network configuration.
 First, traffic between the on-premises Google equipment and
-their network. When replacing The Google router with a debian
+their network. When replacing the Google router with a debian
 Linux computer, this can be configured with
 <a href="https://gist.github.com/rsaxvc/92a7d70c7fc62289fe78347142a9925e">
 this /etc/network/interfaces file for Debian Linux</a>, which requires
 the bridge-utils and vlan debian packages.
+</p><p>
+Next is configuring QoS bits, which can also be done through
+some slightly more advanced scripting in /etc/network/interfaces,
+though I have not completed updating the linked gist with it.
 </p>
