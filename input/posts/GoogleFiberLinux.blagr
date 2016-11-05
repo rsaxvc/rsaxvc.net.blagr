@@ -1,0 +1,14 @@
+Title:Debian Network Configuration For Google Fiber
+Author:rsaxvc
+CreatedDateTime:2016-11-04T22:35:39
+ModifiedDateTime:2016-11-04T22:35:39
+---
+<p>
+Google Fiber requires a slightly esoteric network configuration.
+First, traffic between the on-premises Google equipment and
+their network. When replacing The Google router with a debian
+Linux computer, this can be configured with
+<a href="https://gist.github.com/rsaxvc/92a7d70c7fc62289fe78347142a9925e">
+this /etc/network/interfaces file for Debian Linux</a>, which requires
+the bridge-utils and vlan debian packages.
+</p>
