@@ -1,0 +1,29 @@
+Title:Project: ioload
+Author:rsaxvc
+CreatedDateTime:2016-11-05T20:44:54
+ModifiedDateTime:2016-11-05T20:44:54
+Tag:nload
+Tag:ioload
+---
+
+<p>
+Last night, I started writing ioload, an nload-like program that
+monitors per-disk iops and bandwidth. Here is the first functional result:
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/30166807454/in/dateposted-public/" title="ioload"><img src="https://c7.staticflickr.com/6/5545/30166807454_8ea2dbc2fb_n.jpg" width="320" height="194" alt="ioload"></a>
+</p><p>
+I picked the /proc/diskstats interface to disk stats on Linux purely
+because it was the first. There is also an in interface under
+/sys/block/*/stat that gives a per-disk view directly. Upstream nload
+supports both procfs and sysfs on Linux.
+</p><p>
+Future work:
+<ul>
+<li>Either merge with nload or clean up code to replace network with disk references.</li>
+<li>Support sysfs on Linux for anyone without procfs mounted.</li>
+<li>BSD Port</li>
+<li>HPUX Port</li>
+<li>Solaris Port</li>
+</ul>
+Patches Welcome.
+</p>
