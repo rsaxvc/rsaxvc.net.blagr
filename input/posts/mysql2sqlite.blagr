@@ -1,0 +1,19 @@
+Title:mysql2sqlite
+Author:rsaxvc
+CreatedDateTime:2016-11-19T11:14:03
+ModifiedDateTime:2016-11-19T11:14:03
+Tag:mysql
+Tag:sqlite
+---
+<p>
+Ever downloaded a fresh, tasty database dump, only to be frustrated by the
+need to setup an entire mysql database backend just to read it, even
+though you have a perfectly good SQL engine available from SQLite? Look
+no further! <a href="https://github.com/dumblob/mysql2sqlite">mysql2sqlite</a>
+is a simple awk program that will transparently convert mysql syntax into
+sqlite syntax. Mostly, this consists of dropping a few unsupported keywords,
+and it is not without bugs - mysql foreign key relationships will not
+quite make it into the sqlite database. But for simply loading the data
+into a sane, searchable format, mysql2sqlite will get you a perfectly
+functional database quickly and easily.
+</p>
