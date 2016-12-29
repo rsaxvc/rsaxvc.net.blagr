@@ -1,0 +1,73 @@
+Title:DroneView WiFi Camera
+Author:rsaxvc
+CreatedDateTime:2016-12-28T22:10:52
+ModifiedDateTime:2016-12-28T22:10:52
+Tag:WiFi
+Tag:DroneView
+Tag:Android
+---
+<h2>This one time, I bought a drone</h2>
+A Vista with DroneView Tactic, to be specific. What follows is not
+so much a blog post, but a late night list of things I did.
+
+<h2>Drone</h2>
+<ul>
+<li>Connect with Android App</li>
+<li>Have problems, get frustrated</li>
+<li>Connect with Laptop</li>
+<li>nmap default route IP</li>
+<li>Find HTTP, HTTP on port 5, RTSP, Telnet, and something else</li>
+</ul>
+
+<h2>Http on Port 5</h2>
+<ul>
+	<li>Execute GET /</li>
+	<li>Server reports it is a Hisilicon Ipcam, nothing but 400 errors</li>
+</ul>
+
+<h2>WebApp</h2>
+<ul>
+	<li>Browse to 192.168.234.1</li>
+	<li>Guess the following accounts</li>
+	<ul>
+		<li>admin:admin</li>
+		<li>guest:guest</li>
+	</ul>
+	<li>WebApp suggests downloading plugin. Save some for later</li>
+	<li>Click System, then Device Info to fetch:</li>
+	<ul>
+		<li>Serial Number: QVCVvzhROpFMEtDySbXSOPwEsdbubvyM</li>
+		<li>Hard Ver: ipc4288p-ytf-ov9712d</li>
+		<li>Software Ver: V3.42.88.4808-X10-Build:20151015R</li>
+	</ul>
+	<li>Now we know there is an OmniVision OV9712 involved. This is just the image sensor though.</li>
+</ul>
+
+<h2>Windows Plugin</h2>
+<ul>
+	<li>Use innoextract to decompress installer.</li>
+	<li>Grep for URLs</li>
+</ul>
+
+<h2>Android Application</h2>
+<ul>
+	<li>Use apktool to decompress and disassemble APK file.</li>
+	<li>Grep for URLs</li>
+</ul>
+
+<h2>RTSP</h2>
+<ul>
+	<li>rtsp://192.168.234.1/11</li>
+	<li><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/31112312314/in/dateposted-public/" title="Screenshot at 2016-12-28 23-29-37"><img src="https://c3.staticflickr.com/1/665/31112312314_83d704aa07.jpg" width="500" height="277" alt="Screenshot at 2016-12-28 23-29-37"></a></li>
+	<li>This is my bedroom, as seen by my drone sitting on my bed. The bed is green due to the green navigation LEDs on the drone. In the center of the frame are three plants I am watching for a friend.</li>
+</ul>
+
+<h2>Next Steps</h2>
+<ul>
+	<li>Charge battery</li>
+	<li>Run through the Mirai password list against telnet.</li>
+	<li>Look for command injection in the webapp.</li>
+	<li>Look at how the Android and Windows actually work</li>
+	<li>Request source code from the vendor</li>
+	<li>Leverage <a href="http://www.openwall.com/lists/oss-security/2013/05/22/5">thttpd/2.25b</a> to dump /etc/passwd</li>
+</ul>
