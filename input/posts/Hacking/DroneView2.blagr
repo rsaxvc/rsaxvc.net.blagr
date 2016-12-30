@@ -1,0 +1,47 @@
+Title:DroneView WiFi Camera, Part 2
+Author:rsaxvc
+CreatedDateTime:2016-12-29T22:10:52
+ModifiedDateTime:2016-12-29T22:10:52
+Tag:WiFi
+Tag:DroneView
+Tag:Android
+---
+<h2>This one time, I recharged my drone</h2>
+A second pass at the previous post.
+
+<h2>Telnet</h2>
+Ran through Mirai password list. No luck.
+
+<h2>THTTPD</h2>
+This THTTPD does not appear to be vulnerable to directory traversal, or was appropriately jailed.
+
+<h2>Disassemble!</h2>
+Only four screws. Remove microSD before starting teardown. Be careful not to damage flex cable to image sensor. Once ready to remove PCB,
+must follow plastic posts through PCB, similar alignment for reinstallation.
+
+<h3>Top Case</h3>
+<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/31165593153/in/dateposted-public/" title="IMG_20161230_003444"><img src="https://c2.staticflickr.com/1/652/31165593153_811b7b4845.jpg" width="500" height="375" alt="IMG_20161230_003444"></a>
+
+<h3>Antenna</h3>
+Neatly tucked into top-case. A bit surprised they used a connector rather than a chip or PCB antenna here.
+<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/31937716416/in/dateposted-public/" title="IMG_20161230_003450"><img src="https://c1.staticflickr.com/1/409/31937716416_c801149f01.jpg" width="500" height="375" alt="IMG_20161230_003450"></a>
+
+<h3>PCB Side A</h3>
+This side has the HiSilicon Hi3518 CPU, as well as what appears to be a serial flash, and a four pin UART! I smell a local rootshell.
+<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/31165595873/in/dateposted-public/" title="IMG_20161230_003430"><img src="https://c2.staticflickr.com/6/5605/31165595873_172a71e35a.jpg" width="500" height="375" alt="IMG_20161230_003430"></a>
+
+<h3>PCB Side B</h3>
+This side has power components and the WiFi radio - a radio module design is interesting. It would be cheaper in bulk to integrate directly.
+<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/31937713796/in/dateposted-public/" title="IMG_20161230_003422"><img src="https://c5.staticflickr.com/1/314/31937713796_24052d7a4c.jpg" width="500" height="375" alt="IMG_20161230_003422"></a>
+
+<h2>Next Steps</h2>
+<ul>
+	<li>Charge battery</li>
+	<li>Look for command injection in the webapp.</li>
+	<li>Look at how the Android and Windows actually work</li>
+	<li>Request source code from the vendor</li>
+</ul>
