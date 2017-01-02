@@ -1,0 +1,89 @@
+Title:DroneView WiFi Camera, Part 3
+Author:rsaxvc
+CreatedDateTime:2017-1-01T22:10:52
+ModifiedDateTime:2017-1-01T22:10:52
+Tag:WiFi
+Tag:DroneView
+Tag:Android
+Tag:Serial
+Tag:UART
+---
+<h2>This one time, I just took the darned thing apart</h2>
+A third pass at the previous two posts.
+
+<h2>Serial Config</h2>
+<a href="https://felipe.astroza.cl/hacking-hi3518-based-ip-camera/">Felipe says the default baudrate for HiSilicon Hi3518 IP Cams is 115200 Baud, 8N1</a>
+
+<h2>PCB</h2>
+<p>Only connect RX, TX, and GND. Additionally, the PCB test points are not quite 0.1 inch pitch, so I had to bend some pins to get it to connect.
+Additionally, the 3.3V port does not seem very useful, as it appears the device will become confused if supplied directly with 3.3V without 3.7V
+from the lithium battery pack. I suspect the WiFi radio is powered from 3.7v. After a little solder and knifework, I have a functional serial port.</p>
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/31198996184/in/dateposted-public/" title="Serial Port Mod"><img src="https://c1.staticflickr.com/1/624/31198996184_3d46210ae8.jpg" width="375" height="500" alt="Serial Port Mod"></a></p>
+<p>Sadly I did not photograph it before reassembly. It is simply solder and hot glue for strain relief.</p>
+
+<h2>Rooting the Device Locally</h2>
+<p>Stop the device very early during startup, and append init=/bin/sh to the boot arguments, then do the normal SPI boot.</p>
+<p><code>
+Hit any key to stop autoboot:  1 ^H^H^H 0<br/>
+hisilicon #<br/>
+hisilicon # setenv bootargs mem=42M console=ttyAMA0,115200 root=/dev/mtdblock2 rootfstype=jffs2 mtdparts=hi_sfc:1M(boot),2944K(kernel),10112K(rootfs),1280K(config),64K(key) init=/bin/sh<br/>
+hisilicon # sf probe 0;sf read 0x82000000 0x100000 0x300000;bootm 0x82000000<br/>
+...system boots here...<br/>
+# cat /etc/passwd<br/>
+root:$1$dfU0W8J6$vKtbAXdyZmq5GbYveqnnJ.:0:0::/root:/bin/sh<br/>
+</code></p>
+
+<h2>Preparing a backdoor</h2>
+<p>In UNIX, a second user account may be added with the same user-ID.
+This is easily prepared using openssl</p>
+<p><code>
+rsaxvc@x220:~$ openssl passwd -1<br/>
+Password: <br/>
+Verifying - Password: <br/>
+$1$DGtWAnSP$opJzjiYrVEy82GT9btLCo/<br/>
+rsaxvc@x220:~$ <br/>
+</code></p>
+
+<h2>Adding a backdoor</h2>
+<p>Previously, we created our backdoor, now we install it
+using pipes. I show a demo yoursalt - 1111 hash, but
+you should use the result from OpenSSL.</p>
+<p><code>
+# cat /etc/passwd<br/>
+root:$1$dfU0W8J6$vKtbAXdyZmq5GbYveqnnJ.:0:0::/root:/bin/sh<br/>
+# echo 'rsaxvc:$1$yoursalt$1111111111111111111111:0:0::/root:/bin/sh' >> /etc/passwd<br/>
+# cat /etc/passwd<br/>
+root:$1$dfU0W8J6$vKtbAXdyZmq5GbYveqnnJ.:0:0::/root:/bin/sh<br/>
+rsaxvc:$1$yoursalt$1111111111111111111111:0:0::/root:/bin/sh<br/>
+# mount / -o remount,ro<br/>
+# sync<br/>
+</code></p>
+
+<h2>Cracking the network password</h2>
+<code>
+	rsaxvc@rsaxvc:~/code/john-1.8.0/run$ nice nice ./john ~/passwd<br/>
+	Loaded 1 password hash (md5crypt [MD5 32/64 X2])<br/>
+	Will run 24 OpenMP threads<br/>
+	Press 'q' or Ctrl-C to abort, almost any other key for status<br/>
+	ev1324           (root)<br/>
+	1g 0:00:20:12 3/3 0.000824g/s 104157p/s 104157c/s 104157C/s ev199c..ev1r10<br/>
+	Use the "--show" option to display all of the cracked passwords reliably<br/>
+	Session completed<br/>
+	rsaxvc@rsaxvc:~/code/john-1.8.0/run$  telnet 192.168.234.1<br/>
+	Trying 192.168.234.1...<br/>
+	Connected to 192.168.234.1.<br/>
+	Escape character is '^]'.<br/>
+
+	ipc login: root<br/>
+	Password: <br/>
+	Welcome to HiLinux.<br/>
+	None of nfsroot found in cmdline.<br/>
+	# <br/>
+</code>
+
+<h2>Next Steps</h2>
+<ul>
+	<li>Look for command injection in the webapp.</li>
+	<li>Look at how the Android and Windows actually work</li>
+	<li>Request source code from the vendor</li>
+</ul>

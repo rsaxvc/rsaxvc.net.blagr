@@ -41,6 +41,7 @@ This side has power components and the WiFi radio - a radio module design is int
 <h2>Next Steps</h2>
 <ul>
 	<li>Charge battery</li>
+	<li>Take it apart</li>
 	<li>Look for command injection in the webapp.</li>
 	<li>Look at how the Android and Windows actually work</li>
 	<li>Request source code from the vendor</li>
