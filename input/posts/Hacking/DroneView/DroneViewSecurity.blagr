@@ -1,0 +1,48 @@
+Title:DroneView Security Problems
+Author:rsaxvc
+CreatedDateTime:2017-1-01T22:10:53
+Tag:DroneView
+Tag:Security
+---
+<h2>WiFi Password</h2>
+The WiFi uses an open network. This should be replaced with
+a default password printed on the device label.
+
+<h2>Everything Runs as Root</h2>
+This means any command-injection in the web UI
+would lend itself to immediate system compromise.
+
+<h2>No <a href="https://en.wikipedia.org/wiki/Passwd#Shadow_file">Shadowfile Support</a></h2>
+Password hashes are stored in /etc/passwd. If
+normal processes ran as something other than
+root, they would be restricted from fetching
+password hashes.
+
+<h2>Telnet identifies non-users</h2>
+If attempting to log in over Telnet with
+an invalid username, Telnet displays
+'getpwnam returned null'. This allowed me
+to quickly exclude a list of common username
+and password combinations used in IP camera
+devices. Also telnet should be replaced
+with SSH.
+
+<h2>Poor Password Choices</h2>
+By sharing a short alphanumeric password, ev1324,
+across all drones, the compromise of a single
+drone(mine), combined with telnet, allows
+wireless bricking of devices.
+
+<h2>Weak password hashing algorithms</h2>
+The root password is hashed with MD5. This
+took only about 20 minutes to brute-force.
+Since it is not common for someone to log
+into this device, there is little downside
+to using a much slower algorithm.
+
+<h2>Unlocked Bootloader</h2>
+This one I have mixed feelings on, but a bootloader
+password would have prevented me from extracting
+password hashes from the firmware. However, if the
+bootloader were locked, I then would have extracted
+it from the SPI flash. And then you need disk encryption.
