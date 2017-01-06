@@ -1,0 +1,93 @@
+Title:MadSax
+Author:rsaxvc
+CreatedDateTime:2017-01-05T22:10:52
+ModifiedDateTime:2017-01-05T22:10:52
+Tag:XML
+Tag:Expat
+Tag:MadSax
+Tag:LoadWarrior
+Tag:BeyondThunderDom
+---
+
+<h2>Expat Sax Parsing</h2>
+<p>
+<a href="http://expat.sourceforge.net">Expat</a> is a
+<a href="https://en.wikipedia.org/wiki/Simple_API_for_XML">SAX-Parser</a>
+for <a href="https://en.wikipedia.org/wiki/XML">XML</a>
+documents. However, parsing documents directly with Expat
+is a little cumbersome - Expat triggers a callback for every
+start and end XML tag, along with a string belonging to
+that tag, but it is left to the developer to convert
+this stream of named tags into usable events for processing.
+Various methods exist for this, including keeping a list of
+known tag-identifying-strings in the program, and scanning
+this list per tag to see what should be done. Commonly,
+this results in a string table that maps to an enumeration,
+and a switch-case.
+</p>
+
+<h2>MadSax works a little differently.</h2>
+<p>
+<a href="https://github.com/rsaxvc/MadSAX">MadSax</a> sits
+directly between Expat and higher level logic.
+Instead of a callback API for arbitrary tags, MadSax is
+built at compile-time with a list of tags the application
+is interested in. These tags are used to compile a minimal
+perfect hashmap using <a href="https://www.gnu.org/software/gperf/">gperf</a>.
+</p>
+
+<h2>Example MadSax Usage</h2>
+<p>
+This MadSax Definition File:
+</p><p>
+<code>
+	/svg/rect<br/>
+	/svg/circle<br/>
+</code>
+</p><p>
+Generates the following hash-indexed tag-handlers, which are used to
+trigger the higher-level application logic. These intentionally
+mirror the API of Expat, except that the element name need not
+be parsed, and may be removed in the future.
+</p><p>
+<code>
+	static void handle_tag_start__svg__rect(void *data, const char *el, const char **attr){}<br/>
+	static void handle_tag_end__svg__rect(void *data, const char *el){}<br/>
+	static void handle_tag_data__svg__rect(void *data, const char *content, int length){}<br/>
+	static void handle_tag_start__svg__circle(void *data, const char *el, const char **attr){}<br/>
+	static void handle_tag_end__svg__circle(void *data, const char *el){}<br/>
+	static void handle_tag_data__svg__circle(void *data, const char *content, int length){}<br/>
+</code>
+</p>
+
+<h2>What comes after MadSax?</h2>
+Two more XML-parsing related projects are planned after MadSax.
+<h3>The Load Warrior</h2>
+<p>
+The first, The Load Warrior,
+will be a thin layer on top of MadSax, and will support tagging MadSax definition lines
+with types. For most cases, this will remove the abstract the current three-step
+parsing(start/data/end) into a simpler API consisting of a single callback
+for a single XML Element. Start and End callbacks will still be used to delineate
+more complex objects, but single callbacks will be used to represent simple tags
+that enclose a single value.
+</p>
+<h3>Beyond ThunderDom</h3>
+<p>
+Beyond ThunderDom will sit above The Load Warrior, and serve to aggregate
+objects converted by The Load Warrior into structures directly usable by
+higher level application logic. For example, our above example for rectangles
+becomes:
+</p>
+<p><code>
+struct<br/>
+	{<br/>
+    float x;<br/>
+    float y;<br/>
+    float width;<br/>
+    float height;<br/>
+    const char * style;<br/>
+	}svg_rect;<br/>
+<br/>
+    static void handle_object__svg__rect(void *data, const struct svg_rect * rect){}<br/>
+</code></p>
