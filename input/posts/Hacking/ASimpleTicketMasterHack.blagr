@@ -1,0 +1,52 @@
+Title:A Simple Ticketmaster Hack
+Author:rsaxvc
+CreatedDateTime:2017-02-20T10:10:52
+ModifiedDateTime:2017-02-20T10:10:52
+Tag:Ticketmaster
+---
+<p>
+<a href="https://www.consumeraffairs.com/entertainment/ticketmaster.htm">
+Everyone seems to have their own reasons for hating ticketmaster.</a>
+
+</p><p>
+
+Here is mine - ticketmaster tries to optimize house filling. At first
+glance, this is great, since otherwise there would be a single-seat gap
+between every group at a show. However, this plan breaks down as the seats
+fill. I was recently presented with the following empty seat options for a show.
+I could either buy three seats in a row so that the two of us could sit together,
+or seat two attendees in different sections.
+</p><p>
+Seat in another section not shown below.<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/32204713223/in/dateposted-public/" title="ticketmaster_0"><img src="https://c1.staticflickr.com/3/2322/32204713223_bbdd3bfca0_m.jpg" width="172" height="178" alt="ticketmaster_0"></a>
+</p><p>
+Attempting either of the two-seat pairs of the three seats below...<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/32204713133/in/dateposted-public/" title="ticketmaster_1"><img src="https://c1.staticflickr.com/1/737/32204713133_13fcae87f1_m.jpg" width="176" height="176" alt="ticketmaster_1"></a>
+</p><p>
+...yields:<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/32204713063/in/dateposted-public/" title="ticketmaster_2"><img src="https://c1.staticflickr.com/3/2304/32204713063_47803bb72e.jpg" width="500" height="189" alt="ticketmaster_2"></a>
+</p><p>
+Thanks Bucko. In fact, selecting one seat here and one in another section is fine, like this:<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/32864594542/in/dateposted-public/" title="ticketmaster_3"><img src="https://c1.staticflickr.com/3/2694/32864594542_cd0acbfa2d_m.jpg" width="229" height="182" alt="ticketmaster_3"></a>
+</p><p>
+Once you select it, ticketmaster temporarily reserves your seat and takes you to a holding area:<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/32864594462/in/dateposted-public/" title="ticketmaster_4"><img src="https://c1.staticflickr.com/4/3825/32864594462_5709654b7a.jpg" width="439" height="223" alt="ticketmaster_4"></a>
+</p><p>
+Interestingly enough, opening a private tab at this stage shows that the seats in the holding area are no longer available.<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/32204712853/in/dateposted-public/" title="ticketmaster_5"><img src="https://c1.staticflickr.com/3/2230/32204712853_48bf352bbc_m.jpg" width="172" height="178" alt="ticketmaster_5"></a>
+</p><p>
+Now, you can reserve the two seats you wanted in the first place, and buy them<br/>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/32864594392/in/dateposted-public/" title="ticketmaster_6"><img src="https://c1.staticflickr.com/1/760/32864594392_db84d9bfe3_m.jpg" width="176" height="176" alt="ticketmaster_6"></a>
+</p><p>
+In retrospect, we should have started with the normal tab, and used the private tab to do the switcheroo. So, to wrap this up cleanly into some sensible instructions, the steps needed are:
+<ol>
+	<li>Log into ticketmaster in normal tab</li>
+	<li>Find the seats you want</li>
+	<li>Find the seats in the way of the seats you want</li>
+	<li>Open a private tab, and fill out an order for the unwanted seats, but do not order</li>
+	<li>Refresh the normal tab, confirm unwanted seats no longer available.</li>
+	<li>Order the seats you wanted in the first place.</li>
+	<li>Close the private tab</li>
+	<li>Have a wonderful night at the opera</li>
+</ol>
+</p>
