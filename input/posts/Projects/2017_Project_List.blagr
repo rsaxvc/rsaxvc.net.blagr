@@ -1,0 +1,40 @@
+Title:Project Goals for 2017
+Author:rsaxvc
+CreatedDateTime:2017-04-02T01:47:21
+ModifiedDateTime:2017-04-02T01:47:21
+Tag:Projects
+---
+<div>
+<h2>Implement <a href="https://github.com/rsaxvc/linux-proc-usbstats">
+	/proc/usbstats</a></h2>
+Ever since building <a href="https://github.com/rsaxvc/ioload">ioload</a>,
+I have wished I could see bus throughput for more busses than
+just storage. /proc/usbstats is a file similar to /proc/diskstats
+that enables tracking of bytes and packets per second to and
+from USB devices. This is quite helpful for USB
+performance monitoring, as well as providing a
+middle-ground for debugging between raw USB packet
+capture and no metrics at all.
+
+</div><div>
+<h2>Analyze transmitter differences between KCUR and KPR.</h2>
+
+I suspect KCUR has weak pre-emphasis in their
+FM-transmitter, based on differences with KPR,
+another public radio station, as well as with
+their online broadcast. This analysis will be
+done with an audio spectrum analyzer, as well
+as two RTL-SDR dongles.
+
+</div><div>
+<h2>Kenwood USB Radio Control.</h2>
+The Kenwood radio control project resurfaces
+with another iteration and a new hardware
+platform. Previously built on FTDI USB
+FIFOs and a pile of discrete logic, Cypress
+makes an 8051-based microcontroller capable
+of implementing both Z80 CPU FIFOs as well
+as the status and reset registers of the
+Intel 8251 UART. This will be a much
+cleaner and more manufacturable design.
+</div>
