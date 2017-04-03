@@ -1,0 +1,56 @@
+Title:Scanning for mobile devices running Netflix
+Author:rsaxvc
+CreatedDateTime:2016-12-6T22:10:52
+ModifiedDateTime:2016-12-06T22:10:52
+PublishedDateTime:2017-07-01T00:00:00
+Tag:Mongoose
+Tag:Netflix
+Tag:API
+Tag:REST
+---
+<h2>Strange Port You Have Open There</h2>
+<p>Recently, I found that my television had a new TCP port open - 9080.
+When I closed the Netflix application, the port closed too. Netflix uses port
+9080 to host a few APIs, presumably for mobile remote control or some other
+local-network-interfaced application. Interestingly, Netflix on Android also
+listens on port 9080. On both devices, the server does not respond with much
+except the string status=ok. NMAP service detection correctly guesses it to be a
+<a href="https://github.com/cesanta/mongoose">Mongoose Server</a>, a commonly
+embedded http server. As an embedded http server, it is non-trivial
+to guess URIs, as the URIs point to snippets of code inside the application
+rather than static files. But, guessing /ping as a URI returns PONG.
+I suspect there are more functional URIs, but even a simple response
+is enough for some work.
+</p>
+
+<h2>Shame If Anything...Happened To It</h2>
+<p>
+Oddly, Netflix listens to port 9080 on all
+network interfaces. By using two devices on
+the same cellular network, one can check if
+the other is running Netflix by checking
+for an open port 9080, like so:
+</p><p><code>
+rsaxvc@x220:~/code/rsaxvc.net.blagr/input/posts/Hacking$ nmap 10.186.111.239 -p 9080<br/>
+<br/>
+Starting Nmap 7.31 ( https://nmap.org ) at 2017-01-01 21:04 CST<br/>
+Nmap scan report for mobile.rsaxvc.net (10.186.111.239)<br/>
+Host is up (0.17s latency).<br/>
+PORT     STATE SERVICE<br/>
+9080/tcp open  glrpc<br/>
+<br/>
+Nmap done: 1 IP address (1 host up) scanned in 0.30 seconds<br/>
+rsaxvc@x220:~/code/rsaxvc.net.blagr/input/posts/Hacking$ <br/>
+</code></p><p>
+By replacing the IP address with a range corresponding to a cellular
+network, it becomes quite simple to scan for users running Netflix.</p>
+
+<h2>Remediation Timeline</h2>
+<ul>
+	<li>December 7th, 2016 - Issue initially reported to the <a href="https://help.netflix.com/en/node/6657">Netflix responsible disclosure program</a>.</li>
+	<li>December 23rd, 2016 - Completed documentation and proposed solution.</li>
+	<li>December 27th, 2016 - Netflix confirmed issue.</li>
+	<li>April 2017 - Netflix fixed issue by only listening on local networks.</li>
+</ul>
+
+Netflix handled it professionally, remediating it even though it is a very small privacy leak. It was a pleasure working with them.
