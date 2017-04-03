@@ -1,2 +1,2 @@
 #!/bin/bash
-python blagr/build_blog.py
+python blagr/build_blog.py "$@"

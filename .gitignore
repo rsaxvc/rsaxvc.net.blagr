@@ -28,3 +28,6 @@ pip-log.txt
 
 #output
 tags/
+
+#Random editor gunk
+*.swp
