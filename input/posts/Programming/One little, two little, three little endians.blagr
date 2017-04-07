@@ -7,4 +7,74 @@ Tag:MIPS
 Tag:PDP-11
 Tag:endianness
 ---
-I've done a little work on two different endians. Currently, I've missed out on PDP-endian. Again, the question came up, which one is best, so I'll give it a go at explaining the three and their differences.&nbsp;Endianness, is the pattern of storing a multi-byte word into multiple bytes of memory. In particular, the bytes are often stored most-significant or least significant byte first. You might wonder why anyone would store objects backwards (indeed, little-endian is the only 'language' I know where the 'sentences' are written in ascending order, but the words are written in reverse order). However, there are some distinct advantages to storing words in little-endian order(union alignment and addition/subtraction/multiplication pipelining), as well as there are advantages to storing words in big-endian order( natural treatment of multi-byte objects, easier comparison ).&nbsp;Please keep in mind that with modern processors, some of these reasons end up not meaning nearly as much as they used to.<div><meta http-equiv="content-type" content="text/html; charset=utf-8"><div><br /></div><div><b>Union Alignment</b></div><div>Lets take the following example:</div><div>union{</div><div>uint8_t one;</div><div>uint16_t two;</div><div>uint32_t four;</div><div>}sometype;</div><div><br /></div><div>With little endian, because all the objects are written backwards, the union members one, two, and four can be located at the same address in memory, which can really simplify things at an assembly level. With big endian, two has to be stored 2 bytes past the beginning of the union, and one has to be stored 3 bytes past the beginning of the union. *</div><div><br /></div><div><b>Addition/Multiplication/Subtraction <a class="zem_slink" href="http://en.wikipedia.org/wiki/Pipeline_%28computing%29" title="Pipeline (computing)" rel="wikipedia">Pipelining</a></b></div><div>By storing bytes in little-endian order, something neat happens**. Think back to multi-digit arithmetic(except division). When performing an operation, you always start with the least-significant digit. This is because the less significant digits can only overflow into more significant digits, so when one byte is loaded in, enough information to begin computation is already available.</div><div><br /></div><div><b>Natural Treatment of Object Byte Order</b></div><div>I'm going to call big-endian as natural byte order, because by keeping words in big-endian, things like memcmp() can get a little more efficient. For example, when comparing large objects with memcmp() on a big-endian system, it becomes possible to aggregate compares to full word sizes. This can be significantly more efficient than comparing per byte. (Potentially, you can implement something similar with little-endian, but it incurs an overhead when there is a difference in the two areas of memory, or a per word overhead)***. Also, most network protocols are written in big-endian. This usually isn't much overhead compared to say, generating the data to ship over the network, but for small applications it can build up.&nbsp;</div><div><br /></div><div><b>Comparison and Sign information</b></div><div>By storing the most significant information first in memory, operations requiring sign information or comparison can be implemented more easily(**). Because the sign information is stored earlier in the word, a big-endian compare can complete as soon as there is a difference in the word. This becomes even more important when dealing with objects larger than the native <a class="zem_slink" href="http://en.wikipedia.org/wiki/Word_%28computing%29" title="Word (computing)" rel="wikipedia">word size</a>.</div><div><br /></div><div><b>PDP-endian</b></div><div>I haven't mentioned PDP-endian, because it is such an oddball. Worst of both worlds it seems. As a <a class="zem_slink" href="http://en.wikipedia.org/wiki/16-bit" title="16-bit" rel="wikipedia">16-bit architecture</a>, 16-bit words are stored in little-endian format, but compilers on <a class="zem_slink" href="http://en.wikipedia.org/wiki/PDP-11" title="PDP-11" rel="wikipedia">PDP-11s</a> would store 32-bit words as two consecutive 16-bit little endian words. This makes it extra-confusing. Potentially compilers could be updated to store words in little-endian order, but this architecture is almost entirely dead, and all the other software running on it expects PDP-endian already.</div><div><br /></div><div>*Depending on architecture, the alignment might move things differently, but this scenario is pretty common</div><div>**on systems with memory buses narrower than the cpu word size (this actually happens a lot on embedded stuff (8088, some <a class="zem_slink" href="http://en.wikipedia.org/wiki/ARM_architecture" title="ARM architecture" rel="wikipedia">ARM</a> and some <a class="zem_slink" href="http://en.wikipedia.org/wiki/MIPS_architecture" title="MIPS architecture" rel="wikipedia">MIPS</a> )</div><meta http-equiv="content-type" content="text/html; charset=utf-8"><div>***On systems like ARMv7, you can swap endianness in a single instruction. On little-endian systems, you can still use word compares to speed up memory access, but when the words compared are different, you then have to switch the endianness and figure out the right memcmp return.</div></div>
+<p>I've done a little work on two different endians. Currently, I've missed out on PDP-endian. Again, the question came up,
+which one is best, so I'll give it a go at explaining the three and their differences.&nbsp;Endianness, is the pattern of
+storing a multi-byte word into multiple bytes of memory. In particular, the bytes are often stored most-significant or
+least significant byte first. You might wonder why anyone would store objects backwards (indeed, little-endian is the only
+'language' I know where the 'sentences' are written in ascending order, but the words are written in reverse order).
+However, there are some distinct advantages to storing words in little-endian order(union alignment and addition/subtraction/multiplication
+pipelining), as well as there are advantages to storing words in big-endian order( natural treatment of multi-byte objects,
+easier comparison ). Please keep in mind that with modern processors, some of these reasons end up not meaning nearly as
+much as they used to.</p>
+
+<h2>Union Alignment</h2>
+<p>The following section goes into why an odd feature of C works on little-endian but not on big-endian. 
+You are warned not to use unions in this way.</p>
+
+<code>union{
+<br/>uint8_t one;
+<br/>uint16_t two;
+<br/>uint32_t four;
+<br/>}example_union;
+<br/></code>
+
+<p>In a union, the address of the union is the address of each member. In little-endian, one is located at the same location as
+the least significant byte of two. And two is located at the least significant bytes of four. This means we can read and write
+to member one as if casting two or four to uint8_t. However in big-endian, one is located at the most significant byte of
+two and of four. And two shares the most significant bytes of four. So, we cannot access different members as if they
+were casts of each other. Since doing so is not portable, C code should not be written this way. Now you know why.
+</p>
+
+<h2>Addition/Multiplication/Subtraction <a "href="http://en.wikipedia.org/wiki/Pipeline_%28computing%29" title="Pipeline (computing)" rel="wikipedia">Pipelining</a></h2>
+<p>When performing multi-digit arithmetic(except division), you always start with the rightmost(or least-significant) digit.
+Similarly, digital adders start with the least-significant bit/nibble/byte/word because overflow moves upward toward
+more significant digits, so when the first byte is loaded in, enough information to begin computation is already available.
+However, this optimization is rarely used in hardware design today - most memory subsystems deliver memory to the
+processor in processor-word sized amounts, or larger like cachelines, so the impact of this optimization is rare.
+</p>
+
+<h2>Division <a "href="http://en.wikipedia.org/wiki/Pipeline_%28computing%29" title="Pipeline (computing)" rel="wikipedia">Pipelining</a></h2>
+<p>When performing long-division, you always start with the most-significant ends of both numerator and denominator.
+Similarly in digital division, carrys move from most significant digits toward less significant digits. So, having the
+most significant byte ready first can be leveraged for a small improvement in pipelining. But again, contemporary
+hardware designs are rarely impacted by this.
+</p>
+
+<h2>Natural Treatment of Object Byte Order</h2>
+<p>I'm going to call big-endian as natural byte order, because by keeping words in big-endian, things like memcmp() can get a tiny bit more efficient.
+For example, when comparing large objects with memcmp() on a big-endian system, it becomes possible to aggregate compares to full word sizes.
+This can be significantly more efficient than comparing per byte. (Potentially, you can implement something similar with little-endian, but it
+incurs an overhead when there is a difference in the two areas of memory, or a per word overhead)***. Also, most network protocols are written
+in big-endian. This usually isn't much overhead compared to say, generating the data to ship over the network, but for small applications it
+can build up.&nbsp;</p>
+
+<h2>Comparison and Sign information</h2>
+<p>By storing the most significant information
+first in memory, operations requiring sign information or comparison can be implemented more easily(**). Because the sign information is stored
+earlier in the word, a big-endian compare can complete as soon as there is a difference in the word. This becomes even more important when
+dealing with objects larger than the native <a href="http://en.wikipedia.org/wiki/Word_%28computing%29" title="Word (computing)" rel="wikipedia">word size</a>.
+</p>
+
+<h2>PDP-endian</h2>
+<p>I haven't mentioned PDP-endian, because it is such an oddball. Worst of both worlds it seems. As a 16-bit architecture,
+16-bit words are stored in little-endian format, but compilers on
+<a href="http://en.wikipedia.org/wiki/PDP-11" title="PDP-11" rel="wikipedia">PDP-11s</a> would store 32-bit words as two
+consecutive 16-bit little endian words. This makes it extra-confusing. Potentially compilers could be updated to store words in little-endian order,
+but this architecture is almost entirely dead, and all the other software running on it expects PDP-endian already. Sometimes I put a compiler-assert
+for this case. Nobody has ever complained.
+</p>
+
+<div>**on systems with memory buses narrower than the cpu word size (this tends to only happen on on embedded things like 8088. On <a href="http://en.wikipedia.org/wiki/ARM_architecture" title="ARM architecture" rel="wikipedia">ARM</a> and some <a href="http://en.wikipedia.org/wiki/MIPS_architecture" title="MIPS architecture" rel="wikipedia">MIPS</a> the bus may be smaller than the CPU, but the bus controller will issue multiple bus loads and stores to match the cpu bus width). It seems like this effect might be useful when dealing with integers larger than a CPU can natively handle, but in that case, the CPU can break the integer into multiple smaller pieces, and load them in the optimal order anyways.</div>
+<div>***On systems like ARMv7, you can swap endianness in a single instruction. On little-endian systems, you can still use word compares to speed up memory access, but when the words compared are different, you then have to switch the endianness and figure out the right memcmp return.</div></div>
+<br/>
+<div>On April 7th, 2017, this post was updated to reflect my current knowledge on the topic, as well as to correct some highly grody HTML.</div>
