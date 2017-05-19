@@ -6,9 +6,9 @@ Tag:Arduino
 Tag:NTSC
 Tag:PAL
 Tag:Pickin' Sticks
-Tag:game
-Tag:potentiometers
-Tag:video
+Tag:Game
+Tag:Potentiometers
+Tag:Video
 ---
 Rachel and Jestin, of <a href="http://c3kc.org/">CCCKC</a>&nbsp;fame, pointed me toward a library named&nbsp;<a href="http://code.google.com/p/arduino-tvout/">arduino tv-out</a>, which is a software modulator for NTSC and PAL video signals. Rachel wrote a game long ago, called&nbsp;<a href="http://pickinsticks.moosader.com/">Pickin' Sticks</a>. <a href="https://github.com/rsaxvc/pickin-duino">Pickin' Duino</a> is an implementation of Pickin Sticks on Arduino. The game itself is pretty simple - there is one player, and one other item on the screen, a bundle of sticks. Move your character to the sticks to gain a point. Oh no, more sticks appeared. Eventually I set the score to 'WIN' at some point when you've been playing far too long.<div><br /></div>
 
