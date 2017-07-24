@@ -1,0 +1,56 @@
+Title:Lets Talk About IC Interconnect Buses
+Author:rsaxvc
+CreatedDateTime:2017-07-23T00:13:50
+ModifiedDateTime:2017-07-23T00:15:28
+Tag:Bus
+Tag:AMBA
+Tag:Nebraska
+---
+<h2>Simple busses</h2>
+In the beginning, CPUs had data buses for connecting to RAM and ROM. Often as simple as address and data pins,
+some simple external logic to decode an address and pick a chip was all that was needed to integrate a system.
+This architecture is still used in simple CPUs still produced today, like 8051 and AVR.
+
+<h2>Multi-master simple busses</h2>
+Pretty early on, someone needed to hook another bus master, often a DMA controller, to a simple CPU.
+And thus bus arbitration was born, attempting to answer the question of - what happens
+when two masters want to talk to the same bus slave? One simple approach is to stall the CPU
+clock while the DMA accesses the bus. <a href="http://www.ti.com/lit/ug/slau395e/slau395e.pdf">TI MSP430 DMAs work this way</a>,
+as did Intel 8086/8088 CPUs where the Intel 8237 DMA controller would set the HOLD pin on the CPU to stall it.
+Once a CPU gets pipelining and caches, it sometimes makes sense to stall the DMA while the CPU uses the bus.
+Slightly more complicated is letting the CPU program a priority so that the CPU can
+be stalled by DMA0, and DMA1 only runs when DMA0 and the CPU are idle.
+
+<h2>Multi-master, multi-slave, crossbar switch</h2>
+Letting a CPU fetch instructions from ROM while a DMA copies into RAM is a lot more performant if both can be done at
+the same time. Borrowing a hint from
+<a href="https://howlingpixel.com/wiki/Crossbar_switch">1915 telephone equipment</a>, the crossbar switch connects a number
+of bus masters with a number of bus slaves through a number of connections.
+
+<h2>Distributed crossbar switch</h2>
+<p>As chips gained more peripherals, connecting every bus master(CPU, a few DMA
+controllers, a GPU, maybe a few other things), to every bus slave (SPI, I2C, FlexBus, GPIO, USB, ...)
+gets a little bit excessive and ends up being a bit of a mess in the silicon as it requires routing
+all the internal buses correspodning to the masters and slaves to a single location. Additionally, a big crossbar
+gives a large fan-out, which is where one output signal has to drive a large number of, albeit unused, input signals.
+</p><p>
+This led to systems with a fast crossbar for the CPU, DMA, RAM, and ROM, and another smaller, slower switch for
+things like I2C, SPI, GPIO, that would then all be routed to one or two ports on the big crossbar. This architecture
+is common on ARM platforms, with a fast AHB and a slower APB for peripherals.
+</p><p>
+Things get a little more interesting with multicore microcontrollers. It's certainly possible to connect two microcontroller
+cores to the same main crossbar, but another approach is to give each core its own crossbar, and then routing a slave port for each
+crossbar to a master for the other crossbar, giving each core some of its own RAM, and tying the slow peripheral bus into both crossbars.
+Both of these approaches work, have their own upsides and downsides, and are an evolutionary step to...
+</p>
+
+<h2>Network-on-a-chip</h2>
+As we break up the main crossbar into smaller and more numerous interconnects, the result is a multi-point
+network connecting each component to switches, both large and small, with connections between scaled
+to the amount of expected data. <a href="http://www.nxp.com/docs/en/application-note/AN4947.pdf">NXP Vybrid Architecture</a>
+chips merge M4 and A5 cores along with DMA . All of the cores and peripherals are routed together using
+an <a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0397i/BABGJHFJ.html">ARM NIC-301 network interconnect</a>,
+which supports connecting 18 bus masters to 10 bus slaves using five separate switches to emulate a single, giant, logical crossbar switch.
+This means that both the A5 and M4 cores can access the entire logical address space, but a few really neat options are implemented. Access
+to the Secure-RAM is limited so that only certain masters can access it. These limitations were often available on earlier crossbar bus systems,
+but with an on-chip network the implementation is simpler - there is simply no route from disallowed masters to the Secure-RAM slave.
