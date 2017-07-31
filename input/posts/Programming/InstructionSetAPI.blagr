@@ -1,0 +1,132 @@
+Title:Everything is awesome and terrible
+Author:rsaxvc
+CreatedDateTime:2017-07-30T01:08:14
+ModifiedDateTime:2017-07-30T01:08:14
+Tag:ARM
+Tag:DSP
+Tag:Instruction
+Tag:MIPS
+---
+Originally, this post was going to be titled, "your instruction set is an API",
+and discuss
+how instruction sets have changed over the ages and different ways things
+have been done well and done poorly. But pretty quickly it turned into
+a ramble describing how everything is different and terrible and beautiful,
+and nothing is the right tool for everything.
+
+<h2><a href="https://en.wikipedia.org/wiki/Delay_slot">Branch Delay Slots</a></h2>
+Branch delay slots are a handful of instructions that are both listed, and occur, after a branch. DSPs and older RISC cores tended to do this to keep the pipeline and branch logic both simple and performant. SPARC, PA-RISC, and MIPS have one branch delay slot. SHARC has two. Check out this MIPS32 code to return 0:
+<pre>
+	return_zero:
+		jr $r31             ;return from function. Well, maybe more like start returning from the function.
+		mov $v0, $zero      ;Copy value from zero register into a0(first returned value). This still happens even though there's a jump before it.
+		                    ;At this point, we've finished returning from the functions.
+		addi $v0, $v0, 1    ;This does not happen, because it is too far after the jump.
+</pre>
+
+<h3>Why it's awesome.</h3><p>
+
+Branch delay slots give assembly and compiler writers the opportunity to fold instructions into otherwise unused spots to keep the pipeline filled. And the core stays simple...right?
+
+<h3>Why it sorta sucks.</h3><p>
+
+<p>Encoding details of a CPU pipeline into an instruction set works really well until you need to change your CPU pipeline. Then you have two choice. Choice A, maintaining the existing instruction set API requires emulating the previous CPU pipeline, likely forever. MIPS32 does this, and poorly at that, as we'll see later. <a href="http://www.ti.com/lit/ug/sprugh7/sprugh7.pdf">TI C66X DSPs</a> even go so far as to add new opcodes for functional improvements, while manually stalling older ones to keep the cycle times the same.</p>
+<p>Another hypothetical approach is to make vary the number of delay slots to match the pipeline, invalidating the API. This would only be useful for highly configurable cores with a correspondingly configurable compiler, like <a href="http://me.bios.io/images/d/dd/ARCompactISA_ProgrammersReference.pdf">ARC</a> who took this concept to an absurdist level - ARCompact cores have one delay slot, but you can turn it on or off at runtime. ARCtangent-A5 has two delay slots. ARC600 has three, but only the first is always executed, the other two are killed if the branch isn't taken.
+</p><p>
+What happens when an exception or interrupt occurs in the branch delay slot? One way around this is to require that all branch delay slots be repeatable - destination registers independent from source registers, no stores, other branches, stack manipulation, or other shenanigans either. Suddenly, the branch delay slot is a whole lot less useful. Alternatively, the processor can include additional hardware to record more state about exactly wherabouts inside of the branch the CPU was when the exception occured. Did I forget to mention that fetching an instruction can trigger an exception on operating systems with demand paging, or on cores with software TLB fetches?
+</p>
+
+<h2><a href="https://en.wikipedia.org/wiki/Delay_slot#Load_delay_slot">Load delay slots</a></h2><p>
+On our speed-fueled trip through exposing pipeline innards to developers, non-interlocked load delays describe a non-blocking memory to register load. Non-blocking? To dig a up a little ancient history, MIPS is an acronym for Microprocessor without Interlocking Pipeline Stages. MIPS R2000 and MIPS R3000 load instructions aren't guaranteed finish before any instruction that uses the freshly-loaded register.
+</p>
+<h3>Why it's awesome.</h3><p>
+	TI VLIW DSPs use this to great effect, dispatching many instructions in parallel, mixing loads in freely with arithmetic so that the loads complete just ahead of upcoming arithmetic instructions. The original PlayStation did so to a lesser effect.
+</p>
+
+<h3>Why it sorta sucks.</h3><p>
+The fact that this code fails on a PlayStation MIPS R3000 and works on an R5900 sucks:
+	<pre>
+		why_does_this_only_work_on_newer_mips_cores: ;static uint32_t fetch( uint32_t * ptr ) { return *ptr };
+			lw $v0, 0($a0)  ;Load Word from *a0 into v0.
+			mov $v0, $v0    ;R3000 overwrites v0 when lw completes. R5900 stalls until lw completes.
+			jr $r31         ;start returning from function.
+			nop             ;finish returning from function.
+	</pre>
+And it sucks that for load delay slots to be as short as possible without needing to implement interlock the pipeline, memory has to have known latency. Which means this approach is either incompatible with dynamic RAM, caches and other bus masters, or the processor only ends up hiding some of the interlock stall.
+</p>
+
+<h2>Functional unit delay slots</h2><p>
+	Functional unit latency is the amount of time part of the processor takes to do a certain operation. On a dual-issue dual-ALU system two independent shifts might get done in a single cycle, but their latency is still one if no further instruction can use the result until then. But what if a processor allowed developers to manually schedule individual functional units on a processor to minimize latency. And if developers were already doing that, why bother implementing stalls in the pipeline? Surely the developer would insert a NOP to wait for the ALU to complete before reading from it. Much like load delay slots, functional unit delay slots allow the developer and processor to interleave operations. Unlike load delay slots, most functional unit timings can be known before run-time, so it's often pretty usable.
+</p>
+
+<h3>Why it's awesome.</h3><p>
+	TI C66X DSPs have schedule 32 16-bit multiplies in parallel, and 16 floating point operations. And this isn't even SIMD, it's just keeping the pipeline near optimally filled.
+</p>
+
+<h3>Why it sorta sucks.</h3><p>
+	Reasoning about the state of the CPU can be incredibly difficult, since removing or relocating an instruction changes the meaning of the register map for following instructions. Additionally, programs often end up padded with VLIW NOPs.
+</p>
+
+<h2>Interrupt disablement hazards - MIPS</h2>
+On MIPS, disabling interrupts requires the programmer to set a flag with MTC(Move to Coprocessor), then wait a few cycles. Sometimes you can fold a few register operations in after the MTC, but usually you end up with an MTC instruction and a pile of superscalar-NOPS. How many cyles do we need to wait before we can be sure an interrupt won't pop in? If we <a href="http://www.mit.edu/afs.new/sipb/project/merakidev/include/asm/hazards.h">ask Linux</a>, we get an answer of somewhere between 0(R10000) and 3(Classic MIPS). That's right, a two hundred line file that doesn't actually implement anything other than NOPs. If we  <a href="http://web.mit.edu/freebsd/head/sys/mips/include/cpuregs.h">ask FreeBSD</a>, we get an answer of between 4 and 9(SiByte-1), unless it's a Cavium or Raza, those implement it in hardware. A better way to implement this would be a GCC intrinsic that padded loads and stores out past a parameterized number of cycles, but allowed the compiler to replace the padded NOPs with register instructions from later in the function. Eventually MIPS added the ExecutionHazardBarrier(EHB) instruction, which acts like 'the correct number of NOPs'.
+
+<h3>At first, it sounds kinda awesome.</h3>
+Who wants to wait 9 whole cycles on a SiByte core for interrupts to disable???
+
+<h3>And it always kinda sucked.</h3>
+It turns out that pretty much everyone is willing to wait 9 whole cyles for to be absolutely certain interrupts are disabled. An unexpected interrupt or context switch is such bad news it just isn't worth the risk. I cannot say for certain that nobody takes advantage of the exposed pipeline hazards - in assembly it's actually quite easy to do so, but the fact that nobody has bothered teaching GCC really shows when you disassembly router firmware - there are a lot of NOPs. It also sucks that the instruction sets are basically incompatible, though these changes are really limited to a handful of kernel operations, it's still a pain for RTOS work.
+
+<h2><a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dai0321a/BIHBFEIB.html">Interrupt disablement hazards - ARM32</a></h2><p>
+With ARM architecture version 6(previously interrupt disabling was fully synchronous), ARM introduced two handy instructions, CPSID(Disable Interrupts), and CPSIE(Enable Interrupts). Previously it was always a read-modify-write sequence on the CPU flags register. Unlike MIPS, ARM also included an implicit hardware barrier in CPSID, but not in CPSIE. It turns out CPSID is the one you really want to have hardware support for. For CPSIE, interrupts usually come in a few instructions past the CPSIE, which you can think of as having sneaked a few instructions into time that would've otherwise been idle or spent on NOPs like on MIPS. Except for one rare specific case.
+
+<h3>It's kinda awesome.</h3>
+By the time CPSID completes, you can assume interrupts are disabled. And an interrupt being delayed by a handful of CPU cycles is rarely anything worry about. Codespace cost is a single instruction for each. Sanity stays at a maximum level. For the vast majority of compiler and assembly writers this implemntation of CPSID/CPSIE makes instruction scheduling a breeze...
+
+<h3>...and then it sorta sucks.</h3><p>
+Because there's this thing. The following code tries to reduce interrupt latency by manually scheduling the interruptions for a convenient time in the instruction stream. Luckily, it's quite rare in hosted operating systems, but more common in RTOSs. It's also not guaranteed to work:
+</p><pre>
+	wait_for_interrupt:         ;Assume interrupts are disabled
+	    CPSIE i                 ;Enable interrupts. But don't bother waiting for it...
+	    CPSID i                 ;Stall until interrupts are disabled
+	    b wait_for_interrupt    ;rinse and repeat
+</pre><p>
+Will another interrupt ever occur? If the processor design favors performance, it may finish the current pipeline of instructions before taking an interrupt. If the design favors latency, it could discard whatever is in the pipeline as soon as it can take an incoming interrupt. On Cortex-M0/0+/1, the processor can execute one instruction with interrupts disabled after CPSID. On Cortex-M3/4/4F, one or two instructions can occur. But there's a footnote in <a href="http://infocenter.arm.com/help/topic/com.arm.doc.dai0321a/DAI0321A_programming_guide_memory_barriers_for_m_profile.pdf">ARM's documentation</a> that the above code will work on Cortex-M0/0+/1/3/4/4F because the next CPSID should figure it all out. But this documentation predates the dual issue Cortex-M7, as well as the new M23 and M33, whose documentation has not been announced yet. Clear as mud? Adding an instruction synchronization barrier will always work:
+</p><pre>
+	wait_for_interrupt:         ;Assume interrupts are disabled
+	    CPSIE i                 ;Enable interrupts. But don't bother waiting for it...
+	    ISB                     ;Pause instruction execution
+	    CPSID i                 ;Stall until interrupts are disabled
+	    b wait_for_interrupt    ;rinse and repeat
+</pre>
+
+<h3>...but really, it's a pretty sensible tradeoff.</h3>
+<p>
+Older ARM cores, at least ARM7TDMI and Cortex-A9 supported a different mechanism for interrupt disablement, where all writes to the CPSR were synchronizing, this was often unneccesarily slow. Exposing only the enable hazard will almost never cause a problem.
+</p>
+
+<h2>Instruction Set Compatibility</h2>
+<p>
+As we've seen, there are lots of crazy ways to lock developers into archaic
+details of the CPU. Wouldn't it be great if the same executable could be run
+on future chip versions? ARM handles this with pipeline stalls in the
+appropriate places. After MIPS R3000, things are handled the same way in
+userspace, with a few oddities left for the kernel.
+</p><p>
+TI C66x, with its near fully asynchronous architecture is left
+in a tough spot - improving instruction timings would break
+existing binaries and libraries, but handcuffing the CPU to an
+old pipeline doesn't make sense either. TI's solution is to
+implement an entire, distinct instruction set each time they
+improved the processor throughput, leaving the old instruction
+encodings padded with stalls. Conveniently, compilers can now
+issue these when they need a result a few cycles later than
+originally expected.
+</p><p>
+Tensilica and ARC don't bother with instruction set compatibility.
+The main driver behind selecting one of these is so custom instructions
+can be tailor made into a core. These are available both from the
+the supplier, but ARC also allows adding your own. Simply put,
+when changing over from one processor to another in this family,
+only the base instructions are available, and DCT/IDCT might not be,
+or Vitterbi decoder may or may not be, or motion estimator, or FPU, ...
+</p>
