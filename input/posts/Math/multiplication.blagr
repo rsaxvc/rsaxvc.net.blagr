@@ -1,0 +1,208 @@
+Title:Binary Multiplication Tricks
+Author:rsaxvc
+CreatedDateTime:2017-10-15T22:10:52
+ModifiedDateTime:2017-10-15T22:10:52
+Tag:Math
+Tag:Multiplication
+Tag:Logic
+Tag:Optimization
+---
+
+<p>
+This is a rambly math post. Sean Anderson's <a href="https://graphics.stanford.edu/~seander/bithacks.html">
+Bit Twiddling Hacks</a> is full of interesting uses of multiplication to manipulate bits, but
+some of the examples use multiplication that isn't immediately clear. At some point in my software development
+career, there was a moment where I understood how multiplication worked, and the day before then I didn't. This post
+is an attempt to explain how I use multiplication for bit and byte twiddling, as opposed to scalar arithmetic multiplication.
+In particular, I'm going to focus on multiplication with one constant, and tricks for determining the right constant to use.
+</p>
+
+<h2>Multiplication Algorithms</h2>
+<p>
+There are a number of different multiplation algorithms, each more or less
+useful in different circumstances. When learning multiplication as a child,
+I remember the <a href="https://en.wikipedia.org/wiki/Grid_method_multiplication">Grid Method</a>,
+<a href="https://en.wikipedia.org/wiki/Multiplication_algorithm#Long_multiplication">Long Multiplication</a>, and
+<a href="https://en.wikipedia.org/wiki/Multiplication_algorithm#Peasant_or_binary_multiplication">Peasant Method</a>.
+These all work great, but a derivative of Peasant Method, <a href="https://en.wikipedia.org/wiki/Multiplication_algorithm#Shift_and_add">Shift and Add</a>
+is a good model for digital multiplication.
+</p>
+
+<h2>Shift-and-add multiplication model</h2>
+<p>
+Shift-and-add treats multiplication as a loop over all
+the bits in one multiplicand and multiplies one bit at
+a time by the multiplier. Results are accumulated at each step.
+
+Digitally, a 1xN-bit multiplier can be implemented with
+an N-bit adder and a mask. A*B is equivalent to If(A)
+
+This function implements an 8x8=>16 bit multiplier
+using a 1xN bit multiplier and 16-bit accumulator.
+</p>
+<pre>
+
+uint16_t mult8( uint8_t a, uint8_t b )
+{
+uint16_t accum = 0;
+for( unsigned i = 0; i < 8; ++i ) //For every bit in B
+    if( b & ( 1 << i ) ) //If corresponding bit
+        accum += ( a << i ); //shift-accumulate to multiply
+return accum;
+}
+</pre>
+
+<p>
+While not particularly well suited to hardware-implementation(long, wide adders are complicated),
+when unrolled, N-bit multiplication can be implemented with N shifters(holding 'A'), a set of N masks, each
+combining a bit of 'B' with the corresponding shifter output, and the output of each mask
+fed into an N-input adder. The concept scales to arbitrary length integers with more shifts
+and a wider adder. In short, we can treat multiplication as a bit-vectorized
+shift & add accumulator.
+</p>
+
+<h2>By the Grace of Boole, Let us Compute</h2>
+<h3>Multiplying by 16</h3>
+<p>
+To multiply by a power-of-two, we need only set the corresponding
+bit in the multiplier. So for B=16, shifter number 4 needs activated,
+and no others.
+</p>
+
+<pre>
+        00000000 | B & ( 0 << 0 )
+       000000000 | B & ( 0 << 1 )
+      0000000000 | B & ( 0 << 2 )
+     00000000000 | B & ( 0 << 3 )
+    AAAAAAAA0000 | B & ( 1 << 4 )
+   0000000000000 | B & ( 0 << 5 )
+  00000000000000 | B & ( 0 << 6 )
+ 000000000000000 | B & ( 0 << 7 )
+               +
+---------------------------------
+     AAAAAAAA*10
+</pre>
+
+<h3>Multiplying by 10</h3>
+<p>
+To multiply by B=10, we represent 10 as 2+8, and correspondingly
+activate B shifters 1 and 3. This is equivalent to
+adding 2*B + 8*B:
+</p>
+
+<pre>
+        00000000 | B & ( 0 << 0 )
+       AAAAAAAA0 | B & ( 1 << 1 )
+      0000000000 | B & ( 0 << 2 )
+     AAAAAAAA000 | B & ( 1 << 3 )
+    000000000000 | B & ( 0 << 4 )
+   0000000000000 | B & ( 0 << 5 )
+  00000000000000 | B & ( 0 << 6 )
+ 000000000000000 | B & ( 0 << 7 )
+               +
+---------------------------------
+     AAAAAAAA*10
+</pre>
+
+<h3>Multiplying by 255</h3>
+<p>
+To multiply by B=255, every bit is set in B, so we just add all 8 inputs:
+</p>
+
+<pre>
+        AAAAAAAA | B & ( 1 << 0 )
+       AAAAAAAA0 | B & ( 1 << 1 )
+      AAAAAAAA00 | B & ( 1 << 2 )
+     AAAAAAAA000 | B & ( 1 << 3 )
+    AAAAAAAA0000 | B & ( 1 << 4 )
+   AAAAAAAA00000 | B & ( 1 << 5 )
+  AAAAAAAA000000 | B & ( 1 << 6 )
+ AAAAAAAA0000000 | B & ( 1 << 7 )
+               +
+---------------------------------
+    AAAAAAAA*255
+</pre>
+
+
+<h2>Some simple bit twiddling</h2>
+
+Now that we understand our swiss-army chainsaw of shift-accumulation:
+
+<h3>Repeat a 2-bit pattern 4-times</h3>
+Bit-repeating a pattern is as simple as multipling by 85(0b01010101):
+<pre>
+        000000Aa | B & ( 1 << 0 )
+       000000000 | B & ( 0 << 1 )
+      000000Aa00 | B & ( 1 << 2 )
+     00000000000 | B & ( 0 << 3 )
+    000000Aa0000 | B & ( 1 << 4 )
+   0000000000000 | B & ( 0 << 5 )
+  000000Aa000000 | B & ( 1 << 6 )
+ 000000000000000 | B & ( 0 << 7 )
+               +
+---------------------------------
+        AaAaAaAa
+</pre>
+
+<h3>Repeat an n-bit pattern m(power-of-two)-times</h3>
+As seen above, repetition of a pattern by a power-of-two can be done by
+scaling with a bit-pattern of (n-1) zeros followed by 1 one. We can
+use ( 255 )/( 2^n - 1 ) to synthesize it . In C we might use the following to generate
+a C-integer-sized repetition pattern:
+<pre>
+#define REPEATER(n) ( ~0 / ( ( 1 << n ) - 1 ) )
+</pre>
+
+You'll actually see the equivalent of REPEATER(8), ~0UL/255,
+on 5 of Sean Anderson's collection of bit-twiddling hacks.
+
+<h2>Compiler optimizations for constant multipliers</h2>
+<p>
+On many architectures, a shift and an add is faster or encodes smaller
+than a multiply. With this knowledge, compilers often replace constant-multiplies
+with shifts and adds when that input can be represented with just a few bits set,
+or just a few bits cleared.
+</p>
+
+<h3>Multiplying by three:</h3>
+<p>To multiply by three, we can simply add A to A<<1.</p>
+<pre>
+        000000AA | B & ( 1 << 0 )
+       000000AA0 | B & ( 1 << 1 )
+      0000000000 | B & ( 0 << 2 )
+     00000000000 | B & ( 0 << 3 )
+    000000000000 | B & ( 0 << 4 )
+   0000000000000 | B & ( 0 << 5 )
+  00000000000000 | B & ( 0 << 6 )
+ 000000000000000 | B & ( 0 << 7 )
+               +
+---------------------------------
+             A*3 = A*2+A
+</pre>
+<p>It is trivial to extend this to fit multiplication by any number of set bits</p>
+
+<h3>Multiplying by seven:</h3>
+<p>
+Instead of multiplying by seven, we could add A + A<<1 + A<<2.
+Or...we could also take A<<3 - A.
+Both are equivalent, but the second is usually complies shorter:
+</p>
+<pre>
+        000000AA | B & ( 1 << 0 )
+       000000AA0 | B & ( 1 << 1 )
+      000000AA00 | B & ( 1 << 2 )
+     00000000000 | B & ( 0 << 3 )
+    000000000000 | B & ( 0 << 4 )
+   0000000000000 | B & ( 0 << 5 )
+  00000000000000 | B & ( 0 << 6 )
+ 000000000000000 | B & ( 0 << 7 )
+               +
+---------------------------------
+             A*7 = A*8-A
+
+     000000AA000 | B & ( 1 << 3 )
+        000000AA | B & ( 1 << 0 )
+               -
+---------------------------------
+           A*8-A
+</pre>
