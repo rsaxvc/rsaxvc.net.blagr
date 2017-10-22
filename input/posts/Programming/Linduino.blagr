@@ -1,0 +1,31 @@
+Title:Linduino
+Author:rsaxvc
+CreatedDateTime:2017-10-21T01:12:26
+ModifiedDateTime:2017-10-21T01:12:26
+Tag:Linux
+Tag:Arduino
+---
+<p>
+For an upcoming project, I needed to learn how to program the <a href="https://www.arduino.cc/">Arduino IDE</a> to
+build a sketch for a new hardware platform. This all became possible when
+Arduino IDE 1.5 <a href="https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification">
+abstracted the way platforms are implemented</a>, and even <a href="https://github.com/arduino/Arduino/blob/master/hardware/arduino/avr/platform.txt">
+implemented their basic Arduinos in the same way</a>.
+</p><p>
+To teach myself, I created a native Arduino core, targetting the local
+Linux userspace using gcc. <a href="https://github.com/rsaxvc/linduino">Linduino</a>
+is the result of my work. It does need a new name, as Linduino is the name
+Linear Tech chose for their Arduino boards, but I did not have anything better.
+</p><p>
+In effect, it compiles the current sketch using bog-standard compiler settings
+to create an executable for the local machine. The core currently consists of
+a few support components, including serial I/O using stdio, and timers using
+gettimeofday.
+<p></p>
+Linduino is not quite an Arduino emulator. It does not emulate the AVR 8-bit
+instruction set, and it does not emulate GPIOs, SPI, I2C, and several other
+bits of Arduino proper. Yet, it is useful for prototyping Arduino algorithms
+without uploading to a board. In the future it might be expanded by moving
+to windows ncurses and spending some screen real estate showing GPIO state
+and allowing other inputs.
+</p>
