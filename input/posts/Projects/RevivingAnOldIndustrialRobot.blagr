@@ -1,0 +1,41 @@
+Title:Reviving an old Seiko TT4000SC
+Author:rsaxvc
+CreatedDateTime:2017-10-26T00:00:01
+ModifiedDateTime:2017-10-26T00:00:01
+Tag:Seiko
+Tag:TT4000SC
+Tag:Motors
+---
+
+<p>
+Someone dropped off an old industrial robot at Hammerspace. After a while
+stored in the back, and a move to a new location, <a href="https://twitter.com/nnnnqick">
+thisisradionick</a> and I decided to get it running.
+</p><p>
+The Seiko TT4000SC consists of two major components, a 4-axis
+robot(Z,shoulder,elbow,wrist), and a control box. Our control box
+had a sticker noting that the RAM battery had been replaced about 10 years
+after it was manufactured, and never again. Our first plan was to set up
+the control box, but since our RAM battery was long dead, it simply reported
+a large number of errors, including being uncertain what model it was
+attached to. Since the robot model appears to have no semiconductors to
+speak of, I suspect the model number was a setting in the RAM, and bringing
+this robot back to full operation will require repeating some of the inital
+programming steps that had occured in the 1980s. Needless to say, spare
+TT4000SC factory programmers are in short supply. We do plan to work on
+the control box separately, but decided to crack open the robot case to
+see what was inside.
+</p><p>
+Each axis consists of a 24V motor, encoder, reduction gear box, encoder,
+end-stops, and linkage. After <a href="http://www.built-to-spec.com/">Craig</a>
+was able to help us order a
+<a href="http://www.jae.com/jccom/en/connectors">
+Japanese Airplane Electronics connector</a>, we tapped directly into the motors:
+</p><p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tv48jR3vJeU?rel=0" frameborder="0" allowfullscreen></iframe>
+</p><p>
+Eventually we could design our own control boards or use OpenServo, but
+for today we used remote control boat ESCs, which should be good enough
+for getting a fruit ninja game ready for <a href="https://kansascity.makerfaire.com/">
+Maker Faire</a>.
+</p>

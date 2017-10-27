@@ -1,0 +1,49 @@
+Title:Brushed ESC Overvoltage Failures
+Author:rsaxvc
+CreatedDateTime:2017-10-26T00:00:02
+ModifiedDateTime:2017-10-26T00:00:02
+Tag:ESC
+Tag:Motors
+---
+
+<p>
+A brushed DC motor ESC(Electronic Speed Controller) is a relatively simple
+device with only a few things to do, so it is interesting to consider
+what might happen when one is taken outside of its designed operating
+parameters. Today I needed some cheap ESCs to run on higher voltage
+than designed, and one of them did not quite make it.
+</p><p>
+An ESC has at most a few subsystems:
+<ul>
+<li>A BEC, or Battery Eliminator Circuit, which is a switching buck
+or linear regulator that converts the battery input voltage into approximately
+six volts for running the controller, and possibly supplying power to a receiver
+as well. Not all ESCs include a BEC.</li>
+<li>A controller that takes input from the receiver, and configures
+the output drivers appropriately, modulating them as needed to acheive
+speed and direction</li>
+<li>Output drivers - in the case of a single-direction motor, the output
+driver an be a single power transistor or FET, but in the case
+of a bidirectional motor, it is usually built with four transistors
+implementing an <a href"https://en.wikipedia.org/wiki/H_bridge">H-bridge</a></li>
+</ul>
+</p><p>
+They usually only fail from overvoltage in a few different ways:
+<ul>
+<li>Excessive current caused by excessive voltage. This can cause heating either in the output drivers or in PCB itself. This can also be caused by undersizing the ESC for the application. This tends to fail with the motor spinning or otherwise under load.</li>
+<li>Excessive voltage causing output driver breakdown. The common IRFS3006 output driver is rated for 60V, so this failure is uncommon, although it can also be caused by back-EMF or other inductor noise.
+<li>Excessive voltage causing BEC failure causing a short or open between battery voltage and BEC output. This failure may cascade as voltage from the battery input
+reaches the controller and may reach the receiver. Luckily, often times BECs are designed from the venerable 7806 linear regulator, which routinely handles voltages
+up to 30v, though its power output must be derated as input voltage increases.
+</ul>
+</p><p>
+Today we connected two ESC to first 12V, then 24V, and attempted to drive a 1980s industrial robot. The first ESC, a <a href="https://www.amazon.com/dp/B00DU49XXS">
+10A Hobbypower Rc ESCa</a>, is designed for up to 8.4V and uses an IRFS3006 H-bridge. At 12 volts, the little controller was able to smoothly accelerate our robot,
+though it was a bit slow. BEC output remained steady at 6V. The second ESC, a <a href="https://www.amazon.com/dp/B017LP5LE6">60A Hobbywing Quicrun</a>, is designed
+for 12V systems and performed admirably with little lag or ramp-up, however due to the larger current drivers it could brown out our test supply if the robot
+were commanded to move too quickly.
+</p><p>
+At 24V the plot thickens. The Quicrun ESC functions just fine. However the Hobbypower ESC failed catastrophically at 24V, destroying the ESC, receiver,
+and an innocent servomotor. Postmortem indicates that the BEC failed, shorting the 24 volt battery voltage into the BEC output. Once the BEC output rose
+above 6V, the failure cascaded to the reciever, which connects to more servos, destroying them as well.
+</p>
