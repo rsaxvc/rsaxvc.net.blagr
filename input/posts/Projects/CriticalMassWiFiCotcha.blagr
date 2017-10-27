@@ -1,0 +1,26 @@
+Title:Critical Mass Cotcha
+Author:rsaxvc
+CreatedDateTime:2017-10-26T00:00:00
+ModifiedDateTime:2017-10-26T00:00:00
+Tag:Bicycle
+Tag:USB
+Tag:Cotcha
+Tag:Charger
+Tag:DCDC
+Tag:Power
+---
+
+<p>
+My bike has a headlight with a <a href="https://www.amazon.com/dp/B00PE6TVFU">huge battery pack</a>
+and a DC barrel plug. My friend Bill Swearingen had an awesome idea to take
+an ESP8266, add a li-po battery and a charger, and load it with a firmware
+claiming to be a free internet hotspot. When people connect, their phones
+suggest clicking here to sign in, at which point they are directed to
+an advertisement to <a href="https://seckc.org">SecKC</a>, the local monthly security
+meetup.
+</p><p>
+By replacing the filesystem image, the following is now displayed
+on phones who connect to my bicycle looking for internet:
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/37927181402/in/dateposted-public/" title="KC Critical Mass Advert"><img src="https://farm5.staticflickr.com/4464/37927181402_f614ea044e.jpg" width="431" height="500" alt="KC Critical Mass Advert"></a>
+</p>
