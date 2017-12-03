@@ -54,13 +54,13 @@ Tag:Atomic-Operations
 	</div>
 	<div>
 		<h3>Intel CoreDuo-T2300 running Linux 3.2</h3>
-		The first box is my old CoreDuo powered Thinkpad T60 laptop. Semaphores are pretty unscalable. Atomics scale better, but are still surprisingly expensive. Thread-local options work much better, and with a good number of threads, it is possible to beat the single-threaded performance(untrue for atomics and semaphores).
+		The first box is my old CoreDuo powered ThinkPad T60 laptop. Semaphores are pretty unscalable. Atomics scale better, but are still surprisingly expensive. Thread-local options work much better, and with a good number of threads, it is possible to beat the single-threaded performance(untrue for atomics and semaphores).
 		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381219/" title="graph_CoreDuo_T2300 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8206/8245381219_426b8e0a84.jpg" width="500" height="375" alt="graph_CoreDuo_T2300"></a>
 	</div>
 
 	<div>
 		<h3>Intel Core2Duo-T7600 running Linux 3.2</h3>
-		The next box is my current Core2Duo powered Thinkpad T60P laptop. The results are similar to the CoreDuo results, but the Core2Duo is quite a bit faster(as expected).
+		The next box is my current Core2Duo powered ThinkPad T60P laptop. The results are similar to the CoreDuo results, but the Core2Duo is quite a bit faster(as expected).
 		<br/><a href="http://www.flickr.com/photos/40925843@N03/8245381251/" title="graph_Core2Duo_T7600 by rsaxvc, on Flickr"><img src="http://farm9.staticflickr.com/8060/8245381251_b553d69e59.jpg" width="500" height="375" alt="graph_Core2Duo_T7600"></a>
 	</div>
 
