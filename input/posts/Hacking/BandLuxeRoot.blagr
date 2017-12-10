@@ -1,0 +1,86 @@
+Title:Rooting your Televerge/BandLuxe K530S
+Author:rsaxvc
+CreatedDateTime:2017-12-10T02:10:52
+ModifiedDateTime:2017-12-10T02:10:52
+Tag:Televerge
+Tag:BandLuxe
+Tag:Root
+Tag:SSH
+---
+<h2>Televerge</h2>
+<p>
+A seemingly defunct local telecom vendor, Televerge, sells cellular M2M connectivity solutions.
+They also dump their used prototype hardware at the thrift store. It turns
+out the OEM router at the center of their product is a BandLuxe K530S.
+</p>
+
+
+<h2>WebUI Access</h2>
+<p>
+I only need to turn this device into a router, so a hard reset brings
+it back to a state where username and password of admin can access the webui.
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/38963402601/in/dateposted-public/" title="BandLuxe K530S"><img src="https://farm5.staticflickr.com/4525/38963402601_0a91362970.jpg" width="500" height="155" alt="BandLuxe K530S"></a>
+</p>
+
+<code>lulz</code>
+
+<h2>Download the configuration backup</h2>
+<p>Under system/backup you can download a configuration backup, and extract
+it to find it is a tarball of a bunch of files/etc.
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/38247400214/in/dateposted-public/" title="BandLuxe K530S"><img src="https://farm5.staticflickr.com/4689/38247400214_f1f4af9775.jpg" width="500" height="219" alt="BandLuxe K530S"></a>
+</p>
+
+<h2>Insert a backdoor</h2>
+
+A simple second username mapped to uid 0 works great.
+
+<p>
+/etc/passwd:
+<pre>
+root:x:0:0:root:/root:/bin/ash
+rsaxvc:x:0:0:root:/root:/bin/ash
+daemon:*:1:1:daemon:/var:/bin/false
+ftp:*:55:55:ftp:/home/ftp:/bin/false
+network:*:101:101:network:/var:/bin/false
+nobody:*:65534:65534:nobody:/var:/bin/false
+admin:x:0:0:root:/root:/bin/false
+BR_dealer:x:0:0:root:/root:/bin/false
+BRAdmin:x:0:0:root:/root:/bin/false
+samba:*:1000:65534:samba:/var:/bin/false
+</pre>
+</p>
+
+<p>
+/etc/shadow:
+<pre>
+root:$1$PveCOSC/$3JESDrW4bFIKY1VcoXNFp1:0:0:99999:7:::
+daemon:*:0:0:99999:7:::
+ftp:*:0:0:99999:7:::
+network:*:0:0:99999:7:::
+nobody:*:0:0:99999:7:::
+admin:$1$CultXpWn$2/2qWocxogoTSXo8EzQYd1:15225:0:99999:7:::
+BR_dealer:$1$m/pCtXTy$KBVjQicxMKgvky/Wv3tVO.:15225:0:99999:7:::
+BRAdmin:$1$Mgp5H9O2$55Ra.DHoqHAm7FGM1qe3D.:15844:0:99999:7:::
+rsaxvc:$1$BACKDOORPASSWORDHERE.:15844:0:99999:7:::
+</pre>
+</p>
+
+<h2>Assembly is the reverse of disassembly</h2>
+Just tar up the files, and upload them, wait for the router
+to reboot, and:
+
+<pre>
+rsaxvc@x220:~/code/bandluxe/etc$ ssh 192.168.1.1
+rsaxvc@192.168.1.1's password: 
+
+
+BusyBox v1.19.4 (2014-12-09 16:04:25 CST) built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+ --------------------------------------
+  K530 
+ --------------------------------------
+root@K530:~# 
+</pre>
