@@ -1,0 +1,30 @@
+Title:Quarters In My Change Jar
+Author:rsaxvc
+CreatedDateTime:2018-01-01T01:14:03
+ModifiedDateTime:2018-01-01T01:14:03
+Tag:Math
+Tag:Statistics
+---
+<p>
+<h2>Feasibility</h2>
+To evaluate the feasibility of an upcoming project, I needed
+to know the approximate distribution of quarters in circulation
+in the local area. Upon filling my change jar, I filtered out
+the quarters and counted them. There were 102 quarters.
+</p><p>
+<h2>By Year</h2>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/38735234974/in/dateposted-public/" title="ByYear"><img src="https://farm5.staticflickr.com/4595/38735234974_f3d3926b75.jpg" width="500" height="291" alt="ByYear"></a><br/>
+By year the data is a little hard to digest.
+</p><p>
+<h2>By Decade</h2>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/38735232034/in/dateposted-public/" title="ByDecade"><img src="https://farm5.staticflickr.com/4594/38735232034_99c27cc9d6.jpg" width="500" height="294" alt="ByDecade"></a><br/>
+By binning the data into a point per decade we can get a clearer picture. I think there are a few effects here:
+	<ul>
+		<li>Attrition - coins are removed from circulation by loss and damage.</li>
+		<li>Inflation - according to cointrackers.com, in 1970 there were 556,393,000 quarters produced. But in 1980 there were 1,157,713,000 quarters produced. Though, this trend is also quite noisy.</li>
+		<li>Silver harvesting - 1964 and older quarters are made from 90% silver. This means they are highly likely to be removed from circulation 
+	</ul>
+</p><p>
+<h2>Other work</h2>
+Rhett Allain at wired has <a href="https://www.wired.com/2014/03/can-find-1964-silver-quarters/">a similar piece up</a>.
+</p>
