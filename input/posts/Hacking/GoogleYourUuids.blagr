@@ -1,0 +1,29 @@
+Title:Google your UUIDs
+Author:rsaxvc
+CreatedDateTime:2018-01-20T22:10:52
+ModifiedDateTime:2018-01-20T22:10:52
+Tag:Google
+Tag:Bluetooth
+Tag:UUID
+Tag:OURA
+---
+<p>
+When reverse engineering a device, it is often times handy to
+Google any UUIDs you might find.
+</p><p>
+
+In my case, I otherwise would not have noticed that
+<a href="https://twitter.com/anlaital">Antti</a> works
+<a href="https://www.linkedin.com/in/antti-laitala-a191935/">at OURA</a>,
+because <a href="https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library/issues/155">a github issue</a>
+was posted with an OURA Bluetooth UUID(98ED0001-A541-11E4-B6A0-0002A5D5C51B) that
+is only present in the OURA APP and AES encrypted ring firmware.
+</p><p>
+In my particular case, this corroborates my suspicion that the following UUIDs:
+<ul>
+<li>98ED0001-A541-11E4-B6A0-0002A5D5C51B</li>
+<li>98ED0002-A541-11E4-B6A0-0002A5D5C51B</li>
+<li>98ED0003-A541-11E4-B6A0-0002A5D5C51B</li>
+</ul>
+belong to the OURA's bluetooth communications subsystem. This is trivial to prove if one owns an OURA, but as I do not, the github issue suffices.
+</p>
