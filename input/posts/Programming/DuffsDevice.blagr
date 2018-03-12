@@ -1,0 +1,105 @@
+Title:Why Duffs Device is Awesome
+Author:rsaxvc
+CreatedDateTime:2018-03-11T01:01:01
+ModifiedDateTime:2018-03-11T01:01:01
+Tag:Optimization
+---
+<p>
+Recently, I had the need to optimize some low level graphics code on a Cortex-M4,
+I ran into a need to issue a large number of consecutive stores, similarly
+to <a href="https://www.lysator.liu.se/c/duffs-device.html">what Tom Duff once needed to do</a>,
+but I need to write a value to consecutive memory addresses
+instead of copying a large buffer into a memory-mapped I/O port.
+</p><p>
+I'm using GCC6.3.0 to count instructions, with 'arm-linux-gnueabihf-gcc-6 -O3 -mthumb -mcpu=cortex-m4 -S'
+</p><p>
+To express my problem in a sentence, write a function that takes a pointer to an array, a value to fill the array with, and a number of elements to fill, and fills the array with the value as efficiently as possible. This is quite similar to memset, though the array and value are the same type, and count will always be positive.
+</p>
+<h2>A simple unrolled approach:</h2>
+<pre>
+void memset32(uint32_t * buf, uint32_t val, uint32_t count)
+{
+while( count-- )
+	*buf++ = val;
+}
+</pre>
+<p>This takes 4 instructions per value to fill. Ideally this number should be as close to 1 as possible. But it's simple and clean. Like what you'd see in OpenBSD.</p>
+
+<h2>A simple unrolled approach:</h2>
+<pre>
+void memset32_unroll(uint32_t * buf, uint32_t val, uint32_t count)
+{
+while( count > 8 ) {
+    *buf++ = val;*buf++ = val;
+    *buf++ = val;*buf++ = val;
+    *buf++ = val;*buf++ = val;
+    *buf++ = val;*buf++ = val;
+    count -= 8;
+}
+while( count-- )
+    {*buf++ = val;}
+}
+</pre>
+<p>
+By unrolling the loop 8x, this comes to 12 instructions per 8 values to fill, with 4 instructions per value for anything left after the unrolling.
+This has the downside of being slightly larger than necessary. Additionally, we could save an instruction from the unrolled loop by 
+subtracting 8 and using the architecture's built-in compare with 0, bringing the expected total to 11 instructions per 8 stores, best-case.
+</p>
+
+
+<h2>An unrolled switch case</h2>
+<pre>
+void memset32_naive_switchloop(uint32_t * buf, uint32_t val, uint32_t count)
+{
+loop:
+switch( count ) {
+    default:
+    case 8:*buf++=val;count--;
+    case 7:*buf++=val;count--;
+    case 6:*buf++=val;count--;
+    case 5:*buf++=val;count--;
+    case 4:*buf++=val;count--;
+    case 3:*buf++=val;count--;
+    case 2:*buf++=val;count--;
+    case 1:*buf++=val;count--;
+        goto loop;
+    case 0:return;
+    }
+}
+</pre>
+<p>
+On ARM, this uses a table-branch to locate which label to use in the switch case, then executes unrolled stores until reaching 'case 1' and repeating the loop.
+
+Coincidentally, this exposes <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70359">GCC bug 70359</a>, and doubles the number of instructions per store!
+Outside of that, one downside is that two branches are used per loop, one for the 'goto'(or while loop if you prefer), and one for the switch-case.
+</p>
+
+<h2>Duff's Device</h2>
+<p>We should be able to do better than the above approaches. We want a single block of store instructions, we want most passes through the loop to consist of
+unrolled loops. We want the block of stores that doesn't fit in the unrolling to be done as quickly as possible, ideally without a per-store loop. And
+we don't want multiple branches for the majority of loops. Duff's Device gives us all of these.</p>
+
+<pre>
+void memset32_duff(uint32_t * buf, uint32_t val, uint32_t count)
+{
+uint32_t n=(count+7)/8;
+switch(count%8){
+    case 0: do{ *buf++ = val;
+    case 7:     *buf++ = val;
+    case 6:     *buf++ = val;
+    case 5:     *buf++ = val;
+    case 4:     *buf++ = val;
+    case 3:     *buf++ = val;
+    case 2:     *buf++ = val;
+    case 1:     *buf++ = val;
+        }while(--n>0);
+    }
+}
+</pre>
+
+<p>
+Duff's device uses the count%8 to figure out how many stores would not have unrolled cleanly, and does them in the first pass through the loop.
+The compiler treats the remaining passes as a conditional branch from the end end of 'case 1' directly to 'case 0'.
+</p><p>
+On ARM32, if you ignore the GCC bug by combining STR and ADDS instructions, this comes to a total of 10 instructions per 8 stores, and is the shortest unrolled implementation.
+</p>
