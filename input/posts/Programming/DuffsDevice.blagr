@@ -15,7 +15,7 @@ I'm using GCC6.3.0 to count instructions, with 'arm-linux-gnueabihf-gcc-6 -O3 -m
 </p><p>
 To express my problem in a sentence, write a function that takes a pointer to an array, a value to fill the array with, and a number of elements to fill, and fills the array with the value as efficiently as possible. This is quite similar to memset, though the array and value are the same type, and count will always be positive.
 </p>
-<h2>A simple unrolled approach:</h2>
+<h2>A simple loop approach:</h2>
 <pre>
 void memset32(uint32_t * buf, uint32_t val, uint32_t count)
 {
