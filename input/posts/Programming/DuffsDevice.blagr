@@ -1,19 +1,19 @@
 Title:Why Duffs Device is Awesome
 Author:rsaxvc
 CreatedDateTime:2018-03-11T01:01:01
-ModifiedDateTime:2018-03-11T01:01:01
+ModifiedDateTime:2018-03-31T01:01:01
 Tag:Optimization
 ---
 <p>
 Recently, I had the need to optimize some low level graphics code on a Cortex-M4,
 I ran into a need to issue a large number of consecutive stores, similarly
 to <a href="https://www.lysator.liu.se/c/duffs-device.html">what Tom Duff once needed to do</a>,
-but I need to write a value to consecutive memory addresses
+but I needed to write a value to consecutive memory addresses
 instead of copying a large buffer into a memory-mapped I/O port.
 </p><p>
 I'm using GCC6.3.0 to count instructions, with 'arm-linux-gnueabihf-gcc-6 -O3 -mthumb -mcpu=cortex-m4 -S'
 </p><p>
-To express my problem in a sentence, write a function that takes a pointer to an array, a value to fill the array with, and a number of elements to fill, and fills the array with the value as efficiently as possible. This is quite similar to memset, though the array and value are the same type, and count will always be positive.
+To express my problem in a sentence, write a function that takes a pointer to an array, a value to fill the array with, and a number of elements to fill, and fills the array with the value as efficiently as possible. This is quite similar to memset, though the array elements and value are the same type, and count will always be positive.
 </p>
 <h2>A simple loop approach:</h2>
 <pre>
@@ -43,7 +43,7 @@ while( count-- )
 <p>
 By unrolling the loop 8x, this comes to 12 instructions per 8 values to fill, with 4 instructions per value for anything left after the unrolling.
 This has the downside of being slightly larger than necessary. Additionally, we could save an instruction from the unrolled loop by 
-subtracting 8 and using the architecture's built-in compare with 0, bringing the expected total to 11 instructions per 8 stores, best-case.
+subtracting 8 and using the architecture's built-in compare with 0, bringing the expected total to 11 instructions per 8 stores.
 </p>
 
 
@@ -98,8 +98,8 @@ switch(count%8){
 </pre>
 
 <p>
-Duff's device uses the count%8 to figure out how many stores would not have unrolled cleanly, and does them in the first pass through the loop.
-The compiler treats the remaining passes as a conditional branch from the end end of 'case 1' directly to 'case 0'.
+Duff's device uses the count%8 to figure out how many stores would not have unrolled cleanly, and does them in the first pass through the loop by jumping
+into the middle of it. The compiler treats the remaining passes as a conditional branch from the end end of 'case 1' directly to 'case 0'.
 </p><p>
 On ARM32, if you ignore the GCC bug by combining STR and ADDS instructions, this comes to a total of 10 instructions per 8 stores, and is the shortest unrolled implementation.
 </p>
