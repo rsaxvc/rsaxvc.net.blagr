@@ -1,0 +1,116 @@
+Title:Toymail Talkie Network Services
+Author:rsaxvc
+CreatedDateTime:2018-03-31T02:10:52
+ModifiedDateTime:2018-03-31T02:10:52
+Tag:Toymail
+Tag:WiFi
+---
+<p>
+<a href="https://toymail.co/">Toymail</a> makes some
+<a href="https://www.amazon.com/dp/B0042HMKAK">pretty neat little IoT toys</a>
+that let kids and parents send short voice clips to each other, or to
+other friends. @that_guy recently brought on to <a href="https://seckc.org/">
+SecKC</a> to play with. I downloaded the Android APK and started disassembling
+it. Of note, the toys heavily leverage a technlogy from ElectricImp, which makes
+small IoT modules with WiFi. These are known as Imps. The Imp chip forms
+the majority of complexity inside the Toymail toys. Toymail runs an app on the
+Imp that implements the toy's behaviours and features.
+</p>
+
+<p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/26266287767/in/dateposted-public/" title="Toymail"><img src="https://farm1.staticflickr.com/798/26266287767_904afb7d30_o.png" width="513" height="527" alt="Toymail"></a>
+</p>
+
+<h2>Commissioning</h2>
+<p>
+During mobile app setup, the user is prompted for a wifi network and password.
+This is sent using <a href="https://electricimp.com/">ElectricImp's</a>
+<a href="https://electricimp.com/platform/blinkup/">BlinkUp</a> protocol. BlinkUp
+works like a simple modem, but instead of encoding data in sound, the setup information
+is encoded with light using the mobile device screen. Of note, the data flow
+is only to the toy, there's no response back. In addition to the WiFi
+network credentials, a unique token is generated and sent to the device.
+Once the toy connects to the network, it uploads the token, informing ElectricImp
+that it has a network connection, and ElectricImp informs the mobile app that
+the toy is now online.
+</p><p>
+The details of the BlinkUp protocol may be a future post
+</p>
+
+<h2>Firmware Updates</h2>
+Firmware updates are served from upgrades.electricimp.com, and 
+<a href="https://forums.electricimp.com/t/im-stuck-in-firmware-update/2145/11">
+appear to be encrypted</a>. We haven't yet verified this, but I'm not surprised.
+
+<h2>Imp->ElectricImp Communications</h2>
+<p>
+Each model of Imp uses a different DNS name to call home. For example:
+<ul>
+	<li>https://imp02b.boxen.electricimp.com</li>
+	<li>https://imp07b.boxen.electricimp.com</li>
+	<li>https://imp10a.boxen.electricimp.com</li>
+	<li>https://imp12a.boxen.electricimp.com</li>
+</ul>
+The clients, Imps, may have very different TLS stacks
+limited in different ways. This allows ElectricImp to
+upgrade TLS independently, without breaking clients
+that may not support the latest TLS.
+</p><p>
+Interestingly, all of the above URLs require TLS client
+authentication. Hopefully, each Imp is blessed with
+its own certificate at build time that is used to
+uniquely identify it to the ElectricImp infrastructure.
+</p>
+
+<h2>App->Toymail Communications</h2>
+<p>
+Interestingly, the Android app does not use TLS pinning,
+and instead relies upon the mobile platform to handle security.
+</p><p>
+The following shell script will dump the possible API endpoints once the app is disassembled:
+<pre>grep -r https . | cut -d "\"" -f 2 | sort -u </pre>
+</p><p>
+into:
+<ul>
+<li>https://api.toymailco.com/forgot_pass</li>
+<li>https://api.toymailco.com/friends/</li>
+<li>https://api.toymailco.com/friends/accept</li>
+<li>https://api.toymailco.com/friends/add</li>
+<li>https://api.toymailco.com/friends/reject</li>
+<li>https://api.toymailco.com/friends/remove</li>
+<li>https://api.toymailco.com/friends/requests</li>
+<li>https://api.toymailco.com/kids</li>
+<li>https://api.toymailco.com/kids/ageCategory</li>
+<li>https://api.toymailco.com/kids/create</li>
+<li>https://api.toymailco.com/kids/record</li>
+<li>https://api.toymailco.com/kids/remove</li>
+<li>https://api.toymailco.com/kids/set_photo</li>
+<li>https://api.toymailco.com/kids/subscribe</li>
+<li>https://api.toymailco.com/kids?type=</li>
+<li>https://api.toymailco.com/kids/unsubscribe_all</li>
+<li>https://api.toymailco.com/message/appmailbox</li>
+<li>https://api.toymailco.com/message/create</li>
+<li>https://api.toymailco.com/message/mark_as_old_message</li>
+<li>https://api.toymailco.com/settings/age</li>
+<li>https://api.toymailco.com/settings/email</li>
+<li>https://api.toymailco.com/settings/password</li>
+<li>https://api.toymailco.com/signin</li>
+<li>https://api.toymailco.com/signup</li>
+<li>https://api.toymailco.com/support/</li>
+<li>https://api.toymailco.com/toys</li>
+<li>https://api.toymailco.com/toys/create</li>
+<li>https://api.toymailco.com/user/info</li>
+<li>https://api.toymailco.com/user/invite</li>
+<li>https://api.toymailco.com/user/logout</li>
+<li>https://api.toymailco.com/user/photo</li>
+<li>https://api.toymailco.com/user/profile</li>
+<li>https://api.toymailco.com/users/</li>
+<li>https://api.toymailco.com/users/?name=</li>
+</ul>
+</p>
+
+<h2>Future Work</h2>
+<ul>
+<li>Examine traffic between Toymail Imp and Toymail servers.</li>
+<li>Implement BlinkUp protocol.</li>
+</ul>
