@@ -9,7 +9,7 @@ Tag:WiFi
 <a href="https://toymail.co/">Toymail</a> makes some
 <a href="https://www.amazon.com/dp/B0042HMKAK">pretty neat little IoT toys</a>
 that let kids and parents send short voice clips to each other, or to
-other friends. @that_guy recently brought on to <a href="https://seckc.org/">
+other friends. <a href="https://twitter.com/that_guy_ego">@that_guy_ego</a> recently brought on to <a href="https://seckc.org/">
 SecKC</a> to play with. I downloaded the Android APK and started disassembling
 it. Of note, the toys heavily leverage a technlogy from ElectricImp, which makes
 small IoT modules with WiFi. These are known as Imps. The Imp chip forms
