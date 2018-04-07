@@ -1,0 +1,84 @@
+Title:BlinkUp Protocol Reversing
+Author:rsaxvc
+CreatedDateTime:2018-04-06T02:10:52
+ModifiedDateTime:2018-04-06T02:10:52
+Tag:Toymail
+Tag:ElectricImp
+Tag:Modem
+Tag:WiFi
+---
+<p>
+ElectricImp's BlinkUp protocol is an optical modulation protocol designed
+for low-speed data transfer using mobile phone displays or LEDs as transmitters.
+Since the transmitter runs on my phone, we can begin to reverse engineer the
+protocol strictly from the smali assembly extracted from the APK file.
+</p>
+
+<p>
+To start, smali/com/electricimp/blinkup/BlinkupPacket.java's createFromIntent()
+shows there are currently four different packet types sent over BlinkUp, with (packet type numbers used):
+<ul>
+<li>wifi(1,5,6) - takes enrollment token(5), siteid(5), ssid(1), wpa2psk password(6)</li>
+<li>wps(3,5) - takes enrollment token(5), siteid(5), pin(3)</li>
+<li>fwUpgrade(4) - upgrades firmware over BlinkUp?</li>
+<li>clear(7) - sets up clear wifi?</li>
+</ul>
+
+For each packet type, the packet coder is told the packet size, contents,
+then told the packet is complete, at which point a 16 bit CRC is appended
+to the packet.
+</p>
+
+<h2>Packet Bitstream Structure</h2>
+<table border="1">
+<tr><td>Type</td><td>Bytes</td><td>Value</td></tr>
+<tr><td>Preamble</td><td>8</td><td>0b10101010</td></tr>
+<tr><td>Size</td><td>1</td><td>various</td></tr>
+<tr><td>Data</td><td>N</td><td>various</td></tr>
+<tr><td>Checksum</td><td>2</td><td>CRC-16</td></tr>
+</table>
+
+<h3>Packet Header</h3>
+The packet header is quite simple, a preamble of 8 times the byte 85.
+In binary, this creates an alternating pattern of ones and zeros.
+Usually, in modem design, a preamble such as this allows the receiver to
+notice that data is incoming, and to synchronize its receive clock with
+the transmitted clock.
+
+Next, the header byte 42(0b00101010) comes.
+At this point, the CRC accumulator is zeroed out.
+Finally, the packet length is appended, updating the CRC.
+
+<h3>Packet Payload</h3>
+This varies with the packet type, but starts with a 1 byte indication of
+the packet type, followed by a UTF8 string ending with a NULL terminator.
+For packets without a string argument, the payload is simply the packet type
+byte followed directly by a NULL terminator. Multiple strings can be
+encoded in a simple integer-to-string dictionary by appending more packet type, string pairs. Perhaps packet type is not the best descriptor, perhaps string type?
+
+<h3>CRC</h3>
+<p>
+Luckily, the implementation uses a CRC table. This means we can take the
+lazy path to fingerprinting it by searching github for the strings of
+numbers we find in the CRC table until we find an identical table in
+somebody else's source code. In this case, the CRC is a CRC-16,
+<a href="https://github.com/spotify/linux/blob/master/lib/crc16.c">
+The poly is 0x8005 (x^16 + x^15 + x^2 + 1)</a>
+</p>
+
+<h2>Encoding options</h2>
+No protocol would be complete without a bunch of random cruft tacked on
+over time as the details of whatever mobile phone you used change.
+
+<h3>Baud Rate</h3>
+There are options for encoding the bitstream at both half and
+two thirds speeds, I suspect to deal with faster and faster mobile
+phone displays.
+
+<h3>Binary vs Trinary Encoding</h3>
+<p>In the simple case, bits are encoded with a black screen meaning zero, and
+a white screen meaning one.</p>
+
+<p>But another option is the ability to encode in tri-level flashes.
+In this case, bit 0 is presented as black followed by grey, and
+bit 1 is presented as black followed by white.</p>
