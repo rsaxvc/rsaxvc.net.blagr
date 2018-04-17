@@ -58,9 +58,9 @@ upgrade TLS independently, without breaking clients
 that may not support the latest TLS.
 </p><p>
 Interestingly, all of the above URLs require TLS client
-authentication. Hopefully, each Imp is blessed with
-its own certificate at build time that is used to
-uniquely identify it to the ElectricImp infrastructure.
+authentication. From <a href="http://petasense.com/knowledgebase/security-and-architecture/">Petasense</a>, who also
+uses Imp modules, we see that they're used to
+identify each client to the server.
 </p>
 
 <h2>App->Toymail Communications</h2>
