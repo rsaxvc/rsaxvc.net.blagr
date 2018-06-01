@@ -1,0 +1,37 @@
+Title:ANKR Bluetooth Tracker Hacks
+Author:rsaxvc
+CreatedDateTime:2018-05-31T00:10:52
+ModifiedDateTime:2018-05-31T00:10:52
+Tag:ANKR
+Tag:Bluetooth
+Tag:BLE
+---
+<h2>ANKR</h2>
+<a href="https://ankr.com/">ANKR</a> makes a neat little device
+you can clip on your keychain and make your keys beep
+from your phone. You can also make your phone ring by pressing
+a button on the keychain device.
+<h2>Bluetooth Low Energy (BLE) Hacking</h2>
+Download the APK for the ANKR app, unpack it with apktool, and
+grep the smali disassembly for 'java/util/UUID'.
+com/bleon/ankrmanager/Bluetooth/NordicBasedDevice/NordicBeaconDevice.smali
+contains the following handy Bluetooth service and characteristic UUIDs:
+<ul>
+<li>0000180f-0000-1000-8000-00805f9b34fb - BLE Battery Standard</li>
+	<ul>
+	<li>00002a19-0000-1000-8000-00805f9b34fb - Battery Characteristic</li>
+	</ul>
+<li>08441600-D1B5-94B4-1ACD-0BB3E2ADB6EE - ANKR Custom Service</li>
+	<ul>
+	<li>08441601-D1B5-94B4-1ACD-0BB3E2ADB6EE - Firmware Version Characteristic</li>
+	<li>08441602-D1B5-94B4-1ACD-0BB3E2ADB6EE - Bootloader Characteristic</li>
+	<li>08441603-D1B5-94B4-1ACD-0BB3E2ADB6EE - Buzzer Characteristic</li>
+	<li>08441604-D1B5-94B4-1ACD-0BB3E2ADB6EE - Unknown Characteristic</li>
+	<li>08441605-D1B5-94B4-1ACD-0BB3E2ADB6EE - Button Characteristic</li>
+	</ul>
+</ul>
+
+Funny enough, if we write a nonzero byte between 0 and 10(0xA) to the buzzer
+characteristic, the device emits that number of beeps. From this, it's trivial
+to develop an app or nRF52 based device that scans for the ANKR Custom Service
+and causes them all to beep.
