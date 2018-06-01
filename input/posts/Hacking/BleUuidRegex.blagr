@@ -1,0 +1,13 @@
+Title:UUID Smali Regex
+Author:rsaxvc
+CreatedDateTime:2018-05-31T00:10:53
+ModifiedDateTime:2018-05-31T00:10:53
+Tag:Bluetooth
+Tag:BLE
+---
+This is just a note so that I don't have to type it every time. But
+if you...
+
+<pre>egrep -i "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"</pre>
+
+it finds UUIDs. I use it to search for BLE UUIDs in smali disassembly.
