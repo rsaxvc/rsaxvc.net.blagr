@@ -1,0 +1,95 @@
+Title:Marsaglia's XORSHIFT32 in PSIMD
+Author:rsaxvc
+CreatedDateTime:2018-08-03T01:18:19
+ModifiedDateTime:2018-08-03T01:18:19
+Tag:PSIMD
+Tag:PRNG
+Tag:XORSHIFT
+---
+<p>
+Here's a simple C program using <a href="https://github.com/Maratyszcza/psimd/blob/master/include/psimd.h">PSIMD</a> to implement
+Marsaglia's XORSHIFT32 PRNG with four parallel generators.
+</p>
+
+<pre>
+#include "psimd.h"
+#include <stdio.h>
+
+PSIMD_INTRINSIC psimd_u32 psimd_lsr_u32(psimd_u32 a, uint32_t b)  {return a >> b;}
+PSIMD_INTRINSIC psimd_u32 psimd_lsl_u32(psimd_u32 a, uint32_t b)  {return a << b;}
+PSIMD_INTRINSIC psimd_u32 psimd_xor_u32(psimd_u32 a, psimd_u32 b) {return a ^  b;}
+
+psimd_u32 xorshift32_4( psimd_u32 x )
+{
+    x = psimd_xor_u32( x,  psimd_lsl_u32( x, 13 ) );
+    x = psimd_xor_u32( x,  psimd_lsr_u32( x, 17 ) );
+    x = psimd_xor_u32( x,  psimd_lsl_u32( x, 5  ) );
+    return x;
+}
+
+uint32_t xorshift32(uint32_t x)
+{
+    x ^= x << 13;
+    x ^= x >> 17;
+    x ^= x << 5;
+    return x;
+}
+
+#define print_psimd_u32( _x ) printf("%08x %08x %08x %08x\n", _x[0], _x[1], _x[2], _x[3] )
+
+int main()
+{
+psimd_u32 state_start = { 1, 2, 3, 4 };
+print_psimd_u32( state_start );
+
+psimd_u32 state_vector = xorshift32_4( state_start );
+print_psimd_u32( state_vector );
+
+psimd_u32 state_scalar = { xorshift32(state_start[0]),xorshift32(state_start[1]),xorshift32(state_start[2]),xorshift32(state_start[3]) };
+print_psimd_u32( state_vector );
+
+return 0;
+}
+</pre>
+
+<p>
+And we get the same results for both PSIMD and scalar execution
+<table border="1">
+<tr><td>0x00000001</td><td>0x00000002</td><td>0x00000003</td><td>0x00000004</td><td>Starting States</td></tr>
+<tr><td>0x00042021</td><td>0x00084042</td><td>0x000c6063</td><td>0x00108084</td><td>PSIMD States</td></tr>
+<tr><td>0x00042021</td><td>0x00084042</td><td>0x000c6063</td><td>0x00108084</td><td>Scalar States</td></tr>
+</table>
+</p>
+
+<p>
+With GCC6.3, -O3, assembly for the two algorithms comes out to the same number of instructions, even though one does four times the work.
+</p>
+<pre>
+xorshift32_4:
+    .cfi_startproc
+    movdqa  %xmm0, %xmm1
+    pslld   $13, %xmm1
+    pxor    %xmm0, %xmm1
+    movdqa  %xmm1, %xmm0
+    psrld   $17, %xmm0
+    pxor    %xmm1, %xmm0
+    movdqa  %xmm0, %xmm1
+    pslld   $5, %xmm1
+    pxor    %xmm1, %xmm0
+    ret
+    .cfi_endproc
+
+xorshift32:
+    .cfi_startproc
+    movl    %edi, %eax
+    sall    $13, %edi
+    xorl    %edi, %eax
+    movl    %eax, %edi
+    shrl    $17, %edi
+    xorl    %edi, %eax
+    movl    %eax, %edi
+    sall    $5, %edi
+    xorl    %edi, %eax
+    ret
+    .cfi_endproc
+</pre>
