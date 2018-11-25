@@ -13,7 +13,7 @@ Marsaglia's XORSHIFT32 PRNG with four parallel generators.
 
 <pre>
 #include "psimd.h"
-#include &lt;stdio.h&rt;
+#include &lt;stdio.h&gt;
 
 PSIMD_INTRINSIC psimd_u32 psimd_lsr_u32(psimd_u32 a, uint32_t b)  {return a >> b;}
 PSIMD_INTRINSIC psimd_u32 psimd_lsl_u32(psimd_u32 a, uint32_t b)  {return a << b;}
