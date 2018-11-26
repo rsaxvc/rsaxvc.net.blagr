@@ -1,0 +1,95 @@
+Title:Unaligned Access on Cortex-M: Loads vs Stores, M4 vs M7
+Author:rsaxvc
+CreatedDateTime:2018-11-24T01:18:18
+ModifiedDateTime:2018-11-24T01:18:18
+Tag:ARM
+Tag:Cortex-M
+Tag:Cortex
+Tag:Memory
+---
+<h2>Unaligned Accesses</h2>
+<p>
+Anytime a processor attempts to load or store to memory at an address modulo the size of the transfer not equal to zero, it is considered unaligned. For example, loading 4 bytes from address 1 is unaligned. There are
+two common ways a processor can react to this, fixing up the load to make it work, or faulting so a programmer can fix the error(weirdly, ARMv5 would treat unaligned loads as a Load+Rotate, and was generally considered
+a bad idea to implement this behaviour).
+</p>
+<h2>Unaligned Loads on Cortex-M3/4</h2>
+<p>
+On Cortex-M3/4, the core breaks up unaligned loads into the smallest usable loads. For a 4 byte load at example address we can use the following table:
+<table border="1">
+	<tr><td>Address Modulo 4</td><td>How Done</td><td>Penalty Cycles</td></tr>
+	<tr><td>0</td><td>4B</td><td>0</td></tr>
+	<tr><td>1</td><td>1B+2B+1B</td><td>2</td></tr>
+	<tr><td>2</td><td>2B+2B</td><td>1</td></tr>
+	<tr><td>3</td><td>1B+2B+1B</td><td>2</td></tr>
+</table>
+</p>
+<p>Generally, this is considered a pretty good deal as it is faster than constructing the data in registers using loads and shifts</p>
+<p><a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0439b/CHDIJAFG.html">Reference: Cortex-M4 Technical Reference Manual</a></p>
+
+<h2>Unaligned Loads on Cortex-M7</h2>
+<p>
+Another approach to unaligned loads is to always load two 32-bit words. This gives a more deterministic timing with 1 memory penalty cycle for all unaligned loads,
+however it is slower in the event that the memory pointed to is accessed by a 16-bit or 8-bit bus, as is common for slower external RAMs.
+<table border="1">
+	<tr><td>Address Modulo 4</td><td>How Done</td><td>Penalty Cycles</td></tr>
+	<tr><td>0</td><td>4B</td><td>0</td></tr>
+	<tr><td>1</td><td>4B+4B</td><td>1</td></tr>
+	<tr><td>2</td><td>4B+4B</td><td>1</td></tr>
+	<tr><td>3</td><td>4B+4B</td><td>1</td></tr>
+</table>
+</p>
+<p><a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0489c/CBBIJHHC.html">Reference: Cortex-M7 Technical Reference Manual</a></p>
+
+<h2>A word about the store buffer</h2>
+<p>On Cortex-M3/4 stores are handed off to a unit known as the store-buffer. It allows program execution to continue with the store instruction consuming seeming only a single cycle, but in reality
+the store buffer defers it until memory is ready to accept the change. However, if too many stores are issued too quickly and memory is unable to keep up, the core may become blocked on the store buffer.
+</p>
+
+<h2>Unaligned Stores on Cortex-M3/4/7</h2>
+<p>When an unaligned store occurs, the processor pushes it into the store buffer and continues on as it does for all stores. Beneath the store buffer, the following occurs:
+<table border="1">
+	<tr><td>Address Modulo 4</td><td>How Done</td><td>Penalty Cycles</td></tr>
+	<tr><td>0</td><td>4B</td><td>0</td></tr>
+	<tr><td>1</td><td>1B+2B+1B</td><td>2</td></tr>
+	<tr><td>2</td><td>2B+2B</td><td>1</td></tr>
+	<tr><td>3</td><td>1B+2B+1B</td><td>2</td></tr>
+</table>
+<a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0439b/CHDIJAFG.html">For unaligned accesses</a>, ARM states "A STR or STRH cannot delay the processor because of the store buffer."
+That's not entirely true - again if memory is slower than the processor, or there's just a lot of stores in the instruction stream, the penalty cycles caused by unaligned accesses can bubble up and eventually
+stall the processor.
+</p>
+
+<h2>How this affects embedded developers</h2>
+<p>Rarely, when benchmarking performance-critical code, I'll have strange, hard-to-explain results. A memset to one location might run slower than another, even though they're both in the same fixed-wait-state memory. Or,
+a graphical operation might run slower depending on the coordinates used, even though the number of pixels is the same from run to run. The cause is often unaligned memory accesses and the good news is that it can often
+be at least partially optimized, usually by aligning</p>
+
+<h3>Optimizations for memset</h3>
+<p>For a write-only, memset-like function, it's simple enough to eliminate all unaligned accesses by hand-aligning the head and tail of the operation, and if the operation is large enough, it's almost always worth it.</p>
+<p><a href="https://github.com/eblot/newlib/blob/master/newlib/libc/string/memset.c">Check out newlib's memset() for an example.</a> Note that Newlib is portable to platforms where unaligned accesses are undefined(trap),
+so it must eliminate them, but in doing so, this makes for a fast portable memset.</p>
+
+<h3>Optimizations for memcpy</h3>
+<p>For a read-write, memcpy-like function, it's sometimes impossible to possible to align both ends of the copy. In this case, it's best to align either source or destination, then use a mix of unaligned loads
+and aligned stores, or aligned loads and unaligned stores to carry out the bulk of the work.
+</p>
+<p><a href="https://github.com/eblot/newlib/blob/master/newlib/libc/machine/arm/memcpy-armv7m.S">ARM authored Newlib's memcpy</a>, and it has an excellent example of aligning at least one pointer, then proceeding
+even if the other isn't aligned.</p>
+
+<h3>Optimizations for stream-mixing</h3>
+<p>For a read-read-write function, things are even more complicated. One example of this is mixing two 8-bit audio streams four samples at a time using LDR(streamA), LDR(streamB), QADD8, STR(StreamOut). In this case,
+you usually want to hand-align so that the largest number of streams are aligned, which could end up being anywhere from 1 to 3, potentially starting with 0 aligned streams.
+</p>
+
+<h3>Considerations for different memory subsystems</h3>
+<p>
+So far, the above writings haven't really touched on different memory architectures and how they affect unaligned accesses. For example, many Cortex-M processors are equipped with Flash ROM with a prefetcher. This means
+that the consecutive accesses caused by unaligned accesses cost only the penalty cycles. However, a slow, cacheless RAM may take many CPU cycles to complete a memory cycle, and now an unaligned access requires up to 3!
+Stranger yet are stores to SDRAMs, where the store buffer can cover up entire DRAM refreshes; however refreshes stall loads immediately.
+
+Finally, only rarely does a memory exist in a system with only a CPU - there are often other things
+contending for memory access to the same RAMs, often DMAs, GPUs, display controllers, and more. 
+
+Keep in mind that on Cortex-M, the store-buffer is the only way to hide memory latency, and if you're doing a lot of stores, it may quickly become a bottleneck, doubly-to-tripply so if left unaligned.
+</p>
