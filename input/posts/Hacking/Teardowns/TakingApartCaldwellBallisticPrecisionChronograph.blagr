@@ -1,0 +1,16 @@
+Title:Taking Apart the Caldwell Ballistic Precision Chronograph
+Author:rsaxvc
+CreatedDateTime:2018-12-04T21:25:18
+ModifiedDateTime:2018-12-04T21:25:18
+Tag:Caldwell
+Tag:Chronograph
+---
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/45285884485/in/dateposted-public/" title="Caldwell Chronograph"><img src="https://farm5.staticflickr.com/4810/45285884485_496ffa6d94_z.jpg" width="640" height="640" alt="Caldwell Chronograph"></a></p>
+<p>First we pull four massive screws out</p>
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/44381230750/in/dateposted-public/" title="Caldwell Precision Ballistic Chronograph Teardown"><img src="https://farm5.staticflickr.com/4804/44381230750_ff80f68e39_z.jpg" width="640" height="360" alt="Caldwell Precision Ballistic Chronograph Teardown"></a></p>
+<p>Flip over the whole assembly and remove the top cover</p>
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/32326283328/in/dateposted-public/" title="Caldwell Precision Ballistic Chronograph Teardown"><img src="https://farm5.staticflickr.com/4915/32326283328_00d7a86256_z.jpg" width="640" height="360" alt="Caldwell Precision Ballistic Chronograph Teardown"></a></p>
+<p>On the top of the PCB we see a Silicon Labs 8051</p>
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/45474294954/in/album-72157702874432321/" title="Caldwell Precision Ballistic Chronograph Teardown"><img src="https://farm5.staticflickr.com/4876/45474294954_3acb4a37ee_z.jpg" width="640" height="360" alt="Caldwell Precision Ballistic Chronograph Teardown"></a></p>
+<p>And an LM324 Quad OpAmp</p>
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/45474294904/in/album-72157702874432321/" title="Caldwell Precision Ballistic Chronograph Teardown"><img src="https://farm5.staticflickr.com/4832/45474294904_6f27061cfe_z.jpg" width="640" height="360" alt="Caldwell Precision Ballistic Chronograph Teardown"></a></p>

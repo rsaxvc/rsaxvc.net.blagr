@@ -1,0 +1,59 @@
+Title:Caldwell Ballistic Precision Chronograph Theory of Operation and Signal Path
+Author:rsaxvc
+CreatedDateTime:2018-12-04T21:25:19
+ModifiedDateTime:2018-12-04T21:25:19
+Tag:Caldwell
+Tag:Chronograph
+---
+<p>Inside my chronograph, we find this simple PCB. With only two chips and a handful of passive components,
+this device can measure speeds from 5 to nearly 10000 feet per second. Here is how it works.
+The chronograph waits for an object to pass the first light-gate, starts a timer, waits for the object to
+pass the second light gate, records the finish time, and divides the distance between light gates by the time,
+and converts to appropriate human-readable units for display.</p>
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/45285884485/in/dateposted-public/" title="Caldwell Chronograph"><img src="https://farm5.staticflickr.com/4810/45285884485_496ffa6d94_z.jpg" width="640" height="640" alt="Caldwell Chronograph"></a></p>
+
+<h2>PCB</h2>
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/32326285058/in/album-72157702874432321/" title="Caldwell Precision Ballistic Chronograph Teardown"><img src="https://farm5.staticflickr.com/4862/32326285058_e4f5cc6bbe_z.jpg" width="640" height="360" alt="Caldwell Precision Ballistic Chronograph Teardown"></a></p>
+
+<h2>Sensors</h2>
+<p>At each end of the device we see a large, black sensor module.</p>
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/44381230780/in/album-72157702874432321/" title="Caldwell Precision Ballistic Chronograph Teardown"><img src="https://farm5.staticflickr.com/4900/44381230780_cd785aa514_z.jpg" width="640" height="360" alt="Caldwell Precision Ballistic Chronograph Teardown"></a></p>
+Due to the presence of three wires running to each pod, it is likely either a phototransistor, or a photodiode with a bias circuit to help return a signal over the long wires.
+
+<h2>Sensor Amplifier</h2>
+Connected to the sensors is a TI LM324 quad operational amplifier. This common component adds 
+a lot of flexibility in the analog domain, but its general purpose is to amplify the signal
+coming from the sensors over a range of frequencies.
+
+<h2>Analog to Digital Converter - ADC</h2>
+<p>
+Connected to the output of the LM324 is the <a href="https://www.silabs.com/documents/public/data-sheets/C8051F38x.pdf">Silicon Labs C8051F300 microcontroller</a>.
+From the datasheet we can see that the ADC is 10-bit resolution, up to 500kilosamples per second.
+</p><p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/44381464400/in/dateposted-public/" title="ADC"><img src="https://farm5.staticflickr.com/4918/44381464400_17c8d11d16_z.jpg" width="640" height="421" alt="ADC"></a>
+</p><p>
+This is a pretty simple, basic ADC design. The window-compare feature may be used to allow the 8051
+core to sleep while waiting for a signal pulse to arrive, but given that the chrono does nothing else,
+it may not be utilized. One nice thing about this ADC is that it features differential inputs.
+This means that instead of attempting to read the signals from both sensors we can instead subtract
+one from the other and feed it into the single ADC channel(this may also be done with the OpAmp).
+
+<h2>Signal Processing - what a puzzler</h2>
+<p>I frankly have no idea what the signal of an arrow or bullet passing over a phototransistor when amplified by an unknown amplifier, but we can figure out some basic requirements from the device specifications.</p>
+<ul>
+	<li>Approx 12 inches between light gates</li>
+	<li>Claims to be accurate to within 0.25 percent</li>
+	<li>Measures speeds from 5 to 9999fps</li>
+	<li>12 inches / 9999fps is approximately equal to 100 microseconds</li>
+	<li>To be accurate to 0.25 percent, we need to be able to differentiate 100 and 100.25 microseconds</li>
+	<li>To detect a 0.25 microsecond difference, we need a sample rate of 4MHz or higher</li>
+</ul>
+<p>This is a problem, because the ADC can only run at 0.5MHz. What does that mean? With a sample-rate of 500kHz, we can work out the error over speed like so:</p>
+<p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/32326890828/in/dateposted-public/" title="error_plot"><img src="https://farm5.staticflickr.com/4870/32326890828_9cc98bf67c_o.png" width="640" height="384" alt="error_plot"></a>
+</p>
+<p>
+This means that either the device doesn't operate quite as it appears to, or Battenfeld Technologies / Caldwell cheated a little on their specifications. Not that anyone would notice -
+no bullet travels anywhere near 10000 feet per second, rare bullets travel approximately 5000 feet per second, but most are much, much lower than that. A 220 Swift might be 4000 feet per second, and the chrono
+would be around 0.8 percent accurate. Sadly, 0.25 percent accuracy is achieved only for 1000 feet per second and slower velocities.
+</p>
