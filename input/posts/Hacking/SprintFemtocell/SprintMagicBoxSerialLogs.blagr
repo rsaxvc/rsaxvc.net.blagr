@@ -1,0 +1,260 @@
+Title:Sprint Magic Box Serial Logs
+Author:rsaxvc
+CreatedDateTime:2019-03-23T00:24:05
+ModifiedDateTime:2019-03-23T12:31:33
+---
+
+The three pin header on the relay board has
+a 3.3v 115200 baud serial port. Sadly, it's
+using U-Boot Secure Boot.
+
+<pre>
+U-Boot SPL 2015.10 (Jun 21 2017 - 15:40:14)
+
+
+U-Boot 2015.10 (Jun 21 2017 - 15:40:14 +0100)
+
+CPU:   Freescale i.MX6SX rev1.2 996 MHz (running at 792 MHz)
+CPU:   Extended Commercial temperature grade (-20C to 105C) at 39C
+Reset cause: POR
+Board: MX6SX AIRUNITY
+BoardId: 0005
+       Watchdog enabled
+I2C:   ready
+DRAM:  1 GiB
+MMC:   FSL_SDHC: 0
+PCI:   pcie phy link never came up
+In:    serial
+Out:   serial
+Err:   serial
+Exit emergency shutdown mode
+Writing debounce period of 30 seconds to TI battery chip is OK.
+SECURE BOOT running, Boot prompt is disabled
+Net:   FEC [PRIME]
+Hit any key to stop autoboot:  0 
+Booting from MMC...
+switch to partitions #0, OK
+mmc0(part 0) is current device
+externalconfig: banktoboot=0
+externalconfig: runapp=1
+externalconfig: bootattempts bank0=7
+externalconfig: bootattempts bank1=0
+
+WARNING - Bank 0 previously failed to boot. Attempting again (8/15)
+
+fallbackcheck: banktoboot=0
+fallbackcheck: bootattempts bank0=8
+fallbackcheck: bootattempts bank1=0
+dtb=airspan-0005.dtb
+37665 bytes read in 122 ms (300.8 KiB/s)
+6588448 bytes read in 435 ms (14.4 MiB/s)
+Kernel image @ 0x82000000 [ 0x000000 - 0x648820 ]
+## Flattened Device Tree blob at 88000000
+   Booting using the fdt blob at 0x88000000
+   Loading Device Tree to bfc24000, end bfc30320 ... OK
+
+Starting kernel ...
+
+[    0.086684] reg_fixed_voltage_probe: skipped regulators:regulator@6 from setting HIGH 
+[    0.142899] Inserting airspan_gpio module
+[    0.147712] mxsfb-spi-it8951 spidisp@0: allocated fb @ paddr=0xAA080000, size=518400. yres[540], lineLen[960]
+[    0.185820] imx6sx-pinctrl 20e0000.iomuxc: pin MX6SX_PAD_GPIO1_IO04 already requested by 2020000.serial; cannot claim for 22a0000.serial
+[    0.198150] imx6sx-pinctrl 20e0000.iomuxc: pin-9 (22a0000.serial) status -22
+[    0.205239] imx6sx-pinctrl 20e0000.iomuxc: could not request pin 9 (MX6SX_PAD_GPIO1_IO04) from group uart6wifiap  on device 20e0000.iomuxc
+[    0.217713] imx-uart 22a0000.serial: Error applying setting, reverse things back
+[    0.229848] Error: Driver 'imx-ipuv3' is already registered, aborting...
+[    0.236728] DEBUG: SPIDEV Initialised! 0
+[    0.242600] spidev spi2.0: buggy DT: spidev listed directly in DT
+[    0.467514] my_cfb_imageblit() called
+[    1.143218] caam_jr 2101000.jr0: 20000b11: CCB: desc idx 11: AES: Mode error.
+[    1.150701] alg: aead: encryption failed on test 1 for rfc4106-gcm-aes-caam: ret=-536873745
+[    1.159768] caam_jr 2101000.jr0: 20000c11: CCB: desc idx 12: AES: Mode error.
+[    1.167011] alg: aead: encryption failed on test 1 for gcm-aes-caam: ret=-536874001
+[    1.220880] snvs-secvio 20cc000.caam-snvs: can't get snvs clock
+[    1.237143] cpu cpu0: dev_pm_opp_get_opp_count: device OPP not found (-19)
+[    1.560270] imx6q-pcie 8ffc000.pcie: phy link never came up
+[    1.566134] imx6q-pcie 8ffc000.pcie: failed to initialize host
+[    1.595032] EXT4-fs (mmcblk0p2): couldn't mount as ext3 due to feature incompatibilities
+[    1.603843] EXT4-fs (mmcblk0p2): couldn't mount as ext2 due to feature incompatibilities
+INIT: version 2.88 booting
+Starting udev
+bootlogd: cannot allocate pseudo tty: No such file or directory
+ALSA: Restoring mixer settings...
+/usr/sbin/alsactl: load_state:1729: No soundcards found...
+INIT: Entering runlevel: 3
+Configuring network interfaces... [    3.917366] m25p80 spi1.0: unrecognized JEDEC id bytes: 00,  0,  0
+done.
+Starting system message bus: dbus.
+Starting OpenBSD Secure Shell server: sshd
+done.
+Starting rpcbind daemon...done.
+Starting advanced power management daemon: No APM support in kernel
+(failed.)
+Starting HOSTAP Daemon: Configuration file: /etc/hostapd.conf
+Could not read interface wlan0 flags: No such device
+nl80211: Driver does not support authentication/association or connect commands
+nl80211: deinit ifname=wlan0 disabled_11b_rates=0
+Could not read interface wlan0 flags: No such device
+nl80211 driver initialization failed.
+wlan0: interface state UNINITIALIZED->DISABLED
+wlan0: AP-DISABLED 
+hostapd_free_hapd_data: Interface wlan0 wasn't started
+Starting IrDA: irattach fail
+Starting ntpd: done
+Starting syslogd/klogd: done
+[ ok ]rting Avahi mDNS/DNS-SD Daemon: avahi-daemon
+Starting Telephony daemon
+Starting Linux NFC daemon
+Starting Lighttpd Web Server: lighttpd.
+
+
+***************************************************
+BoardId        = 0005
+BoardId Name   = AU545
+Image          = airunity
+Kernel cmdline = root=/dev/mmcblk0p2 rootwait console=ttymxc0,115200 runapp=yes envoffset=0x48000 bootversion=65.1.23.0 raid=noautodetect pci=nomsi ahci_imx.hotplug=1 quiet
+***************************************************
+
+Start init SUCCESS.
+Inserting module spi_it8951
+[   14.884690] ALERT: Openning file handle on: /dev/spidev2.0
+[   14.896978] Initialised it8951_init 1511
+Initialising spi_it8951
+[   15.450692] Initialised Device it8951_initdev 557
+
+Warning: Old and New Firmware versions match: Airspan.v.0.18
+INFO: Display Width: 960
+INFO: Display Height: 540
+INFO: Display FWVersion: Airspan.v.0.18
+INFO: Display LUTVersion: 320_R117_AF8301_
+[   15.532901] Error: IT8951 unable to open: /dev/mtd0ro it8951_read_epd_flash 417
+[   15.540282] Error: EPD flash read failed
+[   15.554171] Error: IT8951 unable to open: /dev/mtd0ro it8951_read_epd_flash 417
+[   15.561553] Error: EPD flash read failed
+file is not updated: file version [12] batt serial number[12]
+
+Data Flash Parameters update not required.
+Start init SUCCESS.
+Inserting module tamperdetect
+[   18.216668] Error: i2c_transfer: -5 tamperdetect_get_cmd 927
+[   18.222385] Error: Failed to get fw version tamperdetect_get_fwver 1025
+[   18.229034] Error: Invalid FW Version tamperdetect_initdev 716
+[   18.234887] Error: Initialisation Failed: 3
+Initialising tamperdetect
+Error: tamperdetect Driver failed to initialise: Retry: 1
+Module tamperdetect present - removing first
+[   18.353840] Exited tamperdetect_exit 2549
+Inserting module tamperdetect
+[   18.374874] Error: i2c_transfer: -5 tamperdetect_get_cmd 927
+[   18.380636] Error: Failed to get fw version tamperdetect_get_fwver 1025
+[   18.387324] Error: Invalid FW Version tamperdetect_initdev 716
+[   18.393213] Error: Initialisation Failed: 3
+Initialising tamperdetect
+Error: tamperdetect Driver failed to initialise: Retry: 2
+Module tamperdetect present - removing first
+[   18.502064] Exited tamperdetect_exit 2549
+Inserting module tamperdetect
+[   18.523182] Error: i2c_transfer: -5 tamperdetect_get_cmd 927
+[   18.528935] Error: Failed to get fw version tamperdetect_get_fwver 1025
+[   18.535619] Error: Invalid FW Version tamperdetect_initdev 716
+[   18.541519] Error: Initialisation Failed: 3
+Initialising tamperdetect
+Error: tamperdetect Driver failed to initialise: Retry: 3
+Module tamperdetect present - removing first
+[   18.649968] Exited tamperdetect_exit 2549
+Inserting module tamperdetect
+[   18.670924] Error: i2c_transfer: -5 tamperdetect_get_cmd 927
+[   18.676676] Error: Failed to get fw version tamperdetect_get_fwver 1025
+[   18.683372] Error: Invalid FW Version tamperdetect_initdev 716
+[   18.689262] Error: Initialisation Failed: 3
+Initialising tamperdetect
+Error: tamperdetect Driver init retry count exceeded!
+Board type is AU545, eNB power driven by MAINS so keep eNB power turning ON
+
+choice3, gpio_bank2, gpio_bin1, dir_val0, value1
+
+gpioSetupPinMode 2:1 (1 <= bank =< 8, 0 <= bin <= 31)
+gpioRegisterBankPin 2:1 (1 <= bank =< 8, 0 <= bin <= 31)
+registerGpioBankPin: 2:1 pin is registered
+choice3, gpio_bank7, gpio_bin3, dir_val0, value0
+
+gpioSetupPinMode 7:3 (1 <= bank =< 8, 0 <= bin <= 31)
+gpioRegisterBankPin 7:3 (1 <= bank =< 8, 0 <= bin <= 31)
+registerGpioBankPin: 7:3 pin is registered
+choice3, gpio_bank4, gpio_bin23, dir_val0, value1
+
+gpioSetupPinMode 4:23 (1 <= bank =< 8, 0 <= bin <= 31)
+gpioRegisterBankPin 4:23 (1 <= bank =< 8, 0 <= bin <= 31)
+registerGpioBankPin: 4:23 pin is registeredChoosing the image
+airspan: 65.1.23.0
+NFSTEST=
+airspan: RUNAPP = yes
+Mount /config, /calibration and /archive partitions
+Showing Sprint Logo
+/dev/emmc1 has journal
+/dev/emmc2 has journal
+/dev/emmc3 has journal
+Synchronising authentication credentials
+Backup file not found
+Reboot reason: Power-cycle (WDOG1_WRSR=0x0010: POR bit=1)
+Starting background process to kick watchdog for 5 minutes (10s kick) until procmgr takes over
+Starting hardware watchdog loop for 30 iterations with 10000000 usec delay...
+
+X.Org X Server 1.14.4
+Release Date: 2013-10-31
+X Protocol Version 11, Revision 0
+Build Operating System: Linux 3.13.0-110-generic x86_64 
+Current Operating System: Linux airunity 4.1.15 #1 SMP Fri Jun 30 18:16:40 BST 2017 armv7l
+Kernel command line: root=/dev/mmcblk0p2 rootwait console=ttymxc0,115200 runapp=yes envoffset=0x48000 bootversion=65.1.23.0 raid=noautodetect pci=nomsi ahci_imx.hotplug=1 quiet
+Build Date: 02 March 2017[   21.011314] my_cfb_fillrect() called
+  09:32:02AM
+ 
+Current version of pixman: 0.32.6
+        Before reporting problems, check http://wiki.x.org
+        to make sure that you have the latest version.
+Markers: (--) probed, (**) from config file, (==) default setting,
+        (++) from command line, (!!) notice, (II) informational,
+        (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+(==) Log file: "/var/log/Xorg.0.log", Time: Sat Mar 16 21:45:05 2019
+(==) Using config file: "/etc/X11/xorg.conf"
+(==) Using system config directory "/usr/share/X11/xorg.conf.d"
+Initializing built-in extension Generic Event Extension
+Initializing built-in extension SHAPE
+Initializing built-in extension MIT-SHM
+Initializing built-in extension XInputExtension
+Initializing built-in extension XTEST
+Initializing built-in extension BIG-REQUESTS
+Initializing built-in extension SYNC
+Initializing built-in extension XKEYBOARD
+Initializing built-in extension XC-MISC
+Initializing built-in extension XFIXES
+Initializing built-in extension RENDER
+Initializing built-in extension RANDR
+Initializing built-in extension COMPOSITE
+Initializing built-in extension DAMAGE
+Initializing built-in extension MIT-SCREEN-SAVER
+Initializing built-in extension DOUBLE-BUFFER
+Initializing built-in extension DPMS
+Initializing built-in extension X-Resource
+Initializing built-in extension XVideo
+Initializing built-in extension XVideo-MotionCompensation
+Initializing built-in extension XFree86-VidModeExtension
+Initializing built-in extension XFree86-DGA
+Initializing built-in extension XFree86-DRI
+Initializing built-in extension DRI2
+Loading extension GLX
+App Param = 127.0.0.1, 9093, 9092, /bs/font/, 0005, /bs/images/, yes, 960, 540, yes
+2019-03-16 21:45:15 DEBUG ScreenView - /bs/images/animatable/network
+2019-03-16 21:45:17 INFO  ViewNotification - addViewNotificationListener called
+2019-03-16 21:45:18 INFO  CommNotification - addCommNotificationListener called
+Comms Param = 127.0.0.1, 9093, 9092, /bs/font/, 0005, /bs/images/, yes, 960, 540, yes
+2019-03-16 21:45:19 DEBUG UdpServer - UDPServer listening on port 9093
+2019-03-16 21:45:19 DEBUG UpdateDisplay - UDP server socket open on port 9093
+
+2019-03-16 21:45:19 DEBUG AirUnityServiceImpl - irelayCommClient created
+2019-03-16 21:45:19 DEBUG UpdateDisplay - UDP client socket connected to 127.0.0.1 on port 9092
+
+2019-03-16 21:45:19 DEBUG StatusIndicationSender - New Status Indication scheduling being used
+
+
+</pre>
