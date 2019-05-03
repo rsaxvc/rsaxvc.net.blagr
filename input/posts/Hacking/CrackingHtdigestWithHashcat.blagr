@@ -1,0 +1,32 @@
+Title:Cracking .htdigest files with HashCat
+Author:rsaxvc
+CreatedDateTime:2019-05-02T02:10:52
+ModifiedDateTime:2019-05-02T02:10:52
+Tag:HashCat
+Tag:CUDA
+Tag:OpenCL
+Tag:Password
+---
+<p>
+HTDigest files come in the following format:
+</p><p>
+<code>$username:$realm:$hash</code>
+</p><p>
+$hash is calculated as:
+</p><p>
+<code>MD5($username:$realm:$password)</code>
+</p><p>
+This is not a format directly supported by hashcat. Instead, we must reorganize it, like so:
+</p><p>
+<code>$hash:$salt</code>
+</p><p>
+We can place our username, colon, realm, and trailing colon in the salt like so:
+</p><p>
+<code>$hash:$username:$realm:</code>
+</p><p>
+and save it in a file named crackme. Then we use the following command:
+</p><p>
+<code>
+./hashcat -m 20 -o output.txt crackme -O dictionary.txt
+</code>
+</p>
