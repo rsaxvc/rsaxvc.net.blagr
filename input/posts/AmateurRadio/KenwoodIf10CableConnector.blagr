@@ -1,0 +1,29 @@
+Title:Kenwood IF-10 cable connector found!
+Author:rsaxvc
+CreatedDateTime:2019-07-08T03:15:14
+ModifiedDateTime:2019-07-08T03:15:14
+Tag:Kenwood
+Tag:Ham Radio
+---
+
+About five years ago, I emailed Kenwood support looking for the right connector
+to interface an IF-10 card to a Kenwood radio. Kenwood support sent over the following
+for PacParts:
+
+<pre>
+Mfg             Part No             Description                    Price QTY     Total
+--------------------------------------------------------------------------------------
+Kenwood         E31-3333-05         Conn W/Lead 7P                 $6.95   1     $6.95   *** 90 Day Warranty 
+
+Kenwood         E31-3334-05         Conn W/Lead 9P                 $7.64   1     $7.64   *** 90 Day Warranty 
+</pre>
+
+These are actually cable assemblies, with a housing and pins ready for soldering on one end, and,
+thanks to Bob Brown(WØNQX) and William Morris and a little sleuthing on DigiKey, I now know to be
+a JST-EH series, one each of both 9 and 7 pins:
+<ul>
+	<li><a href="https://www.digikey.com/product-detail/en/EHR-7/455-1005-ND/527229">7 pin</a></li>
+	<li><a href="https://www.digikey.com/product-detail/en/EHR-9/455-1007-ND/527231">9 pin</a></li>
+</ul>
+
+I've ordered some and the corresponding crimp pins, and hopefully will be on my way to controlling my radio via USB soon.
