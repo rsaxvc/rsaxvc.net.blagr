@@ -1,0 +1,77 @@
+Title:Adventures in Geocoding the FCC ULS Database On the Cheap
+Author:rsaxvc
+CreatedDateTime:2019-08-03T03:15:14
+ModifiedDateTime:2019-08-03T03:15:14
+Tag:Ham Radio
+---
+
+<p>
+I have a few project ideas that involve the FCC ULS database for ham radio operators. One of these projects
+requires lat/lon estimates of operator locations. To do this, I need to forward geocode data for approximately
+1.4 million radio operators. When I normalize this into a list of operators linked to a list of addresses, there
+are around 1.1 million unique addresses. Texas A&M University maintains <a href="https://geoservices.tamu.edu/Services/Geocode/OtherGeocoders/">
+a list of geocoding software and APIs</a>. For this amount of geocoding, I couldn't find a free API that covered my needs, so I tried a few solutions:
+</p>
+
+<h2><a href="http://geoservices.tamu.edu/">TAMU Geoservices</a></h2>
+<p>
+Texas A&M University provides a free geocoder with several possible cost structures:
+<ul>
+	<li>Free - <a href="https://geoservices.tamu.edu/Pricing/Free/">2500 geocoding API calls, no refills. Use this to test if their API will handle what you need.</a></li>
+	<li>Free Partner - <a href="https://geoservices.tamu.edu/Pricing/Partner/">Sign in and click a button to release 2500 additional geocodes whenever you like</a></li>
+	<li>Paid - <a href="https://geoservices.tamu.edu/Pricing/UsageCosts.aspx">between $.0012 and $.02 per depending on volume</a></li>
+</ul>
+</p><p>
+<a href="https://geoservices.tamu.edu/Pricing/Partner/">Data attribution is required for partner status. Data can be reused and republished.</a>
+</p>
+
+<h2><a href="https://developers.google.com/maps/documentation/">Google Maps</a></h2>
+<p>
+Originally when I started researching this project I looked at Google Maps, but in 2018 their usage costs doubled,
+changing from a free 2500 geocodes per day(75000/month), to a $200 credit per month with geocodes costing $0.005
+each(40000/month). With a cron job encoding 1000 points per day, it should only take three years to geocode the
+ULS. Ugh. I will note that Google correctly geocoded all three of my test addresses to the right house.
+</p>
+<p>
+Of note, Google <a href="https://developers.google.com/maps/documentation/geocoding/policies">disallows prefetching or caching!</a>. This makes
+their service worthless for a number of applications.
+</p>
+
+<h2><a href="https://developer.here.com/documentation/geocoder/topics/what-is.html">HERE</a></h2>
+<p>
+HERE has a monthly global limit on API calls, but that limit is 250k per month, the highest of the paid services.
+HERE could geocode the entire ULS for free in only 5 months, or in one month for $1350.
+</p>
+<p>
+Here also limits caching, <a href="https://legal.here.com/en-gb/terms/acceptable-use-policy">this time to a maximum of 30 days.</a> Ugh. Again worthless for distribution to end-users.
+</p>
+
+<h2><a href="https://wiki.openstreetmap.org/wiki/Nominatim">Nominatim/OSM</a></h2>
+<p>
+OpenStreetMaps has a geocoder named Nominatim. <a href="http://nominatim.org/release-docs/latest/admin/Installation">
+Setting up Nominatim</a> requires a custom-tuned PostgreSQL database with approaching a TB of free disk space available. Though complex, the instructions do a good job of walking you through entire installation process for a few variants of Linux.
+</p>
+<p>
+Once set up, the geocoding API is easy to work with, supporting both free-form and field-specified queries. And I can geocode as much as I want. Since the client and server are both on the same laptop, it's the fastest solution, but...
+</p>
+<p>
+The bad news is that Nominatim only geocoded about half of the addresses, and at least for my three test addresses, the locations were off by several houses. A friend's house was off by a neighborhood.
+</p>
+<p>
+As for data distribution requirements, <a href="https://www.openstreetmap.org/copyright">Data attribution is required.</a> Data can be reused and republished under <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA</a>.
+</p>
+
+<h2>Current Working Solution</h2>
+<p>
+Currently, I'm using a sqlite database with two tables, addresses and geocodes.
+Geocodes consists of a reference back to addresses, a service, a lat and lon, and a timestamp.
+Whenever a service fails to geocode an address, it inserts a row with NULL lat and lon.
+Python scripts for each service run, and select addresses where there are either no
+matching geocodes, or only failed geocodes for other services. This way the services
+work together to cover gaps in one service, but don't waste time requesting data they've
+failed to fetch already.
+</p><p>
+I plan to migrate shortly to TAMU data, replacing all HERE and Google Maps shortly,
+and eventually replace OSM as well.
+</p>
+
