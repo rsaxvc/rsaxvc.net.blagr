@@ -1,0 +1,47 @@
+Title:Ethereum Mining on Raspberry Pi 4
+Author:rsaxvc
+CreatedDateTime:2019-10-18T02:44:54
+ModifiedDateTime:2019-10-18T02:44:54
+---
+<h2>Setup</h2>
+
+<h3>Download Ubuntu Eoan</h3>
+<pre>https://wiki.ubuntu.com/ARM/RaspberryPi#arm64</pre>
+
+<h3>Decompress Image and Flash to SD Card</h3>
+<pre>xz -d ubuntu-19.10-preinstalled-server-arm64+raspi3.img.xz</pre>
+<pre>sudo dd if=ubuntu-19.10-preinstalled-server-arm64+raspi3.img bs=1M of=/dev/mmcblk0</pre>
+
+<h3>Log in, set your password, and fire up a shell</h3>
+
+<h3><a href="https://golang.org/doc/install#install">Download And Install Go</a></h3>
+
+<h3>Download Geth</h3>
+<pre>git clone https://github.com/ethereum/go-ethereum</pre>
+
+<h3>Download And Install Some Dependencies</h3>
+<pre>sudo apt-get install -y build-essential</pre>
+
+<h3>Build Geth</h3>
+<pre>cd go-ethereum</pre>
+<pre>make geth</pre>
+
+<h3>Launch Geth</h3>
+<pre>./build/bin/geth --etherbase 0xYOURWALLETADDRESSHERE --syncmode fast --cache 256 console</pre>
+
+<h3>Start Mining</h3>
+<pre>miner.start(4)</pre>
+
+<h3>Wait for the DAG to generate</h3>
+Doop doop.
+
+<h3>Monitor Hashrate</h3>
+<pre>miner.getHashrate()</pre>
+
+<h2>Results</h2>
+Dag generation currently takes about 25 minutes. But after that...
+
+<pre>
+> miner.getHashrate()
+55210
+</pre>
