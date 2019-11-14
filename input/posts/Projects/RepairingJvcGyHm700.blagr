@@ -1,0 +1,23 @@
+Title:Repairing my JVC GY-HM700 after blowing a fuse
+Author:rsaxvc
+CreatedDateTime:2019-11-13T21:34:26
+ModifiedDateTime:2019-11-13T21:34:26
+Tag:camcorder
+Tag:JVC
+Tag:GY-HM700
+Tag:Fuse
+---
+<p>
+After a long day, I plugged my camera into it's power cord to change some settings back. I had the bright idea to plug in the battery charger cable into the battery as well. The next day, the battery was fully charged, but the
+camera wouldn't run without the hardline power cord - the battery input appeared dead.
+</p><p>
+After contacting several repair shops and getting quotes for several hundred dollars, it seemed the camera might be toast, until I found the service manual online.
+</p><p>
+In the service manual, I could see the battery was connected to the REG board, which had three fuses soldered to it.
+</p><p>
+After removing the battery, battery mount, and rear door, I could see the REG board, and the fuses. Fuses F2 and F3 were intact, but F1 had blown.
+</p><p>
+As soon as I placed an ammeter across F1, the camera booted right up!
+</p><p>
+Next stop is a visit to PacParts to order the replacement fuse.
+</p>
