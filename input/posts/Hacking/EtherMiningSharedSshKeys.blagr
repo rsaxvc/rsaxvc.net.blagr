@@ -1,0 +1,88 @@
+Title:Widespread re-use of SSH Host Keys in Ethereum Mining Rig Operating Systems
+Author:rsaxvc
+CreatedDateTime:2020-04-10T01:10:52
+ModifiedDateTime:2020-04-10T01:10:52
+Tag:Ethereum
+Tag:Crypto
+Tag:Cryptocurrency
+Tag:SSH
+---
+<h2>How this started</h2>
+<p>
+A friend came to me last fall wondering how their newly set up mining rig kept getting rooted. This
+happened over a few different mining OSs. Eventually we found an old firewall rule allowing inbound
+SSH access, and the mining rig had lost the DHCP lottery and SSH was exposed. Rather than close the
+hole immediately we decided to do some logging. We set up a new, fresh install and waited. Mostly,
+we got the usual SSH scanners hitting the box, but rarely our attacker would log in with the right
+default password on the first try. That's strange - default passwords change per mining OS, so how
+would they know what OS was running?
+</p><p>
+I myself have a GPU rig, for machine learning and other purposes. But while it's idle to me, it mines.
+Strangely, I noticed that the SSH host-keys on my box predated the software installation,
+which made me curious who generated them.
+</p><p>
+With these two bits of knowledge, I discovered a widespread key-reusage bug, worked with the mining OS
+groups, and filed several CVEs.
+</p>
+
+<h2>What exactly are SSH host keys?</h2>
+<p>
+SSH host keys provide a mechanism so that a server can be fingerprinted and identified to a client as a trusted
+entity, worthy of being fed a password through a login attempt. In other words:
+</p>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/48772448413/in/dateposted-public/" title="SshHostKeyPrompt"><img src="https://live.staticflickr.com/65535/48772448413_042c5867e3_o.png" width="628" height="63" alt="SshHostKeyPrompt"></a>
+<p>
+The SSH key should be unique per host, both to prevent a bad actor compromising one machine being able to impersonate
+another, and to prevent a bad actor from enumerating identifiable hosts by looking for known public keys.
+</p>
+
+<h2>The Problem</h2>
+<p>
+Several Linux-based Ethereum mining platforms constructed host-keys prior to disk image generation. This means that
+a large number of systems share the SSH host keys. In addition to being able to impersonate servers, we can search
+shodan.io or use an SSH host-public-key scanner to identify hosts accessible on the public IPv4 space. It also means
+that it is fairly easy to construct a dictionary mapping public key to default credentials for some mining OSs.
+</p>
+
+<h2>The Extraction Process</h2>
+<p>
+For each mining image, the disk image was downloaded, and testdisk was run to extract the SSH keys. Testdisk had trouble with
+a few images, so the remaining ones were booting in a VM. SSH keys were then
+searched on shodan.io to confirm the presence of IPv4 exposes hosts.
+</p>
+
+<h2>Conclusions</h2>
+<p>
+It seems attackers have weaponized SSH host keys, both as a means of identifying hosts,
+and identifying default exploits like unchanged default usernames and passwords. Additionally,
+most appliances or IoT devices should not be exposed on IPv4/6 for ingress from the general internet.
+This sentiment was echoed by some mining OS vendors who did not recognize shared host keys as an
+issue until presented with results showing their miners were easily identifiable online. Finally,
+a secure automatic update path is a must - without this miners will remain exposed until manually
+patched, likely with many miners unaware they are exposed.
+</p>
+
+<h2>Affected Platforms and Keys and Host Counts</h2>
+<table border="1">
+<tr><td>Platform</td><td>SSH Host Key(Search Shodan For This)</td><td>Shodan.io Host Count(when found)</td></tr>
+<tr><td>MinerStat</td><td><a href="https://www.shodan.io/search?query=AAAAC3NzaC1lZDI1NTE5AAAAIAsyyG2oms6uTcBqvPf0BlBExu0vR9pP%2BTaXTOm5YedA">AAAAC3NzaC1lZDI1NTE5AAAAIAsyyG2oms6uTcBqvPf0BlBExu0vR9pP+TaXTOm5YedA</a></td><td>1</td></tr>
+<tr><td>nvOC</td><td><a href="https://www.shodan.io/search?query=AAAAC3NzaC1lZDI1NTE5AAAAIKGdb89S1n%2FsGKIcxb6fE9T4529rEBm2aADacrU4NXTz">AAAAC3NzaC1lZDI1NTE5AAAAIKGdb89S1n/sGKIcxb6fE9T4529rEBm2aADacrU4NXTz</a></td><td>1</td></tr>
+<tr><td>EasyMine</td><td><a href="https://www.shodan.io/search?query=AAAAC3NzaC1lZDI1NTE5AAAAICdUb1BNO%2BskAmuvlq2OFY3F%2Bzhz9LLusi7NOhf3KvjA">AAAAC3NzaC1lZDI1NTE5AAAAICdUb1BNO+skAmuvlq2OFY3F+zhz9LLusi7NOhf3KvjA</a></td><td>1</td></tr>
+<tr><td>SimpleMiningOS</td><td><a href="https://www.shodan.io/search?query=AAAAC3NzaC1lZDI1NTE5AAAAIAbq7yTubxaZVz5Dp4O7vf%2F7EDQqykhWoXLDyZ6yfMFT">AAAAC3NzaC1lZDI1NTE5AAAAIAbq7yTubxaZVz5Dp4O7vf/7EDQqykhWoXLDyZ6yfMFT</a></td><td>40</td></tr>
+<tr><td>HiveOS</td><td><a href="https://www.shodan.io/search?query=AAAAC3NzaC1lZDI1NTE5AAAAIHCo%2FCDSgF8ptbH%2Fkez5kxFhd7XEdWclhL%2F5DF1z%2F%2Bm2">AAAAC3NzaC1lZDI1NTE5AAAAIHCo/CDSgF8ptbH/kez5kxFhd7XEdWclhL/5DF1z/+m2</a></td><td>88</td></tr>
+<tr><td>EthOS</td><td><a href="https://www.shodan.io/search?query=AAAAC3NzaC1lZDI1NTE5AAAAIOUNqK8KKPtnSQQuV7YYVpARjZSa8L%2BoqUiiOJ1pFIMg">AAAAC3NzaC1lZDI1NTE5AAAAIOUNqK8KKPtnSQQuV7YYVpARjZSa8L+oqUiiOJ1pFIMg</a></td><td>57</td></tr>
+<tr><td>MinerBabe</td><td><a href="https://www.shodan.io/search?query=AAAAC3NzaC1lZDI1NTE5AAAAIPwfV6QoEGBm%2BDO75p9zRyVZHbPydMZfgucyECta%2Faqn">AAAAC3NzaC1lZDI1NTE5AAAAIPwfV6QoEGBm+DO75p9zRyVZHbPydMZfgucyECta/aqn</a></td><td>1</td></tr>
+</table>
+
+<h2>Responsible Disclosure</h2>
+An effort was made to contact the authors of each identified OS, and publication was delayed four months in an effort to allow vendors to patch their distributions:
+<table border="1">
+<tr><td>Platform</td>      <td>CVE</td>            <td>Initial Report</td> <td>Outcome</td></tr>
+<tr><td>MinerStat</td>     <td>CVE-2019-19750</td> <td>Sept 8, 2019</td>   <td><a href="https://minerstat.com/changelog">Fixed issue promptly</a>.</td></tr>
+<tr><td>nvOC</td>          <td>CVE-2019-19752</td> <td>Dec 1, 2019</td>    <td>Devs on bitcoin talk said it would be fixed in next release.</tr>
+<tr><td>EasyMine</td>      <td>CVE-2019-19751</td> <td>Sept 23, 2019</td>  <td>Fixed Dec 5, 2019</td></tr>
+<tr><td>SimpleMiningOS</td><td>CVE-2019-19753</td> <td>Sept 8, 2019</td>   <td>Declined to fix, pinged again, said they would consider.</td></tr>
+<tr><td>HiveOS</td>        <td>CVE-2019-19754</td> <td>Sept 9, 2019</td>   <td>Said thank you for submitting, they would consider it. Never heard back.</td></tr>
+<tr><td>EthOS</td>         <td>CVE-2019-19755</td> <td>Dec 1, 2019</td>    <td>Stated in IRC they would ask developers to fix it</td></tr>
+<tr><td>MinerBabe</td>     <td>CVE-2020-5200</td>  <td>Dec 3, 2019</td>    <td>Said they would fix it, but did not say anything about fixing the SSH login key shipped in the image.</td></tr>
+</table>
