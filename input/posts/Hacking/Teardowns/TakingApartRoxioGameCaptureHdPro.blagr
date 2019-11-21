@@ -1,0 +1,36 @@
+Title:Taking Apart the Roxio Game Capture HD Pro
+Author:rsaxvc
+CreatedDateTime:2019-11-20T21:25:18
+ModifiedDateTime:2019-11-20T21:25:18
+Tag:Roxio
+Tag:Teardown
+---
+<p>
+Lets take apart this thing:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/49098448712/" title="IMG_20191120_212954"><img src="https://live.staticflickr.com/65535/49098448712_8eaf858f11_w.jpg" width="400" height="225" alt="IMG_20191120_212954"></a>
+</p><p>
+First there are four screws under the rubber feet
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/49097743863/in/photostream/" title="IMG_20191120_213000"><img src="https://live.staticflickr.com/65535/49097743863_e86a78b746_w.jpg" width="400" height="225" alt="IMG_20191120_213000"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+To make the whole thing feel heftier, there is a large metal block:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/49098254376/in/photostream/" title="IMG_20191120_213127"><img src="https://live.staticflickr.com/65535/49098254376_22eff646c2_w.jpg" width="400" height="225" alt="IMG_20191120_213127"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Everything fits on one PCB.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/49098449097/in/photostream/" title="IMG_20191120_213104"><img src="https://live.staticflickr.com/65535/49098449097_9c7cb8fa78_w.jpg" width="400" height="225" alt="IMG_20191120_213104"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+With the Fujitsu transcoder:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/49097743343/in/photostream/" title="IMG_20191120_213056"><img src="https://live.staticflickr.com/65535/49097743343_2c1d637d98_w.jpg" width="400" height="225" alt="IMG_20191120_213056"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+And HDMI encoders/decoders
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/49097743503/in/photostream/" title="IMG_20191120_213054"><img src="https://live.staticflickr.com/65535/49097743503_73b3be1eb5_w.jpg" width="400" height="225" alt="IMG_20191120_213054"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/49097743708/in/photostream/" title="IMG_20191120_213051"><img src="https://live.staticflickr.com/65535/49097743708_35ae12f6e4_w.jpg" width="400" height="225" alt="IMG_20191120_213051"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Interesting, this MB86H58A chip is also used in the Elgato Game Capture HD, which <a href="https://github.com/tolga9009/elgato-gchd">has a Linux driver here</a>.
+</p>
