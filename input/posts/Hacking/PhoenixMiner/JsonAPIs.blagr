@@ -1,0 +1,13 @@
+Title:Reverse Engineering PhoenixMiner JSON API
+Author:rsaxvc
+CreatedDateTime:2019-12-25T02:10:53
+ModifiedDateTime:2019-12-25T02:10:53
+Tag:Ethereum
+Tag:PhoenixMiner
+---
+<p>
+In this video, I take a look at how PhoenixMiner implements JSON APIs by
+reverse engineering the function that identifies and calls each API.
+</p><p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KvUSxLCj42c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</p>

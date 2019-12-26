@@ -1,0 +1,18 @@
+Title:Reverse Engineering PhoenixMiner String Obfuscation
+Author:rsaxvc
+CreatedDateTime:2019-12-20T02:10:52
+ModifiedDateTime:2019-12-20T02:10:52
+Tag:Ethereum
+Tag:PhoenixMiner
+Tag:Obfuscation
+---
+<p>
+In this video, I take a look at how PhoenixMiner implements string obfuscation,
+and reverse engineer a function back into portable C code and run it to obtain
+the deobfuscated string.
+</p><p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9GkU-MhO5rU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</p><p>
+You'll want to watch full-screen on a high-def screen, as I recorded in 1600p. It was my first screen recorded video and I didn't
+plan ahead for playback on mobile and such.
+</p>
