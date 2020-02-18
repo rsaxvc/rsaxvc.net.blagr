@@ -1,0 +1,50 @@
+Title:Why ESP32 sample-based profiling will likely never be fast
+Author:rsaxvc
+CreatedDateTime:2020-02-17T00:00:01
+ModifiedDateTime:2020-02-17T00:00:01
+Tag:Xtensa
+Tag:ESP32
+Tag:Espressif
+---
+
+<p>
+This weekend I investigated why sample-based profiling was so slow
+with OpenOCD on ESP32 over JTAG; this is a report of my findings.
+</p><p>
+When I started, I was getting about 8 samples per second using
+a J-Link debugger at 10MHz. When I was done, I was up to around 10.
+This is not a story of great success.
+</p><p>
+On Cortex-M, reading the program counter over JTAG is rather straightforward.
+The program-counter is usually memory-mapped to DWT_PCSR, so you let
+the core run, and spam reads from the DWT_PCSR, then halt the core when
+you are done.
+</p><p>
+On Xtensa, the situation is a little more complicated. The CPU core is accessed
+via the DebugDataRegister(special function register 104, DDR). To access a general
+(also known as address registers for Xtensa) register over JTAG, the instruction
+WriteSpecialRegister(WSR) is used to copy a general register into DDR, like
+WSR A3, DDR. However, the program-counter is not accessible as a general register
+like A3, it's accessible when the core is halted in the ExceptionProgramCounter(EPC)
+special function registers. This means we must use ReadSpecialRegister(RSR) to first
+fetch the EPC into a general purpose register, then use WSR to copy it to the DDR
+register, where we can read it over JTAG. However, this corrupts the general purpose
+register we used, so the minimum sequence appears to be:
+<ul>
+	<li>Halt the core with a debug exception</li>
+	<li>WSR A3, DDR #Copy A3 into DebugDataRegister</li>
+	<li>Read DDR over JTAG and save as backup of A3</li>
+	<li>RSR EPC, A3 #Copy ExceptionProgramCounter into A3</li>
+	<li>WSR A3, DDR #Copy A3 into DebugDataRegister</li>
+	<li>Write DDR over JTAG with original value of A3</li>
+	<li>RSR DDR, A3 #Restore A3</li>
+	<li>Resume the core</li>
+</ul>
+As an optimization, on halt, OpenOCD reads all the registers out of the core so that
+they are available for debugging. This is useful for debugging; however, it adds
+some extra overhead for profiling, where we really just care about the program counter.
+</p><p>
+It may be possible to add a dedicated path for profiling where we fetch just a handful
+of registers. This could be around 2-3x faster than the current approach, but always
+bottlenecked by the stop-and-go-approach of program-counter sampling.
+</p>
