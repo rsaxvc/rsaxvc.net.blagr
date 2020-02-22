@@ -1,0 +1,28 @@
+Title:Setting up ESP8266 for sample-based profiling and debugging
+Author:rsaxvc
+CreatedDateTime:2020-02-22T00:00:01
+ModifiedDateTime:2020-02-22T00:00:01
+Tag:Xtensa
+Tag:ESP8266
+Tag:Espressif
+---
+
+<p>
+This weekend I finally got my ESP8266 working with OpenOCD's JTAG sample-based profiling.
+There were four problems, one with the Arduino Core, two with OpenOCD, and a similar bottleneck to ESP32.
+</p><p>
+First, the Arduino Core defaults all GPIO-capable pins into GPIO inputs. This very quickly disables the JTAG pins.
+The solution is simply:
+<pre>
+pinMode(12,FUNCTION_0);//TDI
+pinMode(13,FUNCTION_0);//TCK
+pinMode(14,FUNCTION_0);//TMS
+pinMode(15,FUNCTION_0);//TDO
+</pre>
+</p><p>
+Next, OpenOCD's reg command was returning no registers, because they were marked as exist=false.
+Also OpenOCD's profiler looks for a register, PC, but the ESP8266 only implemented pc, and OpenOCD's
+profiler is case-sensitive.
+</p><p>
+This is fixed in <a href="https://github.com/rsaxvc/sysprogs-esp8266-openocd">my OpenOCD port</a>.
+</p>
