@@ -1,0 +1,150 @@
+Title:Installing Debian 10 on a PowerMac G5
+Author:rsaxvc
+CreatedDateTime:2020-07-03T01:14:03
+ModifiedDateTime:2020-07-03T01:14:03
+Tag:Apple
+Tag:Linux
+Tag:Debian
+Tag:PowerPC
+---
+<h2>Prerequisites</h2>
+<ul>
+<li>A spare computer with an SSH client, just in case</li>
+<li>configure disk for SATA1 and install - PowerMac G5s use SATA1(1.5gbps), some disks require configuration to lock them into SATA1 mode, usually a jumper documented on the drive sticker or in the datasheet.</li>
+<li>An ethernet cable with an internet connection plugged in. I haven't tried WiFi as I don't have the adapter</li>
+<li>Burn <a href="https://cdimage.debian.org/cdimage/ports/10.0/powerpc/iso-cd/debian-10.0-powerpc-NETINST-1.iso">Debian 10 PPC ISO</a> to a CD</li>
+</ul>
+
+<h2>Press power button</h2>
+
+<h2>Enter OpenFirmware</h2>
+As soon as the mac chimes, press and hold ALT+WIN+O+F or Apple+Option+O+F to enter openfirmware.
+
+<h2>Insert the Debian disk</h2>
+<ul>
+<li>Type "eject cd", press enter</li>
+<li>insert Debian 10 disc</li>
+<li>Type "eject cd", press enter</li>
+</ul>
+
+<h2>Boot the installer bootloader</h2>
+Type "boot cd:,\install\yaboot"
+
+<h2>Select installer kernel and boot the installer</h2>
+At the boot prompt press enter or type "install" then enter
+
+<h2>Run through some Debian installer steps</h2>
+At this point we should be greeted with the familiar Debian text-based installer.
+Most of this is bog-standard, but there's a few gotchas later.
+<ul>
+<li>Select your language</li>
+<li>Select your location</li>
+<li>Configure your keyboard</li>
+<li>Enter your hostname - remember this for later in case the GPU driver fails</li>
+<li>Enter your domain name or leave blank</li>
+<li>Enter root password twice</li>
+<li>Enter user name, then username, then user password twice</li>
+<li>Select timezone</li>
+</ul>
+
+<h2>Select Partitioning Method</h2>
+
+Unless you're familiar with PowerPC bootloading, just use a guided method. Powermacs require a special partition to be set up, this is the easiest way to do so.
+
+<h2>More standard Debian installer steps</h2>
+<ul>
+<li>Select your installation targe disk.</li>
+<li>Pick your partition layout.</li>
+<li>Make any partition adjustments, then select 'finish partitioning and write changes to disk'</li>
+<li>Select write-changes to disks</li>
+<li>Wait quite a while</li>
+<li>Do not scan another CD/DVD at this point</li>
+</ul>
+
+<h2>Skip the apt mirror setup</h2>
+We need to switch to a debian-ports mirror. However, there's no keychain for debian-ports loaded into the installer. For now, we're going to skip this and fix it later. But the process for doing so is not exactly clear,
+so I have documented it below:
+<ul>
+<li>Select a country</li>
+<li>select a mirror</li>
+<li>enter any proxy information</li>
+<li>At the 'bad archive mirror' prompt, pick continue</li>
+<li>Select a country</li>
+<li>select a mirror</li>
+<li>enter any proxy information</li>
+<li>At the 'bad archive mirror' prompt, pick continue</li>
+</ul>
+
+At this point the installer should continue until it complains that it cannot access the security repositories. Pick continue then wait while the installer selects and installs software.
+
+<h2>Configure Popularity-Contest</h2>
+I recommend participating in the package usage survey, to give feedback to the
+Debian project about what packages you use, but you are free not to.
+
+<h2>Select software package</h2>
+Just joking, there is only one package included with the CD, 'standard system utilities', which you probably want. Hit continue.
+
+<h2>Wait for the CD to eject, take it out, but do not reboot. Time to fix what we broke</h2>
+At this point, we're going to add a ports mirror, and install SSH in case the GPU fails.
+<ul>
+<li>switch to VT2 by pressing Alt+F2</li>
+<li>Press enter to activate the console</li>
+<li>Run <pre>chroot /target bash</pre> to enter the installation target environment</li>
+<li>Open up /etc/apt/sources.list for editing</li>
+<li>Clear out the existing text</li>
+<li>Enter <pre>deb http://ftp.ports.debian.org/debian-ports/ sid main</pre> and close the file</li>
+<li>Tell apt to scan the new mirror with <pre>apt-get update --allow-insecure-repositories</pre>
+It should print some warnings about the mirror not being secured.</li>
+<li>Tell apt to install the mirror keying with <pre>apt-get install debian-ports-archive-keyring</pre>
+When it prompts you to install without verification enter "y"</li>
+<li>Tell apt to rescan the new mirror with <pre>apt-get update</pre></li>
+<li>At this point, we're going to install a few packages to make things easier
+<pre>apt-get install sudo openssh-server</pre></li>
+<li>At this point, we can optionally install some packages useful for developers
+<pre>apt-get install git build-essential htop nload</pre></li>
+<li>enter <pre>exit</pre> to exit the chroot</li>
+<li>enter <pre>exit</pre> again to exit the installer console</li>
+<li>switch back to VT1 by pressing Alt+F1</li>
+<li>select continue to wrap up the installation and reboot</li>
+</ul>
+
+<h2>What to do if you have an NVIDIA GPU and the screen turns black on reboot</h2>
+
+In short, we need to create this file: /etc/modprobe.d/blacklist-nvidia-nouveau.conf,
+with the following contents:<pre>blacklist nouveau</pre>
+
+<h3>With SSH</h3>
+<ul>
+<li>From your spare computer, ssh to the hostname you entered for the PowerMac.</li>
+<li>Switch user to root with <pre>su</pre>, then enter your root password.</li>
+<li>Create and edit this file: /etc/modprobe.d/blacklist-nvidia-nouveau.conf</li>
+<li>Add the following text <pre>blacklist nouveau</pre>< and close the file/li>
+<li>Reboot the system with <pre>reboot</pre></li>
+<li>And you should be presented with a login prompt upon reboot</li>
+</ul>
+
+<h3>Without SSH</h3>
+<ul>
+<li>If the system is on, tap the power button and wait for the system to shut down</li>
+<li>If the system doesn't shut down after a few minutes, press and hold the power button</li>
+<li>Once powered off, tap the power button, as soon as the system chimes press and hold WIN+ALT+O+F to enter Open Firmware</li>
+<li>Type "eject cd", press enter</li>
+<li>insert Debian 10 disc</li>
+<li>Type "eject cd", press enter</li>
+<li>Type "boot cd:,\install\yaboot" to kick off the installer loader</li>
+<li>At the "boot:" prompt, enter "rescue" to get into rescue mode</li>
+<li>Select your language</li>
+<li>Select your location</li>
+<li>Select your keyboard</li>
+<li>Enter your hostname</li>
+<li>Enter your domain name</li>
+<li>Select your timezone</li>
+<li>If you remember your root filesystem partition, select it</li>
+<li>If you do not remember your root filesystem partition, it's probably /dev/sda3 if you have a single disk and if you used guided partitioning. You can always guess and go back if you were wrong.</li>
+<li>Select "Execute a shell in /dev/disk-partition-goes-here</li>
+<li>Create and edit this file: /etc/modprobe.d/blacklist-nvidia-nouveau.conf</li>
+<li>Add the following text <pre>blacklist nouveau</pre>< and close the file/li>
+<li>enter "exit" to leave the console</li>
+<li>select "reboot the system", this will leave the CD installed, but it should default to booting from the hard disk</li>
+<li>And you should be presented with a login prompt upon reboot</li>
+</ul>
