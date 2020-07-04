@@ -118,7 +118,7 @@ with the following contents:<pre>blacklist nouveau</pre>
 <li>From your spare computer, ssh to the hostname you entered for the PowerMac.</li>
 <li>Switch user to root with <pre>su</pre>, then enter your root password.</li>
 <li>Create and edit this file: /etc/modprobe.d/blacklist-nvidia-nouveau.conf</li>
-<li>Add the following text <pre>blacklist nouveau</pre>< and close the file/li>
+<li>Add the following text <pre>blacklist nouveau</pre> and close the file</li>
 <li>Reboot the system with <pre>reboot</pre></li>
 <li>And you should be presented with a login prompt upon reboot</li>
 </ul>
@@ -143,7 +143,7 @@ with the following contents:<pre>blacklist nouveau</pre>
 <li>If you do not remember your root filesystem partition, it's probably /dev/sda3 if you have a single disk and if you used guided partitioning. You can always guess and go back if you were wrong.</li>
 <li>Select "Execute a shell in /dev/disk-partition-goes-here</li>
 <li>Create and edit this file: /etc/modprobe.d/blacklist-nvidia-nouveau.conf</li>
-<li>Add the following text <pre>blacklist nouveau</pre>< and close the file/li>
+<li>Add the following text <pre>blacklist nouveau</pre> and close the file</li>
 <li>enter "exit" to leave the console</li>
 <li>select "reboot the system", this will leave the CD installed, but it should default to booting from the hard disk</li>
 <li>And you should be presented with a login prompt upon reboot</li>
