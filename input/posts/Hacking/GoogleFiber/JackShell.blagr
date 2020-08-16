@@ -5,6 +5,8 @@ ModifiedDateTime:2020-08-12T12:02:34
 Tag:UART
 Tag:Google
 Tag:Shell
+Tag:GPON
+Tag:Fiber
 ---
 <p>
 After looking inside a Google Fiber Jack, I found a similar 0.1 inch header
