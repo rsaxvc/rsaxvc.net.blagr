@@ -1,0 +1,34 @@
+Title:Nokia G-010S-A Pin 6 Issue
+Author:rsaxvc
+CreatedDateTime:2020-08-15T02:02:34
+ModifiedDateTime:2020-08-15T02:55:24
+Tag:Fiber
+Tag:SFP
+Tag:GPON
+---
+<p>
+As part of setting up a GPON lab at home, I noticed that my Nokia G-010S-A SFP refused to connect to my HP 530SFP+ NIC.
+<a href="https://www.dslreports.com/forum/r32230041-Internet-Bypassing-the-HH3K-up-to-2-5Gbps-using-a-BCM57810S-NIC">Some research showed that a NIC modification was needed.</a>
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50231162051/in/dateposted-public/" title="Nokia G-010S-A PCB"><img src="https://live.staticflickr.com/65535/50231162051_0edc6b876d.jpg" width="500" height="281" alt="Nokia G-010S-A PCB"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+I decided to dig in a little deeper to figure out what was wrong. The SFP specification states that SFP pin 6 should be grounded on the SFP module, so that the NIC can
+detect and respond to hotplugged modules. According to the link above, the Nokia G-010S-A doesn't do so, but that's not quite the whole story. After disassembling
+the SFP housing(a tricky and risky venture, bent sheet metal may cause interference on reinsertion to the NIC), I was able to trace out enough of the PCB to figure out
+what Nokia did. Instead of directly grounding pin 6, they placed a 1k SMT resistor between pin 6 and the SFP ground(also pins 1/9/10). This forms a voltage divider between
+the NIC and the G-010S-A. I suspect the issue is that different NICs may use different pull-up resistors connected to pin 6, or have different levels of VIL(Voltage Low Level, the
+minimum voltage required to read as a zero reliably), causing some systems to detect the G-010S-A correctly(if their pull-up is high enough), others to flutter(if their pull-up
+is middle-sized, or not using Schmitt triggered inputs), and mine to fail to detect entirely(pull-up too low).
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50230517728/in/dateposted-public/" title="Nokia G-010S-A PCB"><img src="https://live.staticflickr.com/65535/50230517728_9baeba85f2.jpg" width="500" height="281" alt="Nokia G-010S-A PCB"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+The fix seems to be simple enough, short out this resistor(there are three white boxes above the 5 pin chip, the middle box has two resistors, the left is a zero-ohm, and the right is our 1k culprit, it's connected to pin 6, starting with pin 1 on the far right).
+</p><p>
+And it is! After soldering all four pads together, because my iron is far too large to solder over a single SMT resistor, rebooting the machine, setting the speed to 1000mbps with <pre>sudo ethtool -s ens4f1 1000</pre>,
+configuring my IP address as 192.168.1.15, I can ping 192.168.1.10 and SSH into it as ONTUSER:SUGAR2A041@192.168.1.10:22, it works!
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50231243576/in/dateposted-public/" title="Nokia G-010S-A Solder Fix"><img src="https://live.staticflickr.com/65535/50231243576_492f5bc9a3_w.jpg" width="225" height="400" alt="Nokia G-010S-A Solder Fix"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50231465162/in/dateposted-public/" title="Nokia G-010S-A Solder Fix"><img src="https://live.staticflickr.com/65535/50231465162_272e89174d_w.jpg" width="225" height="400" alt="Nokia G-010S-A Solder Fix"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50230607298/in/dateposted-public/" title="ONTUSER:SUGAR2A041@192.168.1.10:22"><img src="https://live.staticflickr.com/65535/50230607298_32e08ca0fb_w.jpg" width="343" height="400" alt="ONTUSER:SUGAR2A041@192.168.1.10:22"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p>
+
