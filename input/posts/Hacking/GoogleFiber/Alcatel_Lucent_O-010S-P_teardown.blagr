@@ -1,0 +1,48 @@
+Title:Alcatel Lucent O-010S-P GPON Teardown
+Author:rsaxvc
+CreatedDateTime:2020-08-21T00:12:34
+ModifiedDateTime:2020-08-21T00:12:34
+Tag:Fiber
+Tag:GPON
+---
+<p>
+On <a href="https://www.dslreports.com/forum/r32230041-Internet-Bypassing-the-HH3K-up-to-2-5Gbps-using-a-BCM57810S-NIC">a recent DSL-Reports thread</a>
+I noticed that Alcatel-Lucent O-010S-P was marked as untested. I ordered a used
+one to take apart and see what was inside. For reference, here it is next to
+a Nokia G-010S-A(with infamous SFP linkup issue). As we can see, the cases
+are quite different, in addition to the different fiber connectors/polishes
+(SC/APC and SC/UPC).
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50252999913/in/dateposted-public/" title="Alcatel-Lucent O-010S-P"><img src="https://live.staticflickr.com/65535/50252999913_a65baf0717.jpg" width="500" height="281" alt="Alcatel-Lucent O-010S-P"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+First to go are these little tabs on the right(other matching tab on other side of SFP).
+These can be bent out with a steel probe from the end of the SFP.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50253838817/in/dateposted-public/" title="Alcatel-Lucent O-010S-P"><img src="https://live.staticflickr.com/65535/50253838817_acc0331b51.jpg" width="500" height="281" alt="Alcatel-Lucent O-010S-P"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Next, the outer case/shield just sort of slides off. Note this will likely
+scratch your labels and jack up your thermal pad if it is old and dry.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50253662456/in/dateposted-public/" title="Alcatel-Lucent O-010S-P"><img src="https://live.staticflickr.com/65535/50253662456_282fe4a1a0.jpg" width="500" height="281" alt="Alcatel-Lucent O-010S-P"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Removing the heatsink we can see a Broadcom chip under it. Due to stains from
+the heatsink insert, it's a little hard to read the number, but I believe it
+to be BCM685131FBG, BCM685161FBG, or BCM685181FBG.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50253839132/in/dateposted-public/" title="Alcatel-Lucent O-010S-P"><img src="https://live.staticflickr.com/65535/50253839132_cfd76d73f6.jpg" width="500" height="281" alt="Alcatel-Lucent O-010S-P"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+From the side, we can see this is indeed a lot of electronics in a small package,
+with two PCBs soldered together, and what I would guess is RAM in the middle.
+Also, you need to smoosh the laser module
+and PCB assembly together a bit like shown before continuing.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50252999583/in/dateposted-public/" title="Alcatel-Lucent O-010S-P"><img src="https://live.staticflickr.com/65535/50252999583_6d2438516e_c.jpg" width="450" height="800" alt="Alcatel-Lucent O-010S-P"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Apologies for this next shot, but to remove the PCB, you need to continue
+smooshing the PCB assembly towards the laser until the PCB can be rotated
+up and off the metal notches like shown.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50253662156/in/dateposted-public/" title="Alcatel-Lucent O-010S-P"><img src="https://live.staticflickr.com/65535/50253662156_807dd52d2a.jpg" width="500" height="281" alt="Alcatel-Lucent O-010S-P"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Apologies again for not taking the last photo of the back - the main feature is a Spansion FL256SAIF00 3v, 256mbit/32MByte Quad-SPI Flash.
+</p>
