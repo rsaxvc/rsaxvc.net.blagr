@@ -1,7 +1,7 @@
 Title:Installing Debian 10 on a PowerMac G5
 Author:rsaxvc
 CreatedDateTime:2020-07-03T01:14:03
-ModifiedDateTime:2020-07-03T01:14:03
+ModifiedDateTime:2020-09-07T01:14:03
 Tag:Apple
 Tag:Linux
 Tag:Debian
@@ -49,7 +49,17 @@ Most of this is bog-standard, but there's a few gotchas later.
 
 <h2>Select Partitioning Method</h2>
 
-Unless you're familiar with PowerPC bootloading, just use a guided method. Powermacs require a special partition to be set up, this is the easiest way to do so.
+It seems that yaboot is not familiar with the latest ext4 partition features, namely extents and 64-bit block mode. This means we must create a /boot partition. However,
+none of the guided partitioning options do so. Also, I'm assuming a clean Linux install without dual-booting, as this is complicated enough already. So,
+<ul>
+<li>Select 'Guided - use entire disk'.</li>
+<li>Select 'All file in one partition'.</li>
+<li>Eventually, you'll be presented with the Debian installer partitioning menu.</li>
+<li>Delete the '/' and 'swap' partitions</li>
+<li>Create a new '/boot' partition formatted as 'ext2', mine is 1GB but that's larger than necessary.</li>
+<li>Create a '/' partition, leaving a few GB for swap, formatted as 'ext4'</li>
+<li>Create a 'swap' partition to fill in the remainder of the disk.</li>
+</ul>
 
 <h2>More standard Debian installer steps</h2>
 <ul>
