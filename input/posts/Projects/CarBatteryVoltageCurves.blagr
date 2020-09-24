@@ -1,0 +1,35 @@
+Title:Car Battery Startup and Shutdown Voltage Curves
+Author:rsaxvc
+CreatedDateTime:2020-09-23T01:01:01
+ModifiedDateTime:2020-09-23T01:01:01
+Tag:Voltage
+Tag:Battery
+---
+<h2>Test Setup</h2>
+<p>
+My car is a 2002 Toyota Highlander with either a 100 or 130 Amp alternator. The car battery
+was last replaced about four years ago with an auto parts store brand. I used a Mooshimeter
+for data logging at about roughly 1.5Hz logging rate. Of note, my car currently sometimes has
+a low idle, I believe due to a sticky idle air control valve.
+</p>
+
+<h2>Startup</h2>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50377155801/in/dateposted-public/" title="startup"><img src="https://live.staticflickr.com/65535/50377155801_a77870bc08_o.png" width="640" height="480" alt="startup"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<p>
+Around 2 seconds I opened the car door and sat down. Around 7 seconds I
+turned the key to the on-position. Around 15 seconds I started the car,
+sagging the voltage significantly, then the alternator began and the
+voltage quickly approached 14v. I then left for the grocery store.
+</p>
+
+<h2>Shutdown</h2>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50377155781/in/dateposted-public/" title="shutdown"><img src="https://live.staticflickr.com/65535/50377155781_209fba0855_o.png" width="640" height="480" alt="shutdown"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<p>
+After unpacking the groceries, I reattached the meter, waited a few seconds, then shut off
+the engine completely. The voltage dropped quickly initially then recovered a little and
+relaxed slower. It appears that around one minute after shutdown another load was removed.
+</p><p>
+Interestingly, the voltage lowered between leaving the house and returning. This could be
+alternator regulation changing to float-charge, or it could be that my engine was idling
+lower when I returned then when I left.
+</p>
