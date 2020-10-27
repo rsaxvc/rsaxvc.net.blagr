@@ -1,7 +1,7 @@
 Title:Car Battery Startup and Shutdown Voltage Curves
 Author:rsaxvc
 CreatedDateTime:2020-09-23T01:01:01
-ModifiedDateTime:2020-09-23T01:01:01
+ModifiedDateTime:2020-10-26T01:01:01
 Tag:Voltage
 Tag:Battery
 ---
@@ -32,4 +32,11 @@ relaxed slower. It appears that around one minute after shutdown another load wa
 Interestingly, the voltage lowered between leaving the house and returning. This could be
 alternator regulation changing to float-charge, or it could be that my engine was idling
 lower when I returned then when I left.
+</p>
+
+<h2>Notes</h2>
+<p>
+This is, of course, a single data-point taken with a low sample-rate. I was
+simply looking to see if I could pick out the alternator easily. If you are
+looking to design your own vehicle-powered device, please refer to ISO 7637.
 </p>
