@@ -44,7 +44,7 @@ ONU STATE:                     1 [INITIAL]
 INIT STATE:                    TRUE
 OMCC Valid:                    FALSE
 OMCC Port:                     65535
-Password:                      31.32.33.34.35.36.37.38.39.30
+Password:                      REDACTED but it's 10 bytes in 2-digit hex, period separated REDACTED
 BER Interval:                  0
 SD Threshold:                  9
 SF Threshold:                  5
