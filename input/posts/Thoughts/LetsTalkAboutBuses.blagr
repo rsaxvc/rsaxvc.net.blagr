@@ -4,7 +4,6 @@ CreatedDateTime:2017-07-23T00:13:50
 ModifiedDateTime:2017-07-23T00:15:28
 Tag:Bus
 Tag:AMBA
-Tag:Nebraska
 ---
 <h2>Simple busses</h2>
 In the beginning, CPUs had data buses for connecting to RAM and ROM. Often as simple as address and data pins,
