@@ -1,0 +1,226 @@
+Title:Right to Left Computability
+Author:rsaxvc
+CreatedDateTime:2020-11-21T00:13:50
+ModifiedDateTime:2020-11-21T00:15:28
+Tag:Computability
+---
+<h2>A Theorem</h2>
+In the book <i>Hacker's Delight</i>, Henry S. Warren, Jr states
+<q>A function mapping words to words can be implemented with word-parallel add,
+subtract, and, or, and not instructions if and only if each bit of the result depends only on bits
+at and to the right of each input operand</q>. Of note, add, subtract, and, or, and not also
+have this same property, that each output bit depends only on input bits in the same position
+or to the right, never to the left. This theorem has two major topics to unpack. First, any
+and all functions that are right-to-left computable can be built from a sequence of these
+more basic instructions. Second, any function whose output bits depend on a bit to the
+left of them cannot be implemented with only these basic functions.
+
+<h3>Part 1: Building right-to-left computable functions</h3>
+Warren notes that the basic operations can be combined to form left-shift-by-a-constant(repeated additions)
+and multiply. We can also trivially construct NOR,NAND,XOR,XNOR from the basic binary operations. Now that
+we have the full set of binary operations, and a mechanism to shift inputs to the left by a constant number of bits,
+we can build any right-to-left computable function. For each output bit it's possible to implement the boolean logic of a
+function by taking copies of the input words, shifting them left until the needed input bit lines up with the
+output bit, then use binary operations to compute the output. Once each output bit is computed, they are combined
+with addition or word-parallel or. As noted by Warren, this approach is often inefficient, but it does prove
+that any right-to-left computable function can be implemented with these basic operations.
+
+<h3>Part 2: Inability to build left-to-right computable functions from right-to-left computable functions</h3>
+<p>
+Many processors contain an instruction to shift a register right by a given amount, dropping bits off that
+shift right of zero, and inserting most significant bits of either zero(logical right shift) or the previous
+most significant bit(arithmentic right shift). This is a very useful and simple instruction, but as each output bit
+depends on bits at or to the left of it, it is not right-to-left computable. As such, it cannot be
+implemented only by right-to-left computable operations. Since right shift is one of the simplest left-to-right
+computable functions, it should be obvious we cannot implement it with right-to-left operations.
+</p><p>
+Warren gives the example of a function that clears the left-most set bit in a word. 
+For each output bit, we need to look at OR(bits to the left) to decide to clear this
+bit or pass it through unchanged.
+
+For fixed-width register machines, this can sometimes be handled with a
+count-leading-zeros(CLZ) or loop through through each bit searching for the
+most significant bit, but these approaches require operations that examine
+bits to the left of the output bit(CLZ) or conditional branching and looping,
+and a fixed number of bits per register.
+</p><p>
+Another example is division - the simplest division algorithm is repeated
+subtraction, whose only arithmetic operation is subtraction, but
+knowing how many rounds of subtraction requires comparison and looping,
+which require reading all available bits. Similarly, we can look to long-division
+(which produces one binary output per loop), and can be done in as many steps as there
+are bits in the result. But when we work an example, it's plain to see that the rightmost
+output bit depends on all the bits to the left of it, so we cannot represent division
+as a function of add, subtract, and, or, not.
+</p>
+
+<h2>A hypothetical machine</h2>
+<p>
+Real computers often have instructions like divide, or at least right-shift, which
+can be used to construct functions outside of right-to-left computable functions. Also,
+Turing-complete computers have some form of conditional branching. From here, we explore
+a hypothetical infinite-bit machine, and the problems we can solve with it as we build
+it, adding instructions at each step to this RISC-style machine.
+</p>
+
+<h3>Registers</h3>
+There are registers, denoted by r followed by a whole number, each capable of storing
+an infinite number of bits.
+
+<h3>Instructions</h3>
+In this section, I discuss some discrete instructions that can be added to the machine.
+The first many instructions will all be right-to-left calculable, but we'll also
+discuss a limited set of left-to-right instructions that may be supportable. Of note, each
+instruction is bit-calculable, that is to say that only the bits needed by future instructions
+can be calculated, and if needed later, the instruction may restart and calculate more bits.
+
+<h4>Basics</h4>
+To make things easier, we can create new instructions freely, as long as they can be defined
+in terms of add, subtract, and, or, and not. As mentioned above, xor, xnor, nand, and nor are
+trivially implemented from and, or, and not. To perform a left-shift by one we add a register
+to itself, and can repeat to perform left-shift by a constant amount. Unsigned multiplication by a
+constant can be represented the same way, but unsigned multiplication by a variable is also right-to-left
+calculable, so we start with:
+<ul>
+	<li>ADD register = register + register</li>
+	<li>SUB register = register - register</li>
+	<li>INC register = register + 1</li>
+	<li>DEC register = register - 1</li>
+	<li>XOR register = register xor register</li>
+	<li>XNOR register = register xnor register</li>
+	<li>AND register = register and register</li>
+	<li>NAND register = register nand register</li>
+	<li>OR register = register or register</li>
+	<li>NOR register = register nor register</li>
+	<li>NOT register = invertEachBit(register)</li>
+	<li>LSH register = register << constant</li>
+	<li>MULC register = register * constant</li>
+	<li>MUL register = register * register</li>
+    <li>MOV register = register</li>
+</ul>
+As Warren mentions, we can start doing some work with just these basic operations. To
+clear the least-significant-set-bit, the well-known formula x&(x-1) works here as well as it
+does on realizable machines. (x-1) sets all bits to the right of the least-significant set bit,
+and clears the least-significant set bit. Computing the binary and with that bitmask leaves only
+the more significant bits.
+
+<h4>The Curious Case of Underflow</h4>
+You might've wondered what happens when we try to clear the least-significant-set-bit
+in zero. For that matter, what happens when we compute 0-1? We could trap this and stop the program,
+but there's really no need to. Decrement effectively searches a bitstring,
+right to left, toggling/borrowing bits until a set bit is found, which is
+then set to zero and the operation is complete. When we decrement zero,
+we product an infinite bitstring of set bits. At first this may seem
+a little alarming, but consider that each register is an infinite bitstring
+already, though usually of zeros. Similarly, if we compute (0-1)+1, the result
+is zero again, as expected. This is very similar to a 2's complement machine
+but subtly different - knowing the sign of a number would require peeking
+at the most-significant bit which cannot be done by these operations, but
+in 2's complement style, we can add:
+<ul>
+	<li>INV register = INC(NOT(register))</li>
+</ul>
+
+<h4>Constants</h4>
+<p>
+Interestingly, in some of the examples Warren gives later in Hacker's
+Delight, not only are the basic operations available, but operations
+like increment(add 1) and decrement(subtract one) are also available.
+This is perfectly reasonable, because the output bits of a function that returns a constant
+do not depend on any input bits. Similarly, it's possible to design a binary adder with
+an input tied to one. From this, we can load any constant into a register, and denote
+operations LOAD and LOADREP to do so. Interestingly, it's possible to LOAD both finite constants and
+LOADREP repeating binary sequences. It should be possible to load other things like recursive sequences
+as well.
+</p><p>
+Now that we can load constants and patterns, we can start to implement some vectorized logic.
+Juha Jarvi suggests this C function, which produces a pattern of 0x80 if a byte-lane is
+greater than n and less than 128, and 0x00 if a byte-lane is less than n and greater than 0,
+and may produce nonsense if x is greater than 128. Since the indicator bit is at the top
+of the byte-lane, it depends only on input bits at and to the right of itself:
+<pre>
+#define hasless8(x,n) (((x)-~0UL/255*(n))&~(x)&~0UL/255*128)
+</pre>
+When n is a constant, and x is passed in R0, we can compute R6 like so:
+<pre>
+	LOADREP R1 = n(repeating every 8 bits) #Represents ~0UL/255 * (n)
+	SUB R3 = R0 - R1 #Represents ((x)-~0UL/255*(n))
+	INV R4 = ~R0
+	LOADREP R2, 0x80(repeating every 8 bits) #Represents ~0UL/255*128
+	AND R5 = R3 & R4
+	AND R6 = R4 & R2
+</pre>
+Similarly, LOADREC(load recursive) could construct arbitrary bit-patterns where
+each group of bits depends on a group of bits to the right of it in the same
+register. For example, a repeating counter like 0xFFFEFD...03020100 could be constructed
+easily by repeating 8-bit increment over each byte. We could also represent all possible
+states of a pseudo-random number generator in the same way.
+</p>
+
+<h4>8-bit SIMD</h4>
+As we saw above it is possible to create some simple vectorized expressions. Can we
+extend our basic operations as needed to create byte-lane operations? Certainly, because
+each output bit still only depends on input bits at the same location and to the right of it,
+but for parallel 8-bit arithmetic each output bit now depends on 1-8 input bits instead of
+all the input bits to the right of it.
+<ul>
+	<li>ADD8 register = foreach(byte) add(regA[byte], regB[byte])</li>
+	<li>SUB8 register = foreach(byte) sub(regA[byte], regB[byte])</li>
+</ul>
+Similarly we can emulate a SIMD vector of any width.
+
+<h4>8-bit SIMD Saturating arithmetic</h4>
+It can be useful in certain algorithms to clip or saturate an operation instead
+of overflowing. For example, with 8-bit saturation we would like to produce 0xFF as the result of 0xFF
+plus 0x01, yet return the normal addition result otherwise. This cannot be represented in
+right-to-left operations, as the rightmost bit now depends on the bits in a byte-lane to the left of it.
+But unlike division, the results only depend on a fixed number of left-to-right inputs, so if we were willing
+to support left-to-right operations with limited number of bits, this might be an interesting extension to play with later.
+
+<h4>IO</h4>
+As a convenience to get data in and out of the machine, we add INPUT and OUTPUT instructions, which
+are likely connected to some human-facing console or UNIX pipe.
+
+<h4>Comparison and branching</h4>
+<p>
+So far, the machine is not Turing-complete, being incapable of control-flow. I'm not certain there's a clean
+way to model this.
+</p><p>
+Initially I considered some instructions like branch-if-greater-than, but this may require
+evaluating the entire infinite bit-string, and only works for a handful of cases. For example, comparing two
+finite numbers is simple enough, but for negative numbers to compare correctly we must know the most-significant bit.
+I considered a hack allowing the maching to look-ahead to the MSB for a register, but this also breaks down when
+comparing repeating patterns. Though it's simple enough to compare patterns of the same length, attempting to
+compare patterns of different lengths quickly leads to a situation of needing to evaluate both inputs entirely
+to compute the branch condition. Consider computing the signedness of the repeating bitpattern 0b01 - it cannot be done.
+</p><p>
+Any comparison approach on this machine must not require complete left-to-right evaluation of an entire register for the
+reasons above, but must support iterative evaluation of said register.
+</p><p>
+One approach would be a mask-and-branch-on-compare-with-finite-constant. This would be simple enough to construct loops
+and if-statements, but also seems like a pretty big hack. So, more consideration needed here for sure.
+</p>
+
+<h4>Right shift by a constant</h4>
+While not right-to-left computable, if we allow ourselves this small treat, we can greatly extend the machine.
+Right shift by a constant only implies an implementation overhead of evaluating a few more bits earlier.
+<ul>
+	<li>SHR register = register >> constant</li>
+</ul>
+
+<h4>Division by an arbitrary constant</h4>
+<p>
+Many compilers know a trick for division by a constant by multiplication with a reciprocal calculated at compile time.
+For example, to divide a 32-bit register by 3, we can multiply by 0x55555556(approximately fixed point one-third) into a 64-bit register,
+then shift right by 32.
+</p><p>
+Sadly, this approach cannot be scaled up for this machine, as it breaks down once the numerator is larger than a certain value, due
+to the difference between fixed-point approximately-one-third and one-third. Normally, the result of this difference is in
+the lower 32-bits, and eliminated by shifting right by 32. This means that to support integer division on arbitrary scales,
+we would need an infinitely precise reciprocal and infinitely long right shift. We can construct the reciprocal easily enough,
+but the right-shift cannot be represented by a constant, as the scale of the required denominator changes according to the
+size of the numerator.
+</p><p>
+If the scale of possible numerators is known, the fixed-point multiplication-by-reciprocal trick does work well.
+If the divisor can be represented by a binary terminating decimal(a non-repeating decimal, in binary), multiply then right-shift works well.
+</p>
