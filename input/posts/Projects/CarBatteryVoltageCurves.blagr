@@ -5,10 +5,17 @@ ModifiedDateTime:2020-10-26T01:01:01
 Tag:Voltage
 Tag:Battery
 ---
+<h2>Disclaimer</h2>
+<p>
+About two months after I wrote this, both my battery and alternator died within a few weeks of each other.
+This test should be conducted again with a young battery and alternator, but
+I've already returned the logging meter back to my friend.
+</p>
+
 <h2>Test Setup</h2>
 <p>
 My car is a 2002 Toyota Highlander with either a 100 or 130 Amp alternator. The car battery
-was last replaced about four years ago with an auto parts store brand. I used a Mooshimeter
+was last replaced about five years ago with an auto parts store brand. I used a Mooshimeter
 for data logging at about roughly 1.5Hz logging rate. Of note, my car currently sometimes has
 a low idle, I believe due to a sticky idle air control valve.
 </p>
