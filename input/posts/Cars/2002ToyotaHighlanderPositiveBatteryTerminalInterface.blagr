@@ -1,0 +1,37 @@
+Title:2002 Toyota Highlander Positive Battery Terminal Interface
+Author:rsaxvc
+CreatedDateTime:2020-12-20T00:30:10
+ModifiedDateTime:2020-12-20T00:30:10
+Tag:Toyota
+Tag:Highlander
+Tag:Battery
+---
+<p>
+Recently, I replaced my car battery and alternator on my 2002 Toyota Highlander. While doing so,
+I noticed that the positive battery terminal was fairly corroded and should be replaced before failure.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50741500946/in/dateposted-public/" title="battery terminal adapter"><img src="https://live.staticflickr.com/65535/50741500946_739ea7edc9.jpg" width="500" height="271" alt="battery terminal adapter"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Yep, that's pretty chunky, time for a new one. But the local autoparts store didn't have quite the right replacement. At least in the US,
+it's common to use SAE top-posts, where the positive terminal is a little larger than the negative(also true of JIS, but this car uses SAE top posts).
+Here's a rough diagram of the component I need to replace:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50740762278/in/dateposted-public/" title="battery terminal adapter diagram"><img src="https://live.staticflickr.com/65535/50740762278_ec86215e98.jpg" width="500" height="343" alt="battery terminal adapter diagram"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+The key measurements are:
+<ul>
+	<li>Roughly 17.5mm at the top of the terminal post / SAE standard positive terminal size. The negative post is much smaller.</li>
+	<li>Less than 8.5mm diameter threaded stud for starter/alternator cables - a 5/16 inch or M8 stud is fine</li>
+	<li>It would be nice to keep roughly 5.5mm threading for the clamp bolt so I don't have to re-connector my brake controller or radio</li>
+	<li>It would be nice if the clamp bolt were in or movable to the current orientation - I don't have a whole lot of extra wire. Most can be flipped but not all.</li>
+</ul>
+</p><p>
+What's available:
+<ul>
+	<li>Local Store: Universal top-post positive adapter, with 3/8 inch stud - stud won't fit alternator/starter wiring.</li>
+	<li>Local Store: Universal top-post negative adapter, with 5/16 inch stud - stud fits, but positive terminal is too big for adapter.</li>
+	<li>Toyota Dealer: <a href="https://parts.adamstoyota.com/a/Toyota_2002_Highlander-LIMITED-30L-4WD/63403132__7171688/Cable-Ends/maintenance_CableEnds.html">Battery Cable Terminal End 90982-05058</a>, only $32.09, no indication of which polarity it goes to, closed on Sundays.</li>
+	<li>Amazon: <a href="https://www.amazon.com/gp/product/B07QPRQYTP/">POSITIVE OEM Car Battery Terminal</a>, $8.41, M8 nut in description.</li>
+</ul>
+I ordered the part from Amazon, and we'll see if it works.
+</p>
