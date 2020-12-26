@@ -1,0 +1,101 @@
+Title:ALSR function pointer addresses for PRNG seeding
+Author:rsaxvc
+CreatedDateTime:2020-12-26T02:10:52
+Tag:ASLR
+Tag:PRNG
+Tag:C
+---
+<p>
+On a recent <a href="https://www.reddit.com/r/C_Programming/comments/kk75l8/random_number_generation_seems_to_be_not_so_random/gh0wn85">/r/c_programming post</a>,
+someone noticed that srand(time(NULL)) would duplicate libc random number generator initialization whenever two programs ran
+it within the same second. /u/jujijengo commented that you could instead use srand(time(NULL) ^ malloc ^ printf), which on
+ASLR-aware operating systems should throw in some bits related to the addresses of dynamically linked functions like malloc and printf.
+I thought this was a pretty slick idea, but something bothered me about using two functions that could be in the same library.
+</p><p>
+As an aside, you should always evaluate random number generators against your application requirements. libc srand()/rand() aren't
+great, but today we'll focus only on reducing the number of repeated seeds at the same time on ASLR-aware operating systems.
+</p><p>
+On 64-bit ASLR systems, the address of a library should have at least a few random bits
+(How many? How random? Up to the OS and address space) that tend to vary between program executions,
+so xoring them with the time should help.
+</p><p>
+But, the addresses of malloc and printf usually aren't independently random - at least on Debian Buster, they're both
+provided by GNU libc. Effectively, the contiguous pages of libc's code will be placed at a random location, but the following are static across process creations, even with ASLR:
+<ul>
+	<li>offset from the start of libc to malloc</li>
+	<li>offset from the start of libc to printf</li>
+	<li>offset between malloc and printf</li>
+</ul>
+</p>
+
+<h2>Test Program</h2>
+<p>
+A simple C program with the following snippet of code can be executed many times to output ASLR-based libc function addresses:
+</p>
+<pre>
+printf("%p %p %" PRIxPTR" %" PRIiPTR "\n",malloc, printf, (uintptr_t)malloc^(uintptr_t)printf, (intptr_t)((uintptr_t)malloc - (uintptr_t)printf));
+</pre>
+
+<h2>Results on Debian Buster on AMD64</h2>
+Here are some statistics on 100k runs on a 64-bit Debian Buster Intel laptop from the snippet above:
+<pre>
+number of samples in run:100000
+unique locations of malloc:99981
+unique locations of printf:99981
+unique results of malloc xor printf:70
+up to 10 most common counts and offsets between malloc and printf:
+ 100000 179696
+up to 10 most common counts and values(hex) of malloc xor printf:
+   3156 7c630
+   3222 1d4630
+   6185 74630
+   6239 d4630
+   6243 6c630
+   6324 5c630
+   6334 3c630
+  12409 2c630
+  12457 54630
+  12479 34630
+</pre>
+
+<h3>Offset between malloc and printf is probably fixed</h3>
+<p>
+This makes sense because if malloc and printf are in the same text section of libc, we would expect the dynamic linker would always locate into contiguous memory pages.
+</p>
+
+<h3>ASLR can repeat libc load addresses on a 64-bit machine</h3>
+<p>
+"ASLR: How Robust is the Randomness?" by Ganz and Peisert suggests 64-bit ASLR can use 48-bits of random virtual address,
+which seems reasonable, since it must be less than 64-log2(PAGE_SIZE), which is 52 bits on this system. Also, at least on this system,
+the upper four bits of text addresses in libc appear to always be 0x7.
+</p><p>
+But even assuming the ASLR implementation uses a good PRNG, there's still a <a href="https://en.wikipedia.org/wiki/Birthday_problem">birthday problem</a> limitation.
+But none of the online birthday attack calculators I tried support computing
+the probability of collisions between 2^48 unique locations over 100000 samples.
+</p><p>
+Whatever the cause, we do see that over 100k program invocations, repeated addresses do occur, but rarely.
+It's not always 19 times per 100k, that's just what happened this run.
+</p>
+
+<h3>ASLR repeats malloc xor printf much more often than either function independently.</h3>
+<p>
+This makes sense to me, as any time the upper bits of both function addresses are the same, xor will zero them,
+and this is where most of the randomness of ASLR lives.
+</p>
+
+<h3>ASLR repeats malloc xor printf more seldom than I thought it would.</h3>
+<p>
+Initially I had worried was that malloc^printf would evaluate to a constant - this was not quite correct - it seems to depend on the offset between them.
+If malloc and printf are located in the same virtual address page, then malloc ^ printf's upper ASLR bits would always cancel to zero 
+and the lower bits would represent only xor of the offset differences.
+</p><p>
+At least on this system, malloc and printf at around 175 kilobytes apart, so malloc ^ printf is a mix of behaviours. The upper bits
+are still zeroed. The lower bits still represent the xor of the offset differences.
+But the middle bits change whenever the upper bits of the offset differences overlap the lower bits of the page address differences.
+</p>
+
+<h2>Conclusions<h2>
+Using ASLR addresses to scavenge a few noisy bits can work for simple PRNG seeding, but care must be taken that each
+address is independent. /u/jujijengo suggested Melissa O'Neill's approach in the PCG entropy fallback generator, which uses
+time(NULL) ^ current_function ^ address_of_a_stack_variable if /dev/random is not available, which should work well, since
+stacks and text-segments are always separately locatable by ASLR.
