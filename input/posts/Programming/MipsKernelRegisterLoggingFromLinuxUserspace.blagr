@@ -1,0 +1,22 @@
+Title:Detecting changes to kernel registers Linux/MIPS
+Author:rsaxvc
+CreatedDateTime:2020-12-31T21:08:14
+Tag:Linux
+Tag:MIPS
+Tag:Interrupt
+Tag:Exception
+---
+<p>
+The MIPS processor exception handling sequence uses two reserved
+general-purpose registers, k0 and k1. When the exception occurs, the
+core jumps to the exception handler address, then using only k0 and k1, the
+handler must save enough state to handle the exception.
+</p><p>
+From userspace, we can poll for changes to k0/k1, and track unique values, like so:
+</p>
+<script src="https://gist.github.com/rsaxvc/e9c133ade59ee6804968330327701aa8.js"></script>
+</p>
+I'm not really sure what these numbers represent - they're only written by the Linux
+kernel, so they might be something interesting. They don't seem to line up with /proc/self/maps,
+but they also don't seem to line up with /proc/iomem.
+<p>
