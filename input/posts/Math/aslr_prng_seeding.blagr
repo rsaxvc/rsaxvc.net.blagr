@@ -94,7 +94,7 @@ are still zeroed. The lower bits still represent the xor of the offset differenc
 But the middle bits change whenever the upper bits of the offset differences overlap the lower bits of the page address differences.
 </p>
 
-<h2>Conclusions<h2>
+<h2>Conclusions</h2>
 Using ASLR addresses to scavenge a few noisy bits can work for simple PRNG seeding, but care must be taken that each
 address is independent. /u/jujijengo suggested Melissa O'Neill's approach in the PCG entropy fallback generator, which uses
 time(NULL) ^ current_function ^ address_of_a_stack_variable if /dev/random is not available, which should work well, since
