@@ -24,7 +24,7 @@ set the current limit very low, then for each measurement point:
 <ul>
 	<li>Wait for the power supply to stabilize and meters to settle</li>
 	<li>Read the current and voltage a few times to ensure they have settled</li>
-	<li>Increate the current limit slightly</li>
+	<li>Increase the current limit slightly</li>
 </ul>
 
 <h2>Challenges</h2>
@@ -99,7 +99,7 @@ and is conducting quite a bit of current at 0.7 volts.
 This is a similar plot with more milliamps per measurement, but up to 1 ampere
 </p><p>
 <a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50850718828/in/dateposted-public/" title="diode_6a05_1amp"><img src="https://live.staticflickr.com/65535/50850718828_4ecf7f31cd.jpg" width="500" height="379" alt="diode_6a05_1amp"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
-<p>
+</p>
 
 <h3>Measurement Error</h3>
 <p>
