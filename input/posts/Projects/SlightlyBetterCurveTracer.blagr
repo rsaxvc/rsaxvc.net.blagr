@@ -1,0 +1,127 @@
+Title:Slightly more refined curve tracing with a power supply and oscilloscope
+Author:rsaxvc
+CreatedDateTime:2021-01-20T01:01:39
+ModifiedDateTime:2021-01-20T01:01:39
+---
+<h2>Introduction</h2>
+<p>
+On my quest to characterize a strange LED, I need a curve-tracer. I don't
+have one but I do have a power supply and an oscilloscope, the ability
+to spend large periods of time developing complex solutions to things
+I could bang out with a few multimeter measurements and a spreadsheet. From XCKD:
+</p><p>
+<a href="https://xkcd.com/1319/"><img src="https://imgs.xkcd.com/comics/automation.png" title="&#39;Automating&#39; comes from the roots &#39;auto-&#39; meaning &#39;self-&#39;, and &#39;mating&#39;, meaning &#39;screwing&#39;." alt="Automation" style="image-orientation:none"></a>
+</p><p>
+Can I generate better IV curves using an oscilloscope for measurement rather than a power-supply?
+</p>
+
+<h2>Equipment</h2>
+<ul>
+	<li>GW Instek GDS-2102 Oscilloscope - any programmable oscilloscope should do</li>
+	<li>GW Instek GPD-3303S Programmable, Isolated Power Supply ( The isolated part is really quite important! )</li>
+	<li>A roughly 33 ohm current-limiting resistor - you may wish to select a different resistor based on any estimate of max voltage or current, but in either case measure it(mine was 32.5 ohms).</li>
+	<li>A device to test - I used a 6A05 diode to start with.</li>
+</ul>
+
+<h2>Test Circuit</h2>
+<p>
+Unlike a simple power-supply based measurement directly connected to a bare device under test, we need a current limiting resistor to both convert current to voltage for measurement with
+the oscilloscope and to increase current measurement resolution above that of the power supply. You could also use a current-probe, but I haven't got one.
+</p><p>
+A picture is worth a thousand words, but I do not have schematic capture software installed, so:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50858541022/in/dateposted-public/" title="oscilloscope tracer setup"><img src="https://live.staticflickr.com/65535/50858541022_edf2bb5c5c_z.jpg" width="411" height="640" alt="oscilloscope tracer setup"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Effectively, by connecting the oscilloscope ground to both the DUT and resistor, and measuring voltage across both at the same time, we can get closely aligned samples of both voltage across the resistor and across the DUT.
+</p><p>
+Did I mention you need an isolated power supply? If the power supply's negative terminal is grounded to the same potential as the oscilloscope, the test current will bypass the resistor, drastically increasing the
+current for each voltage step, possibly destroying the DUT, and likely damaging your oscilloscope probe or worse, your scope too!
+</p><p>
+Here's what mine looks like:
+<ul>
+	<li>On the left of the 6A05 DUT the voltage probe and yellow positive power supply are connected.</li>
+	<li>In the middle between DUT and resistor both probes are grounded.</li>
+	<li>On the right is the resistor voltage probe and green negative power supply connection.</li>
+</ul>
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50858521812/in/dateposted-public/" title="oscilloscope+powersupply circuit"><img src="https://live.staticflickr.com/65535/50858521812_e272c6c813_z.jpg" width="640" height="360" alt="oscilloscope+powersupply circuit"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+There is another way to wire this, for a non-isolated power supply, but it requires connecting both oscilloscope grounds to the power supply negative terminal and measuring voltage from both the positive positive terminal
+and between the DUT and resistor, then doing some subtraction. It probably works fine, but I worried the error might be higher for low voltages. But really, this is still a very, very crude curve-tracer.
+</p>
+
+<h2>Mechanism</h2>
+This mechanism is slightly different(and better) than the power-supply-only approach from a previous post, yet still quite simple.
+Set the current limit to a reasonable maximum. For a 6A diode I set mine to 1A since I do not have a diode heatsink but we will not reach this unless there is a short.
+Decide on a maximum voltage for the top range, but set the voltage limit quite low to start, I used 1mV(but power supply error might be several mV at this range).
+Decide how much time you are willing to wait for results and how many measurement points you will need over voltage. I used 
+To start, adjust the oscilloscope voltage offsets to center and scale to cover the voltage you will be sweeping. Until the maximum voltage is reached:
+<ul>
+	<li>Read both voltage channels from the oscilloscope</li>
+	<li>Convert the voltage over the resistor to current by flipping the sign and dividing by resistance.</li>
+	<li>Save the samples of current through the resistor and voltage over the DUT for later analysis</li>
+	<li>Increase the voltage limit slightly</li>
+</ul>
+
+<h2>My Setup, for 6A05 Diode</h2>
+<ul>
+	<li>Power supply voltage up to 3V, 10mV steps, so 300 triggers</li>
+	<li>2x500 oscilloscope points per trigger</li>
+	<li>1ms per division, 10ms sweep</li>
+	<li>10:1 probes(make sure to set on probe and scope)</li>
+	<li>DUT Channel(2): 200mV per division, 1V per half-screen, 20MHz bandwidth limiter enabled</li>
+	<li>Resistor Channel(1): 500mV per division, 2.5V per half-screen, 20MHz bandwidth limiter enabled</li>
+</ul>
+
+<h2>Challenges & Improvements over power-supply-curve-tracer</h2>
+We've moved many measurements errors from the power supply meter to the oscilloscope. This means we have different errors. Zero-calibration of the oscilloscope is quite important here.
+Also, any error in resistor measurement will appear as a scaling error in the current conversion. We also have to manage oscilloscope scale with varying voltages present - I didn't even attempt to do so and
+just set it wide enough - this means that my low-end voltages will impacted more by quantization error(ratio-wise). I did self-calibrate my oscilloscope before running this test. DUT temperature rise
+is still an issue.
+
+<h3>Current/Voltage sample synchronization</h3>
+Since we're using an oscilloscope, the two channels are closely synchronized. There may be a slight AC effect caused by resistance and diode junction capacitance forming a filter, but it's not significant for this diode.
+This means we can take many more samples without settling delay at each IV point. It's still quite slow compared to a curve-tracer though.
+
+<h3>Current Resolution</h3>
+Since we're using a 33ohm resistor, we can vary the power supply voltage by roughly a millivolt each time and step the circuit through no more than a 30 microamp increase.
+
+<h2>Possible improvement: autoscale</h2>
+You could automatically adjust the oscilloscope as needed to optimize sample scaling across the varying range of voltages on each channel, since we are effectively using it as a dual-channel meter.
+
+<h2>Results: Great Big 6A05 Diode, up to 3 volts across circuit, up to almost 0.7 volts across diode, up to about 66mA</h2>
+While not the diode I want to characterize, this is a big, resilient, 6 amp diode, very resistant to sofware development errors.
+
+<h3>Scope voltages over time</h3>
+<p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50858593506/in/dateposted-public/" title="6A05_voltages"><img src="https://live.staticflickr.com/65535/50858593506_1fe424f92d_z.jpg" width="640" height="480" alt="6A05_voltages"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+These are the unconverted voltages from a run with the oscilloscope. At this stage we just need to check that neither trace is clipped. We can also use this graph to estimate possible adjustments to oscilloscope resolution.
+</p>
+
+<h3>Voltage and current over Time</h3>
+<p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50858593501/in/dateposted-public/" title="6A05_voltages_and_current"><img src="https://live.staticflickr.com/65535/50858593501_159f0a9047_z.jpg" width="640" height="480" alt="6A05_voltages_and_current"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+We can clearly see from this plot that the 6A05 starts conducting around sample 25000 when the diode forward voltage starts to be reached near 0.6 volts. Before then, voltage increases without much current increase.
+After sample 30000, the diode is on, and further increases in drive voltage result in increases in DUT current.
+</p>
+
+<h3>IV Curve</h3>
+<p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/50857878573/in/dateposted-public/" title="6A05_IV_curve"><img src="https://live.staticflickr.com/65535/50857878573_06c40a0543_z.jpg" width="640" height="480" alt="6A05_IV_curve"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+This is what we came here for. For the 6A05, the IV curve is usually only plotted above 10mA and 0.65V, so my trace doesn't overlap enough to compare. I could re-run this over a larget drive voltage range, or use a smaller
+current measuring resistor, but I think this setup should work for my mystery LED, and I already have a datasheet for the 6A05.
+</p>
+
+<h2>Measurement Error</h2>
+It should be possible to compute error bars for the oscilloscope measurements, but I have not done so for this graph and it's getting late.
+The accuracy range of the oscilloscope depends on the actual measurement, the voltage per division settings and a constant base error.
+
+<h2>Conclusion</h2>
+<p>
+Does it work? It works much better than IV curve tracing with just power supply, and I bet it works well enough to characterize my mystery LED.
+I certainly have fine enough control over current stepping, which was the main issue with using only the power supply.
+</p>
+
