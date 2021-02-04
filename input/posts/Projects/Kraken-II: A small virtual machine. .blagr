@@ -7,7 +7,6 @@ Tag:Kraken
 Tag:Kraken-II
 Tag:MST
 Tag:UMR
-Tag:github
 ---
 <p>Long ago, in the age of state-collegiate education, I had a class with Ted McCracken. On the first day, he announced we would be designing a computer. Specifically, a small 8-bit RISC machine. By some strange chance one of the best teachers at the school was having his course reviewed by the state. This terrible maelstrom yielded my semester of CpE315. We would cover 8086, 80386, brush on PowerPC, serial busses, parallel busses, memory and timing, segmented memory, virtual memory, pipelining, and would touch on nearly everything I would come to understand years later about electronics from diode-transistor logic to cache architecture on multicore devices.</p>
 
