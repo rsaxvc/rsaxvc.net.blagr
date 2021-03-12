@@ -1,0 +1,47 @@
+Title:RaspberryPi Software FM and APRS
+Author:rsaxvc
+CreatedDateTime:2021-03-11T00:47:21
+ModifiedDateTime:2021-03-11T00:47:21
+Tag:APRS
+Tag:Radio
+Tag:FM
+Tag:RaspberryPi
+---
+<h2>RaspberryPi FM Transmitter</h2>
+<p>
+RaspberryPis have a GPIO pin that can be connected internally to a clock divider of a number of source clocks.
+This isn't a simple divider, rather, it's a dithering fractional divider, with 12 integer bits, and 12 fractional bits.
+First, this means that the frequency is only correct when averaged. Since it's digital, there will be many harmonics as well.
+</p><p>
+As an example, a 500MHz PLL clock(from PLLD on the older boards) can be divided by the ratio (22285/4096) to reach 91.9004MHz,
+this is somewhat of a best-case, since the divider lines up well.
+</p><p>
+To make broadcast FM, we can change the divider(or have the chip's DMA do it rapidly for us) to generate other tones within the
+broadcast FM bandwidth, which is 100-150KHz(channel spacing is 200KHz). For our example 91.2MHz station, we can use dividers
+from (22303/4096) at 91.826MHz to (22266/4096) at 91.978MHz, which is 37 discrete tones at maximum volume(roughly 4kHz spacing between tones).
+If we switch(modulate) between them rapidly enough, we can generate something like FM audio at the receiver, which low pass
+filtering in the receiver should help us clean up.
+</p>
+
+<h2>Why RaspberryPi FM will not work for APRS</h2>
+<p>
+However, things get more interesting at 144.390MHz, for two reasons. First, since the transmit frequency is higher, a single
+increment or decrement of the divider moves the transmit frequency further, about 10KHz now. But also, the bandwidth of
+2 meter FM voice is only around 12kHz. When we work out the dividers, we get (14184/4096) at 144.388MHz and (14183/4096) at 144.398MHz,
+which is far enough from 144.390MHz that receivers are likely to filter it out or at least significantly attenuate it.
+</p>
+
+<h2>Cludging it all together</h2>
+<p>
+Because square waves have a lot of odd harmonics, with appropriate filtering, we can tune to 144.390MHz/3, or 48.130MHz,
+and filter out unwanted harmonics like 96.260MHz(2x) and 192.520MHz(4x). It's easiest to use a bandpass filter centered on 144.390MHz,
+with cuts set between 2x and 3x, and again between 3x and 4x harmonics. We could also tune lower, perhaps to 144.390MHz/5, but this will
+reduce out transmit power on target frequency more, and make filtering more difficult, as the nearest unwanted harmonics become closer
+together(4*144.390MHz/5 and 6*144.390MHz/5).
+</p><p>
+Bandwidth calculation also needs scaled. +/-6KHz at 144.390MHz is only +/-2KHz at 48.130MHz, however, we can fit four tones there,
+where we could only fit 1 at 144.390MHz, specifically we can divide 500MHz by (42553/4096) to (42550/4096).
+</p><p>
+When we do this, we can indeed hear some sort of audio, but it's still pretty terrible. Dithering and increasing the sample rate
+might help, but it's never going to work well.
+</p>
