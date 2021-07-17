@@ -1,0 +1,77 @@
+Title:Installing Magisk on Raspberry Pi 4 OmniROM Android 11
+Author:rsaxvc
+CreatedDateTime:2021-07-15T22:10:52
+ModifiedDateTime:2021-07-15T22:10:52
+Tag:OmniROM
+Tag:Android
+Tag:Magisk
+---
+
+<a href="https://topjohnwu.github.io/Magisk/install.html">Magisk</a> is a great tool for rooted devices, but
+the installation process for Raspberry Pi 4 running Android is a little different than most.
+
+<h2>Magisk Installation Process</h2>
+<p>
+Magisk is normally installed by installing the Magisk App APK, then
+using it to patch a boot.img. See
+<a href="https://topjohnwu.github.io/Magisk/install.html">the upstream instructions here</a>.
+Notably, this won't work with any files you'll see on a Raspberry Pi 4 /boot filesystem.
+</p><p>
+It was puzzling because the Magisk app shows "Ramdisk: Yes" on the Raspberry Pi 4, but /boot does
+not have one, and <a href="https://topjohnwu.github.io/Magisk/install.html#patching-images">
+the usual sources for patching images</a> don't have one either.
+</p>
+
+<h2>Android Boot Process</h2>
+See <a href="https://www.geeksforgeeks.org/android-boot-process/"> this overview</a> and
+<a href="https://source.android.com/devices/bootloader/images">this list of Android image
+files</a>, but the important part is that Android usually boots by having the bootloader
+loads the kernel and ramdisk from a single boot.img, then jumps to the kernel.
+
+<h2>Raspbery Pi 4 Boot Mechanism</h2>
+<p>
+From <a href="https://raspberrypi.stackexchange.com/a/10490/38131">this stack overflow post</a>,
+we can see that the Raspberry Pi 4 boots the GPU first, loads start.elf into the GPU, which reads a
+config.txt from the SD (or other sources) filesystem, and follows the instructions in config.txt.
+</p><p>
+From the OmniROM for RPi4 boot image, we can see it is only slightly different from the usual
+config.txt, in that a few files are renamed, here are their lines:
+<pre>
+kernel=Image
+initramfs ramdisk.img followkernel
+</pre>
+</p>
+
+<h2>TLDR: The solution</h2>
+<p>
+Since Magisk is expecting a boot.img, we need to create one in the format Android usually uses,
+patch it using the Magisk App, extract the patched recovery.img out of the boot.img, then install it.
+</p><p>
+Here are the tools we'll need:
+<ul>
+	<li>A Raspberry Pi 4 with OmniROM 11 installed to the microSD card</li>
+	<li>A Linux workstation with SD card slot - may be doable on Windows as well</li>
+	<li>A copy of <a href="https://github.com/osm0sis/mkbootimg/releases">mkbootimg and unpackbootimg</a></li>
+	<li>A copy of <a href="https://magiskmanager.com/">the Magisk app</a></li>
+</ul>
+Here are the steps, a little more verbose, starting from scratch, and assuming we're installing from a Linux computer.
+<ol>
+	<li>Insert the microSD card into the Linux workstation</li>
+	<li>If the first microSD card partition does not mount, mount it manually. Mine was under /media/rsaxvc/rpi4/boot</li>
+	<li>Combine the Kernel Image file with the ramdisk using mkbootimg.
+        Here was my command to create image.bin ./mkbootimg --kernel /media/rsaxvc/rpi4/boot/Image --ramdisk /media/rsaxvc/rpi4/boot/ramdisk.img --output image.bin</li>
+	<li>We will need to transfer the image.bin somewhere the Magisk app can read it like the downloads folder, but I just pushed it to a webserver and downloaded it later</li>
+	<li>Unmount all filesystems on the microSD card, eject it, insert into Raspberry Pi 4</li>
+	<li>Boot the Raspberry Pi 4. When it comes up, launch the Magisk App</li>
+	<li><a href="https://topjohnwu.github.io/Magisk/install.html#patching-images">Patch as usual</a> but stop when it tells you to copy the patched image back to the PC. I will note that the file picker on OmniROM seemed to crash loading .img files - I think I had to right-click the boot.img icon to toggle selection</li>
+	<li>Once the patching is complete and succeeds, shutdown the Raspberry Pi 4</li>
+	<li>Move the microSD card back to the workstation and mount at least the first(/boot) partition and the last partition which contains the Downloads folder</li>
+	<li>Backup the original ramdisk.img from the microSD card /boot partition</li>
+	<li>In the Downloads folder, the Magisk app will have written magisk_patched_[random_strings].img. Copy it to a local temporary directory, this may need to be done as root due to permissions</li>
+	<li>fix the ownership/permissions if needed</li>
+	<li>Unpack contents into a folder with with ./unpackbootimg -i magisk_patched-[random_strings].img</li>
+	<li>Inside the folder will be a file magisk_patched-[random-strings].img-ramdisk.gz - move to the microSD card's /boot/ramdisk.img </li>
+	<li>Unmount all microSD card partitions eject the card, and insert into Raspberry Pi 4</li>
+	<li>Boot up the device, Magisk should now be fully installed - this did take a minute or two for it to start the first time</li>
+</ol>
+</p>
