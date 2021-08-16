@@ -1,0 +1,23 @@
+Title:modifiying mp2307 buck converter boards
+Author:rsaxvc
+CreatedDateTime:2021-08-15T21:14:03
+ModifiedDateTime:2021-08-15T21:14:03
+Tag:DCDC
+Tag:power
+---
+<p>
+I was using some Mini360 DCDC buck converter modules to power raspbery pis when I noticed their output was a little noisy.
+On the bench with a 5ohm resistive load drawing about an amp, the output ripple was around 950mv, which is quite bad.
+</p>
+
+<p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51381981895/in/dateposted-public/" title="MP2307 Buck Converter Mod"><img src="https://live.staticflickr.com/65535/51381981895_8b7a3cf8bf_c.jpg" width="608" height="800" alt="MP2307 Buck Converter Mod"></a>
+</p>
+
+<p>
+The upper two circles(red and yellow) are connected to the input voltage - I added a 10uF capacitor to each, which helped lower the input switching noise. The yellow circles are unpopulated pads, one for input and one for output. I added a 10uF capacitor to the pads in the lower yellow circle, and stacked three more 10uF capacitors around it.
+</p><p>
+I used 0805 capacitors, but the yellow pads were probably for 0603 parts - this makes them a little tricky to connect. The existing capacitor under the purple was larger than an 0805.
+</p><p>
+The final result was about 150mV of ripple at 1A - much better but still not great.
+</p>
