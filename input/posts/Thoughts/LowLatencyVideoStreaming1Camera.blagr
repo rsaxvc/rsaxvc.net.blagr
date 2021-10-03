@@ -1,0 +1,30 @@
+Title:Low Latency Video - Cameras
+Author:rsaxvc
+CreatedDateTime:2021-08-15T00:47:22
+ModifiedDateTime:2021-08-15T00:47:22
+Tag:H264
+Tag:NTSC
+Tag:Video
+---
+<p>
+Today's digital rolling shutter image sensors are usually a 2D array of photodiodes, often with a color filter array directly above them to produce a Bayer RGB pattern.
+To produce a frame, a small controller selects a row and column to select a photodiode, then connects that to a PGA(Programmable Gain Amplifier), then
+to an ADC(Analog to digital converter) whose output is sent over a data bus to the ISP(image signal processor, may be in another chip). Some image
+sensors contain an integrated ISP, but this is not common in the Raspberry Pi cameras.
+</p><p>
+
+The signal available at the ADC is a product of the PGA gain and the exposure time for each photodiode. If we halve the exposure time and double the gain,
+the picture should be about as bright, but with more noise visible, since the PGA amplifies noise too.
+</p><p>
+
+Internally, the camera's scanrate/framerate will create a limitation for exposure time - a 30FPS camera cannot expose each pixel for more than ~33ms, but we can
+usually also reduce this exposure time and keep the same framerate - this is our first latency limitation - the average signal age for a 33ms exposure time
+camera is ~16ms. If enough light is available, we can reduce this time and increase gain until the image is just barely not quite too noisy.
+</p><p>
+
+The data link to the ISP creates another limitation too - if the data link is fully saturated(always transmitting, 100% duty cycle) in a given image
+sensor configuration, we cannot stream pixels faster than the framerate - as soon as the last subpixel in the sensor is read, the sensor has to
+start streaming out the first pixel of the next frame. This creates rolling shutter artifacts due to the time delay in reading the pixels at
+different locations in the sensor. This isn't a direct cause of latency since each pixel is still only at most exposureTime old, but can be reduced
+by shortening the number of pixels sent or using a faster or wider datalink.
+</p>

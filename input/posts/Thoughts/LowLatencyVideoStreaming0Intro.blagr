@@ -1,0 +1,22 @@
+Title:Low Latency Video Digital Encoding Introduction
+Author:rsaxvc
+CreatedDateTime:2021-08-16T00:47:21
+ModifiedDateTime:2021-08-16T00:47:21
+Tag:H264
+Tag:NTSC
+Tag:Video
+Tag:OpenHD
+---
+<h2>Introduction</h2>
+<p>
+This is the introduction to a series of posts about digital video encoding, focused on low latency optimization.
+It's well-known that NTSC's framerate is 29.97Hz(~33.4ms) and fieldrate(half frame to be interleaved) is 59.954(~16.7ms), but the actual latency
+is much less, just the time required to acquire, filter, modulate, transfer, demodulate, and display. This means that while the whole display may
+only update 30 times per second, the average age of each pixel value can be almost as low as half that. Assuming no additional delays which are common on LCDs.
+</p>
+
+<p>
+But, for many digital streaming systems, frames may buffered several times along the way, which is appropriate for
+certain tasks, but usually not for low-latency video. I'll discuss where and why that happens, and potential
+ways around it. Sometimes, I'll use OpenHD as an example.
+</p>
