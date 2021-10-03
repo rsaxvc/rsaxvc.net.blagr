@@ -1,0 +1,152 @@
+Title:Google Fiber Partial Jack Bypass
+Author:rsaxvc
+CreatedDateTime:2020-10-26T02:35:39
+ModifiedDateTime:2020-10-26T02:35:39
+---
+<p>
+About four years ago, using help from the internet, I was able to bypass
+the Google Fiber Box and connect a Debian-based router to my GFLT110
+Google Fiber Jack. In this post, we explore bypassing the GFLT110 as well.
+</p>
+
+<h2>Main Requirement - GPON SFP Module</h2>
+<p>
+<ul>
+	<li>Must support G.984 - GPON specification</li>
+	<li>Must support G.988 - OMCI specification</li>
+	<li>Must support programming the PON Serial Number</li>
+	<li>Must support programming the PON Password Number</li>
+	<li>Should default to a similar VLAN configuration as the Jack</li>
+	<li>Must support standard SFP module detection</li>
+	<li>May support 2.5GBase SFP+ modes</li>
+</ul>
+This document references a Nokia g-010s-a, so some steps may need to be changed
+for other modules. This module actually doesn't support standard
+SFP module detection but can be fixed with a bit of solder or
+conductive paint as shows in another post. This module also does have a
+similar default VLAN mapping to the JACK, though we'll cover that later.
+</p>
+
+<h2>GPON network terminology</h2>
+<p>
+<ul>
+	<li>ONT - Optical Line Terminal - The box at the ISP. Each of these has between 1 and 128 ONU/OLT attached to it.</li>
+	<li>ONU/OLT - Optical Network Unit / Optical Network Terminal - The box in your home. Can be part of a fiber to ethernet converter, ONU can be inside of a router, or ONU can be an SFP/SFP+ module.</li>
+	<li>GPON - Gigabit Passive Optical Network - 1310 NM upstream(ONU->ONT), 1490nm downstream(ONT->ONU). Different from EPON/GEPON(ethernet PON) and WDM-PON technologies</li>
+	<li>OMCI - management interface - ISP uses this to configure ONUs</li>
+</ul>
+</p>
+
+<h2>A bit about the g-010s-a GPON SFP Module</h2>
+<p>
+The SFP module contains a fairly complex 3-port switch. One port is connected to the SFP/SFP+ interface. Another port
+is connected to the GPON subsystem which is connected to the TX laser and RX photodiode. A third port is connected
+to a small Linux-based management engine with a web and SSH server located at 192.168.1.10 or 192.168.2.2. This means that while
+configuring the SFP module, you must be on the same subnet. I suspect this means you should not use the same subnet
+for your home network.
+</p>
+
+<h2>Configuring the g-010s-a GPON SFP Module</h2>
+<a href="https://forum.openwrt.org/t/will-gpon-nokia-g-010s-a-change-sn/69602">Reference.</a>
+<h3>Locating the needed GPON Parameters</h3>
+Most of the parameters are on the back of the GFLT110 fiber jack. One must be extracted from the firmware.
+<p><ul>
+	<li>GPON Manufacturer ID - 4 letters. These are the first four digits of the GFLT110 serial number.</li>
+	<li>GPON Serial Number - decimal digits. These are the last eight digits of the GFLT110 serial number.</li>
+	<li>GPON PLOAM Password - '1234567890' or hex 31323334353637383930.</li>
+</ul></p>
+
+<h3>Connections</h3>
+<p>
+Start with everything powered down, fiber unplugged. Connect the SFP module to a router or computer -
+I used an SFP-RJ45 media converter. Do not connect the fiber at this time. Power the media converter
+or boot the computer with SFP NIC. The SFP should boot and linkup within a few minutes.
+Configure your IP to 192.168.1.1. Ping 192.168.1.10. If 192.168.1.10 does not repond, reconfigure
+IP to 192.168.2.1, then try to ping 192.168.2.2. Once a response is received, use that IP for the below steps.
+</p>
+
+<h3>Logging into SSH on the SFP</h3>
+<pre>
+$ sshpass -p 'SUGAR2A041' ssh ONTUSER@192.168.1.10
+</pre>
+
+<h3>Backing up the current configuration</h3>
+Save the output of the following command:
+<pre>
+ONTUSER@SFP:/rom# ritool dump
+</pre>
+
+<h3>Programming the MFR ID</h3>
+<pre>
+ONTUSER@SFP:/rom# ritool set MfrID JAAG
+</pre>
+
+<h3>Programming the Serial Number</h3>
+<pre>
+ONTUSER@SFP:/rom# ritool set G984Serial 12345678
+</pre>
+
+<h3>Programming the MAC address</h3>
+<pre>
+ONTUSER@SFP:/rom# ritool set MACAddress 12:34:56:78:9a:bc
+</pre>
+
+<h3>Programming the GPON password / SLID</h3>
+<p>
+Visit 192.168.1.10 in a web browser. Log in with adminadmin/ALC#FGU. I've noticed that the webserver may error out unless you wait a few minute for the module to fully boot up.
+</p></p>
+Next click on "SLID Configuration", then "Enter New SLID" textbox. In HEX-mode, enter 31323334353637383930 then save.
+</p>
+
+<h2>GPON ONU Startup</h2>
+<p>
+At this point, we have the g-010s-a configured to connect to Google Fiber and emulate the GPON configuration of the jack. We can power down the unit, connect the fiber, and power it back up.
+</p><p>
+We should also monitor our end of the system. Once the SFP module has booted, again SSH into it. Run the following command:
+<pre>
+onu ploamsg
+</pre>
+This should print the GPON state - it should be in state 5 (also known as O5) or transition to state 5 quickly. If it does not,
+you may wish to <a href="https://forum.huawei.com/carrier/en/thread-446043-1-1.html">review this document</a>. You can also use:
+<pre>
+omcli omciMgr showRSSI
+</pre>
+to print the RSSI. If the SFP is in state 5, GPON is up and OMCI configuration should occur soon after. However, there is an issue.
+</p>
+
+<h2>The VLAN Issue</h2>
+<p>
+At this point I tried requesting a DHCP lease from my computer, but received no response.
+</p><p>
+A few hours of confusion later, on a whim, I tried tagging my outbound traffic with VLAN2, as was
+required 4 years ago with Google Fiber in another neighborhood. Strangely, I recieved a DHCP offer, but it was untagged,
+so my DHCP client didn't see it.
+</p><p>
+This means the VLAN mapping from ethernet to GPON or back again on the SFP module is not correct. This mapping is used to
+prioritize GPON traffic to ensure things like voice-calling don't drop out when the GPON tree is saturated with
+non-prioritized traffic. This is supposed to be managed by the ISP over OMCI, but it's possible that Google's
+OMCI configuration is incomplete and assumes the ONU has some defaults in place that the g-010s-a does not.
+</p><p>
+At least on Linux, we can rewrite incoming untagged packets to VLAN2 with the following steps(enp0s25 is my interface name):
+<pre>
+sudo tc qdisc del dev enp0s25 ingress
+sudo tc qdisc add dev enp0s25 handle ffff: ingress
+sudo tc filter add dev enp0s25 parent ffff: protocol all basic match 'not meta(protocol eq 0x8100)' action vlan push id 2
+sudo ip link add enp0s25.2 type vlan id 2
+sudo ip link add link enp0s25 name enp0s25.2 type vlan id 2
+sudo ip link set enp0s25.2 up
+sudo dhclient enp0s25.2
+</pre>
+</p>
+
+<h2>Results</h2>
+<p>
+With the SFP+ module linked at 1gbps, I got about 800mbps/900mbps on speedtest.net. With the original GFLT110,
+I got about 940mbps/940mbps on speedtest.net. I'm uncertain why - it could be the case that the extra
+VLAN tagging needed to work around the g-010s-a's VLAN tagging/untagging could be slowing downloads. Also,
+it should be possible to linkup at 2.5gbps by connecting the g-010s-a directly to an SFP+ NIC,
+though some users attempting this with other ISPs have found
+that uploads need to be throttled/shaped by a router, or else the router may transmit at 2.5gbps when
+the GPON upload speed is at most 1.244gpbs, and likely throttled depending on the ISP plan. This can
+cause excess packet drop on upload.
+</p>
