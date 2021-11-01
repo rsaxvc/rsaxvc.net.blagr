@@ -1,0 +1,715 @@
+Title:Casa Systems B41 Femtocell Console and Fastboot
+Author:rsaxvc
+CreatedDateTime:2021-10-31T22:10:52
+ModifiedDateTime:2021-10-31T22:10:52
+Tag:Femtocell
+Tag:UART
+Tag:Serial
+---
+
+<p>
+Casa Systems B41 Femtocell has a 4-pin serial console.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51645963603/" title="Casa Systems Serial port and USB"><img src="https://live.staticflickr.com/65535/51645963603_cba60dc7e0.jpg" width="281" height="500" alt="Casa Systems Serial port and USB"></a>
+</p><p>
+From left to right:
+</p>
+<ol>
+	<li>brown - Ground</li>
+	<li>red - RX(to device)</li>
+	<li>orange - TX(from device)</li>
+	<li>yellow - 3.3v</li>
+</ol>
+<p>
+Configuration is 115200, 8N1.
+</p><p>
+During startup, you'll see the Android bootloader start, then a prompt:
+<pre>
+[170] Press 1 to enable fast boot mode...
+</pre>
+where you can indeed press 1 to enable fast boot mode which is accessible over the adjacent USB port. However, the bootloader is locked, so if you continued booting normally...
+</p><p>
+You'd next see what appears to be an Android Linux 3.10.84-perf kernel booting up.
+</p><p>
+Eventually, you'll see an OpenWrt logo, as there appears to be a separate CPU to run an MTK build of OpenWrt.
+This is used for both WiFi backhaul and to stand up an access point for commissioning.
+</p><p>
+Here's the entire log of a bootup:
+<pre>
+B -     60847 - SBL1, Start
+B -     60878 - scatterload_region && ram_init, Start
+D -        30 - scatterload_region && ram_init, Delta
+B -     71858 - Enable tsens
+B -     72376 - tsensResult:=0 tsensTemp:=27
+B -     72773 - Clock_BranchEnable
+B -     76006 - Clock_MuxInit
+B -     78629 - pm_device_init, Start
+B -     81953 - boot_fsm_cdt_init, Start
+D -    356026 - boot_fsm_cdt_init, Delta
+B -    441609 - pm_fsm9055pdm_config
+B -    442097 - boot_pm_driver_init, Start
+B -    445940 - Clock_BranchEnable
+B -    448960 - Clock_MuxInit
+D -      5673 - boot_pm_driver_init, Delta
+B -    455334 - pm_set_based_on_mode, Start
+D -         0 - pm_set_based_on_mode, Delta
+B -    462929 - pm_adjust_based_on_cpr, Start
+D -        30 - pm_adjust_based_on_cpr, Delta
+P -      1127 - pm_get_cx_vout (mv)
+D -         0 - pm_device_init, Delta
+B -    477386 - clock_init, Start
+D -     26443 - clock_init, Delta
+B -    507154 - boot_flash_init, Start
+D -    985089 - boot_flash_init, Delta
+B -   1492334 - boot_set_partition_id, Start
+D -        91 - boot_set_partition_id, Delta
+B -   1497336 - boot_fsm_cdt_init, Start
+D -    146491 - boot_fsm_cdt_init, Delta
+B -   1647396 - sbl1_hw_platform_pre_ddr, Start
+D -         0 - sbl1_hw_platform_pre_ddr, Delta
+B -   1653100 - sbl1_ddr_set_params, Start
+D -       762 - sbl1_ddr_set_params, Delta
+B -   1660542 - sbl1_ddr_init, Start
+B -   1663775 - CHIP ID = 0x100 MSM Version = 0x10000
+B -   1668472 - Board Type = 0x8 Version = 0x10000
+B -   1672925 - DDR Frequency = 450000 kHz
+B -   1678232 - Start DDR RCW Training
+B -   1680397 - DDR RCW Training Results Start=0x07070707 Coarse=0x00002222 Fine=0x38383438
+B -   1688022 - DDR CH0 Start Address:0x00000000_00000000 Size:0x400 MBytes
+D -     30744 - sbl1_ddr_init, Delta
+B -   1723890 - sbl1_tlmm_init, Start
+D -        91 - sbl1_tlmm_init, Delta
+B -   1724256 - Image Load, Start
+B -   1739659 - Tz Execution, Start
+D -    218837 - Tz Execution, Delta
+B -   1982225 - Image Load, Start
+B -   1982408 - Image Load, Start
+B -   1982439 - Image Load, Start
+B -   2000891 - sbl1_efs_handle_cookies, Start
+D -       579 - sbl1_efs_handle_cookies, Delta
+B -   2002782 - SBL1, End
+Android Bootloader - UART_DM Initialized!!!
+[0] welcome to lk
+[0] Casa Systems Inc.
+[10] platform_init()
+[20] target_init()
+[30] SDHC Running at 200 MHz
+[70] SDHC Running in HS200 mode
+[90] Done initialization of the card
+[110] scm call to check secure boot fuses failed
+[140] Neither 'config' nor 'frp' partition found
+[170] Press 1 to enable fast boot mode...
+[270] Trying to use 'boot_1' image...
+[290] Loading (boot) image (30670848): start
+[520] Loading (boot) image (30670848): done
+[540] use_signed_kernel=0, is_unlocked=0, is_tampered=0.
+[580] Uncpmpressed kernel in use
+[590] Kernel image not patched..Unable to locate dt offset
+[880] DTB Total entry: 20, DTB version: 3
+[900] Using DTB entry 0x00000100/00000000/0x00010008/0 for device 0x00000100/00010000/0x00010008/0
+[950] cmdline: root=/dev/ram0 rw rdinit=/sbin/init console=ttyHSL0,115200n8 earlyprintk maxcpus=4 coherent_pool=3M mem=196M@0x03c00000 mem=360M@0x29800000 vmalloc=512M androidboot.emmc=true androidboot.serialno=59d437a7 androidboot.baseband=msm cs_version=1 bun[1090] Updating device tree: start
+[1130] Updating device tree: done
+[1150] booting linux @ 0x3c08000, ramdisk @ 0x4d00000 (25910766), tags/device tree @ 0x4c00000
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Initializing cgroup subsys cpuset
+[    0.000000] Initializing cgroup subsys cpu
+[    0.000000] Initializing cgroup subsys cpuacct
+[    0.000000] Linux version 3.10.84-perf (user@qaserver2) (gcc version 5.4.1 20161213 (Linaro GCC 5.4-2017.01) ) #1 SMP PREEMPT Fri Apr 9 11:17:49 CEST 2021
+[    0.000000] CPU: ARMv7 Processor [410fc073] revision 3 (ARMv7), cr=50c5387d
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] Machine: Qualcomm Technologies, Inc. FSM 9010 (Flattened Device Tree), model: Qualcomm Technologies, Inc. FSM9010 MTP
+[    0.000000] Ignoring memory range 0x0 - 0x3c00000
+[    0.000000] Ignoring memory range 0x0 - 0x3c00000
+[    0.000000] cma: Found qsecom_region, memory base 0x00000000, size 0 MiB, limit 0x15000000
+[    0.000000] cma: CMA: reserved 16 MiB at 0x0f000000 for default region
+[    0.000000] Memory policy: ECC disabled, Data cache writealloc
+[    0.000000] PERCPU: Embedded 12 pages/cpu @c314e000 s28608 r8192 d12352 u49152
+[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 141944
+[    0.000000] Kernel command line: root=/dev/ram0 rw rdinit=/sbin/init console=ttyHSL0,115200n8 earlyprintk maxcpus=4 coherent_pool=3M mem=196M@0x03c00000 mem=360M@0x29800000 vmalloc=512M androidboot.emmc=true androidboot.serialno=59d437a7 androidboot.baseband=msm cs_version=1 bundle=1
+[    0.000000] PID hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.000000] Dentry cache hash table entries: 32768 (order: 5, 131072 bytes)
+[    0.000000] Inode-cache hash table entries: 16384 (order: 4, 65536 bytes)
+[    0.000000] Memory: 513772K/569344K available (4887K kernel code, 433K rwdata, 2456K rodata, 215K init, 878K bss, 55572K reserved, 368640K highmem)
+[    0.000000] Virtual kernel memory layout:
+[    0.000000]     vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+[    0.000000]     fixmap  : 0xfff00000 - 0xfffe0000   ( 896 kB)
+[    0.000000]     vmalloc : 0xcc800000 - 0xff000000   ( 808 MB)
+[    0.000000]     lowmem  : 0xc0000000 - 0xcc400000   ( 196 MB)
+[    0.000000]     pkmap   : 0xbfe00000 - 0xc0000000   (   2 MB)
+[    0.000000]     modules : 0xbf800000 - 0xbfe00000   (   6 MB)
+[    0.000000]       .text : 0xc0008000 - 0xc0733ff4   (7344 kB)
+[    0.000000]       .init : 0xc0734000 - 0xc0769fc0   ( 216 kB)
+[    0.000000]       .data : 0xc076a000 - 0xc07d6758   ( 434 kB)
+[    0.000000]        .bss : 0xc07d681c - 0xc08b20c8   ( 879 kB)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] Preemptible hierarchical RCU implementation.
+[    0.000000] 	RCU dyntick-idle grace-period acceleration is enabled.
+[    0.000000] NR_IRQS:16 nr_irqs:16 16
+[    0.000000] processor id specified, in device tree 5
+[    0.000000] Architected cp15 and mmio timer(s) running at 19.20MHz (virt/virt).
+[    0.000000] sched_clock: 56 bits at 19MHz, resolution 52ns, wraps every 3579139424256ns
+[    0.000000] Switching to timer-based delay loop
+[    0.000000] sched_clock: 32 bits at 19MHz, resolution 52ns, wraps every 223696213963ns
+[    0.000000] Console: colour dummy device 80x30
+[    0.000246] Calibrating delay loop (skipped), value calculated using timer frequency.. 38.40 BogoMIPS (lpj=192000)
+[    0.000261] pid_max: default: 32768 minimum: 301
+[    0.000464] Mount-cache hash table entries: 512
+[    0.001334] Initializing cgroup subsys debug
+[    0.001347] Initializing cgroup subsys freezer
+[    0.001386] CPU: Testing write buffer coherency: ok
+[    0.001704] /cpus/cpu@0 missing clock-frequency property
+[    0.001722] /cpus/cpu@1 missing clock-frequency property
+[    0.001739] /cpus/cpu@2 missing clock-frequency property
+[    0.001757] /cpus/cpu@3 missing clock-frequency property
+[    0.001772] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+[    0.001843] Setting up static identity map for 0xc049c5f8 - 0xc049c644
+[    0.006732] MSM Memory Dump table set up
+[    0.007739] CPU1: thread -1, cpu 1, socket 0, mpidr 80000001
+[    0.008629] CPU2: thread -1, cpu 2, socket 0, mpidr 80000002
+[    0.009502] CPU3: thread -1, cpu 3, socket 0, mpidr 80000003
+[    0.009646] Brought up 4 CPUs
+[    0.009673] SMP: Total of 4 processors activated (153.60 BogoMIPS).
+[    0.009681] CPU: All CPU(s) started in SVC mode.
+[    0.010649] devtmpfs: initialized
+[    0.024505] VFP support v0.3: implementor 41 architecture 2 part 30 variant 7 rev 3
+[    0.025476] pinctrl core: initialized pinctrl subsystem
+[    0.025796] regulator-dummy: no parameters
+[    0.026674] NET: Registered protocol family 16
+[    0.030503] DMA: preallocated 3072 KiB pool for atomic coherent allocations
+[    0.031553] stub-regulator-1v: 1000 mV normal idle 
+[    0.031876] stub-regulator-1.8v: 1800 mV normal idle 
+[    0.032216] stub-regulator-0.95v: 950 mV normal idle 
+[    0.032540] stub-regulator_vdd_mx: 0 <--> 0 mV at 0 mV normal idle 
+[    0.032882] stub-regulator_3.3v: 3200 mV normal idle 
+[    0.040705] gdsc_pcie_0: normal idle 
+[    0.041073] gdsc_pcie_1: normal idle 
+[    0.042588] socinfo_print: v0.9, id=256, ver=1.0, raw_id=2378, raw_ver=0, hw_plat=8, hw_plat_ver=65536
+[    0.042588]  accessory_chip=0, hw_plat_subtype=0, pmic_model=2147483647, pmic_die_revision=0 foundry_id=1
+[    0.042620] invalid MAC address in efuse
+[    0.042642] invalid MAC address in efuse
+[    0.042702] add_danipc_property: adding danipc DT prop dl-bufs=<0x24000000 0x5800000>
+[    0.042715] add_danipc_property: adding danipc DT prop ul-bufs=<0x23800000 0x800000>
+[    0.043691] hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
+[    0.043703] hw-breakpoint: maximum watchpoint size is 8 bytes.
+[    0.043863] msm_mpm_dev_probe(): Cannot get clk resource for XO: -517
+[    0.043887] platform fc4281d0.qcom,mpm: Driver mpm-v2 requests probe deferral
+[    0.044347] clock-dummy qcom,rpmcc.7: Registered DUMMY provider.
+[    0.048078] qcom,gcc-fsm9010 fc400000.qcom,gcc: Registered GCC clocks
+[    0.050743] sps:sps is ready.
+[    0.070987] bio: create slab <bio-0> at 0
+[    0.072044] dummy_vreg: no parameters
+[    0.072406] vgaarb: loaded
+[    0.072823] usbcore: registered new interface driver usbfs
+[    0.072894] usbcore: registered new interface driver hub
+[    0.073034] usbcore: registered new device driver usb
+[    0.074241] ION heap system created
+[    0.074353] ION heap qsecom created at 0x0f000000 with size 800000
+[    0.075259] pcie:pcie_init.
+[    0.077123] Switching to clocksource arch_sys_counter
+[    0.105289] NET: Registered protocol family 2
+[    0.106178] TCP established hash table entries: 2048 (order: 2, 16384 bytes)
+[    0.106236] TCP bind hash table entries: 2048 (order: 2, 16384 bytes)
+[    0.106281] TCP: Hash tables configured (established 2048 bind 2048)
+[    0.106353] TCP: reno registered
+[    0.106371] UDP hash table entries: 256 (order: 1, 8192 bytes)
+[    0.106405] UDP-Lite hash table entries: 256 (order: 1, 8192 bytes)
+[    0.106656] NET: Registered protocol family 1
+[    0.107059] RPC: Registered named UNIX socket transport module.
+[    0.107070] RPC: Registered udp transport module.
+[    0.107079] RPC: Registered tcp transport module.
+[    0.107088] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.107380] Trying to unpack rootfs image as initramfs...
+[    2.822403] Freeing initrd memory: 25300K (c1100000 - c29b5000)
+[    2.825456] ftr_probe: BoardId = 0x33
+[    3.472318] error setting kswapd cpu affinity mask
+[    3.472553] bounce pool size: 64 pages
+[    3.483313] fuse init (API version 7.23)
+[    3.483832] msgmni has been set to 364
+[    3.486010] NET: Registered protocol family 38
+[    3.486278] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 251)
+[    3.486290] io scheduler noop registered
+[    3.486300] io scheduler deadline registered
+[    3.486322] io scheduler row registered
+[    3.486504] io scheduler cfq registered (default)
+[    3.486515] io scheduler test-iosched registered
+[    3.490475] msm_serial: driver initialized
+[    3.490640] msm_serial_hsl_probe: detected port #0 (ttyHSL0)
+[    3.490668] msm_serial_hsl_probe: Bus scaling is disabled
+[    3.490787] f9920000.serial: ttyHSL0 at MMIO 0xf9920000 (irq = 128) is a MSM
+[    3.490851] msm_hsl_console_setup: console setup on port #0
+[    4.221978] console [ttyHSL0] enabled
+[    4.226012] msm_serial_hsl_probe: detected port #1 (ttyHSL1)
+[    4.231282] msm_serial_hsl_probe: Bus scaling is disabled
+[    4.236759] f991d000.serial: ttyHSL1 at MMIO 0xf991d000 (irq = 127) is a MSM
+[    4.243966] msm_serial_hsl_init: driver initialized
+[    4.259317] diag: In socket_open_server, socket not initialized for MODEM_DCI
+[    4.264204] diag: In socket_open_server, socket not initialized for LPASS_DATA
+[    4.266336] diag: In socket_open_server, socket not initialized for LPASS_CNTL
+[    4.266418] diag: In socket_open_server, socket not initialized for WCNSS_DCI
+[    4.267905] diag: In socket_open_server, socket not initialized for SENSORS_DCI
+[    4.268029] diag: In socket_open_server, socket not initialized for WCNSS_CNTL
+[    4.268112] diag: In socket_open_server, socket not initialized for SENSORS_DATA
+[    4.269129] diag: In socket_open_server, socket not initialized for MODEM_DATA
+[    4.269181] diag: In socket_open_server, socket not initialized for LPASS_DCI
+[    4.272286] diag: In socket_open_server, socket not initialized for SENSORS_CNTL
+[    4.272342] diag: In socket_open_server, socket not initialized for WCNSS_DATA
+[    4.273344] diag: In __diag_cntl_socket_init, cntl socket is not initialized, ret: -97
+[    4.278342] diag: In socket_open_server, socket not initialized for MODEM_CNTL
+[    4.283354] brd: module loaded
+[    4.287301] loop: module loaded
+[    4.287644] QSEECOM: qseecom_probe: qseecom.qsee_version = 0x405000
+[    4.287689] QSEECOM: qseecom_probe: qseecom.appsbl_qseecom_support = 0x0
+[    4.287695] QSEECOM: qseecom_probe: no-clock-support=0x1
+[    4.287696] QSEECOM: qseecom_probe: qsee reentrancy support phase is not defined, setting to default 0
+[    4.287732] QSEECOM: qseecom_probe: secure app region addr=0x13500000 size=0x100000
+[    4.287733] scm_call failed with error code -2
+[    4.287740] QSEECOM: qseecom_check_whitelist_feature: Check whitelist with ret = -22, result = 0x1000
+[    4.287744] QSEECOM: qseecom_probe: qseecom.whitelist_support = 0
+[    4.288101] qfp_fuse_probe: Fuse driver base:cc878000 end:cc87f000
+[    4.288378] QCE50: __qce_get_device_tree_data: BAM Apps EE is not defined, setting to default 1
+[    4.288383] QCE50: __qce_get_device_tree_data: CE operating frequency is not defined, setting to default 100MHZ
+[    4.439802] qcrypto fe0c0000.qcom,qcrypto: Qualcomm Crypto 5.3.0 device found @0xfe0c0000
+[    4.446950] qcrypto fe0c0000.qcom,qcrypto: CE device = 0x0
+[    4.446950] , IO base, CE = 0xcc880000
+[    4.446950] , Consumer (IN) PIPE 0,    Producer (OUT) PIPE 1
+[    4.446950] IO base BAM = 0x  (null)
+[    4.446950] BAM IRQ 141
+[    4.446950] Engines Availability = 0x1e0111df
+[    4.472501] sps:BAM 0xfe0c4000 is registered.
+[    4.476734] sps:BAM 0xfe0c4000 (va:0xcc8b0000) enabled: ver:0x24, number of pipes:16
+[    4.484801] QCE50: qce_sps_init:  Qualcomm MSM CE-BAM at 0x00000000fe0c4000 irq 141
+[    4.495388] bus_scale_table is NULL
+[    4.498035] qcrypto fe0c0000.qcom,qcrypto: qcrypto-ecb-aes
+[    4.503494] qcrypto fe0c0000.qcom,qcrypto: qcrypto-cbc-aes
+[    4.508925] qcrypto fe0c0000.qcom,qcrypto: qcrypto-ctr-aes
+[    4.514352] qcrypto fe0c0000.qcom,qcrypto: qcrypto-ecb-des
+[    4.519847] qcrypto fe0c0000.qcom,qcrypto: qcrypto-cbc-des
+[    4.525289] qcrypto fe0c0000.qcom,qcrypto: qcrypto-ecb-3des
+[    4.530903] qcrypto fe0c0000.qcom,qcrypto: qcrypto-cbc-3des
+[    4.536398] qcrypto fe0c0000.qcom,qcrypto: qcrypto-xts-aes
+[    4.541943] qcrypto fe0c0000.qcom,qcrypto: qcrypto-sha1
+[    4.547107] qcrypto fe0c0000.qcom,qcrypto: qcrypto-sha256
+[    4.552504] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha1-cbc-aes
+[    4.559289] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha1-cbc-des
+[    4.566005] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha1-cbc-3des
+[    4.572925] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha1-cbc-aes
+[    4.579663] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha1-cbc-des
+[    4.586404] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha1-cbc-3des
+[    4.593291] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha256-cbc-aes
+[    4.600237] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha256-cbc-des
+[    4.607150] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha256-cbc-3des
+[    4.614204] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha256-cbc-aes
+[    4.621154] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha256-cbc-des
+[    4.628104] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aead-hmac-sha256-cbc-3des
+[    4.635104] qcrypto fe0c0000.qcom,qcrypto: qcrypto-hmac-sha1
+[    4.640772] qcrypto fe0c0000.qcom,qcrypto: qcrypto-hmac-sha256
+[    4.646561] qcrypto fe0c0000.qcom,qcrypto: qcrypto-aes-ccm
+[    4.652054] qcrypto fe0c0000.qcom,qcrypto: qcrypto-rfc4309-aes-ccm
+[    4.658101] qcrypto: FIPS140-2 Known Answer Tests: Skipped
+[    4.663658] QCE50: __qce_get_device_tree_data: BAM Apps EE is not defined, setting to default 1
+[    4.672261] QCE50: __qce_get_device_tree_data: CE operating frequency is not defined, setting to default 100MHZ
+[    4.683901] qcrypto fe0c0000.qcom,qcrypto1: Qualcomm Crypto 5.3.0 device found @0xfe0c0000
+[    4.691163] qcrypto fe0c0000.qcom,qcrypto1: CE device = 0x10
+[    4.691163] , IO base, CE = 0xcc8c0000
+[    4.691163] , Consumer (IN) PIPE 6,    Producer (OUT) PIPE 7
+[    4.691163] IO base BAM = 0x  (null)
+[    4.691163] BAM IRQ 141
+[    4.691163] Engines Availability = 0x1e0111df
+[    4.717364] QCE50: qce_sps_init:  Qualcomm MSM CE-BAM at 0x00000000fe0c4000 irq 141
+[    4.727462] bus_scale_table is NULL
+[    4.729910] qcrypto: FIPS140-2 Known Answer Tests: Skipped
+[    4.735481] QCE50: __qce_get_device_tree_data: BAM Apps EE is not defined, setting to default 1
+[    4.744116] QCE50: __qce_get_device_tree_data: CE operating frequency is not defined, setting to default 100MHZ
+[    4.755049] qcrypto fe0c0000.qcom,qcrypto2: Qualcomm Crypto 5.3.0 device found @0xfe0c0000
+[    4.762422] qcrypto fe0c0000.qcom,qcrypto2: CE device = 0x20
+[    4.762422] , IO base, CE = 0xcc900000
+[    4.762422] , Consumer (IN) PIPE 8,    Producer (OUT) PIPE 9
+[    4.762422] IO base BAM = 0x  (null)
+[    4.762422] BAM IRQ 141
+[    4.762422] Engines Availability = 0x1e0111df
+[    4.788621] QCE50: qce_sps_init:  Qualcomm MSM CE-BAM at 0x00000000fe0c4000 irq 141
+[    4.798711] bus_scale_table is NULL
+[    4.801159] qcrypto: FIPS140-2 Known Answer Tests: Skipped
+[    4.808263] tun: Universal TUN/TAP device driver, 1.6
+[    4.812274] tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
+[    4.818710] PPP generic driver version 2.4.2
+[    4.823891] FIFO apps_ipc_data FOUND!
+[    4.826549] FIFO apps_ipc_pcap FOUND!
+[    4.830218] FIFO apps_hex_ipc_log NOT FOUND!
+[    4.834413] FIFO apps_hex_ipc_log NOT FOUND!
+[    4.841444] msm_sharedmem: sharedmem_register_qmi: Creating sharedmem_qmi qmi handle failed
+[    4.841685] msm_sharedmem: msm_sharedmem_probe: Device created for client 'rmtfs'
+[    4.857282] msm-dwc3 f9200000.ssusb: bus scaling is disabled
+[    4.863647] i2c /dev entries driver
+[    4.868319] device-mapper: ioctl: 4.24.0-ioctl (2013-01-15) initialised: dm-devel@redhat.com
+[    4.875718] device-mapper: req-crypt: dm-req-crypt successfully initalized.
+[    4.875718] 
+[    4.884275] cpuidle: using governor ladder
+[    4.888239] cpuidle: using governor menu
+[    4.892161] sdhci: Secure Digital Host Controller Interface driver
+[    4.898337] sdhci: Copyright(c) Pierre Ossman
+[    4.902626] sdhci-pltfm: SDHCI platform and OF driver helper
+[    4.908415] sdhci_msm f9824900.sdhci: sdhci_msm_probe: ICE device is not enabled
+[    4.915746] sdhci_msm f9824900.sdhci: Parsing Pinctrl failed with -22, falling back on GPIO lib
+[    4.924564] sdhci_msm f9824900.sdhci: host_use_default_qos = 1
+[    4.930181] sdhci_msm f9824900.sdhci: For qos_policy(default qos) = 0, tbl_sz = 1, qos type = 2
+[    4.938847] sdhci_msm f9824900.sdhci: 	dma_latency = 200
+[    4.944125] sdhci_msm f9824900.sdhci: For qos_policy(modified dynamic qos) = 1, tbl_sz = 1, qos type = 2
+[    4.953642] sdhci_msm f9824900.sdhci: 	dma_latency = 200
+[    4.958910] sdhci_msm f9824900.sdhci: For qos_policy(modified dynamic qos) = 2, tbl_sz = 1, qos type = 2
+[    4.968367] sdhci_msm f9824900.sdhci: 	dma_latency = 200
+[    4.973639] sdhci_msm f9824900.sdhci: Host using default pm_qos
+[    4.980312] mmc0: no vqmmc regulator found
+[    4.983620] mmc0: no vmmc regulator found
+[    4.987838] mmc0: SDHCI controller on f9824900.sdhci [f9824900.sdhci] using 32-bit ADMA in legacy mode
+[    5.025318] ssbi f9b18000.qcom,ssbi: SSBI controller type: 'geni-ssbi-arbiter'
+[    5.032273] ssbi f9b1c000.qcom,ssbi: SSBI controller type: 'geni-ssbi-arbiter'
+[    5.039109] ssbi f9b20000.qcom,ssbi: SSBI controller type: 'geni-ssbi-arbiter'
+[    5.046256] ssbi f9b24000.qcom,ssbi: SSBI controller type: 'geni-ssbi-arbiter'
+[    5.053526] ssbi f9b28000.qcom,ssbi: SSBI controller type: 'geni-ssbi-arbiter'
+[    5.060940] usbcore: registered new interface driver usbhid
+[    5.065873] usbhid: USB HID core driver
+[    5.070447] u32 classifier
+[    5.072543] ipip: IPv4 over IPv4 tunneling driver
+[    5.073184] mmc0: BKOPS_EN bit = 0
+[    5.073191] mmc0: eMMC FW version: 0x01
+[    5.080718] mmc0: new HS200 MMC card at address 0001
+[    5.089319] mmcblk0: mmc0:0001 004GA0 3.68 GiB 
+[    5.089884] TCP: cubic registered
+[    5.089888] Initializing XFRM netlink socket
+[    5.090630] NET: Registered protocol family 10
+[    5.091800] NET: Registered protocol family 17
+[    5.091826] NET: Registered protocol family 15
+[    5.091932] Bridge firewalling registered
+[    5.091999] 8021q: 802.1Q VLAN Support v1.8
+[    5.094209] sctp: Hash tables configured (established 65536 bind 65536)
+[    5.094999] NET: Registered protocol family 27
+[    5.134066] mmcblk0rpmb: mmc0:0001 004GA0 partition 3 512 KiB
+[    5.134355] Registering SWP/SWPB emulation handler
+[    5.135844] regulator-dummy: disabling
+[    5.137172] qcom,cc-debug-fsm9010 fc400000.qcom,cc-debug: Registered Debug Mux successfully
+[    5.137506] android_probe: pm_qos latency not specified 0
+[    5.137843] file system registered
+[    5.137927] mbim_init: initialize 1 instances
+[    5.138060] mbim_init: Initialized 1 ports
+[    5.138063] mbim_bam_setup: no_ports:1
+[    5.177342] mbim_bam_setup: Initialized 1 ports
+[    5.183358] rndis_qc_init: initialize rndis QC instance
+[    5.183488]  mmcblk0: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 p13 p14 p15 p16 p17 p18 p19 p20 p21 p22 p23 p24 p25 p26 p27 p28 p29 p30 p31 p32
+[    5.200815] android_usb gadget: Mass Storage Function, version: 2009/09/11
+[    5.206990] android_usb gadget: Number of LUNs=1
+[    5.211619]  lun0: LUN: removable file: (no medium)
+[    5.216901] android_usb gadget: android_usb ready
+[    5.221355] /home/user/jenkins/workspace/QualcommBspArtifact/build_90xx/LINUX/opensource/kernel/drivers/rtc/hctosys.c: unable to open rtc device (rtc0)
+[    5.234750] msm_thermal:interrupt_mode_init Interrupt mode init
+[    5.241137] clock_late_init: Removing enables held for handed-off cloÿ[    5.248286] Freeing unused kernel memory: 212K (c0734000 - c0769000)
+starting pid 218, tty '': '/etc/init.d/rcS'
+rcS:::executing /etc/init.d/rcS script
+rcS:::mounting filesystems
+rcS:::generating ld.so.cache
+rcS:::executing /etc/rc.d scripts
+starting udev
+creating static nodes
+starting udevd...[    5.356291] udevd[235]: starting version 182
+done
+waiting for devices...done
+[    5.844461] mountflash:::Mounting /dev/disk/by-partlabel/modem_1 on /mnt/firmware
+[    5.866557] mountflash:::Mounting /dev/disk/by-partlabel/rfcal on /mnt/rfcal
+[    5.886640] EXT4-fs (mmcblk0p6): recovery complete
+[    5.891280] EXT4-fs (mmcblk0p6): mounted filesystem with ordered data mode. Opts: (null)
+[    5.903855] mountflash:::Mounting /dev/disk/by-partlabel/system_1 on /opt
+[    5.917127] EXT4-fs (mmcblk0p30): mounted filesystem with ordered data mode. Opts: (null)
+[    5.929787] mountflash:::Mounting /dev/disk/by-partlabel/userdata on /mnt/flash
+[    5.948306] EXT4-fs (mmcblk0p14): recovery complete
+[    5.952947] EXT4-fs (mmcblk0p14): mounted filesystem with ordered data mode. Opts: (null)
+[    5.975236] mountflash:::Mounting /dev/disk/by-partlabel/stack_1 on /stack
+[    5.991878] EXT4-fs (mmcblk0p31): recovery complete
+[    5.996640] EXT4-fs (mmcblk0p31): mounted filesystem with ordered data mode. Opts: (null)
+[    6.009011] mountflash:::Mounting /dev/disk/by-partlabel/config_1 on /config
+[    6.032287] EXT4-fs (mmcblk0p32): recovery complete
+[    6.036924] EXT4-fs (mmcblk0p32): mounted filesystem with ordered data mode. Opts: (null)
+[    6.056885] mountflash:::generating ld.so.cache
+/etc/rc.d/S02persist-fixup: fixing up persistent files
+/etc/rc.d/S02persist-fixup: fixed up entry /root
+/etc/rc.d/S02persist-fixup: fixed up entry /home
+/etc/rc.d/S02persist-fixup: fixed up entry /etc/dropbear/dropbear_dss_host_key
+/etc/rc.d/S02persist-fixup: fixed up entry /etc/dropbear/dropbear_rsa_host_key
+/etc/rc.d/S02persist-fixup: fixed up entry /etc/rsyslog.conf
+/etc/rc.d/S02persist-fixup: done fixing up persistent files
+running rc.once.d services...
+Creating dynamic linker cache...
+syslogd starting
+klogd starting
+boardinit:::Loading NSS GMAC ethernet module
+[    6.418000] libphy: GPIO Bitbanged MDIO: probed
+[    6.442553] **********************************************************
+[    6.448099] * Driver    :NSS GMAC Driver for RTL v(3.72a)
+[    6.453428] * Version   :1.0
+[    6.456290] * Copyright :Copyright (c) 2013-2016 The Linux Foundation. All rights reserved.
+[    6.464661] **********************************************************
+[    6.471875] GMAC0(c251b500) Invalid MAC@ - using 72:73:74:75:76:77
+[    6.482627] GMAC1(c2518500) Invalid MAC@ - using be:bf:c0:c1:c2:c3
+boardinit:::Setting up coredump location in /mnt/flash
+boardinit:::Creating /dev/mqueue
+fs.mqueue.msg_max = 256
+starting dropbear...done
+Setting up LVM2...
+  No volume groups found
+done
+Using stack init scripts to configure networking.
+stop syslogd stopping syslog
+/etc/rc.d/S84rsyslogd: line 70:   402 Terminated              /etc/init.d/syslogd stop
+
+Starting system logger (rsyslogd): 
+Starting OAM Proxy (/opt/qcom/bin/fsmOamProxy): 
+Starting (/opt/qcom/bin/fsmPhyTraceProxy): 
+loading modules
+/etc/rc.d/S99persist-save: saving persistent files
+/etc/rc.d/S99persist-save: done saving persistent files
+rcS:::configuring ACPU parameters
+rcS::Starting fsminitd
+Starting (/local/qcom/bin/fsminit/fsminitd): 
+rcS::fsminitd started
+rcS:::Running /stack/etc/rc.once.d scripts
+[    7.094340] /etc/init.d/sentinel ::: Started ...
+[    7.098899] /etc/init.d/sentinel ::: Checking partitions ...
+[    7.134130] /etc/init.d/sentinel ::: Waiting 1200 seconds to stack boot up ...
+rcS:::Running /stack/etc/rc.d scripts
+[    7.246477] warning: `fsmPhyTraceProx' uses 32-bit capabilities (legacy support in use)
+Waiting for fsminitd (reattemp 1)...
+Waiting for fsminitd (reattemp 2)...
+[   11.306417] pil-femto-modem fbc00000.qcom,modem-femto: mba: loading from 0x13080000 to 0x130da000
+[   11.381625] pil-femto-modem fbc00000.qcom,modem-femto: MBA boot done
+[   11.386958] pil-femto-modem fbc00000.qcom,modem-femto: mba: Brought out of reset
+[   11.394629] pil-femto-modem-desc fd4a7000.qcom,modem: mdm0_00: loading from 0x16400000 to 0x17848000
+[   11.587178] pil-femto-modem-desc fd4a7000.qcom,modem: mdm0_00: Brought out of reset
+[   11.594050] pil-femto-modem-desc fd4a7030.qcom,modem: mdm1_00: loading from 0x18000000 to 0xfb840000
+[   12.156569] pil-femto-modem-desc fd4a7030.qcom,modem: mdm1_00: Brought out of reset
+[   12.163410] pil-femto-modem-desc fd4a7060.qcom,modem: mdm2_00: loading from 0x00800000 to 0xf7998000
+[   12.324944] pil-femto-modem-desc fd4a7060.qcom,modem: mdm2_00: Brought out of reset
+[   12.331760] pil-femto-modem-desc fd4a7090.qcom,modem: mdm3_00: loading from 0x14000000 to 0x140a1000
+[   12.359027] pil-femto-modem-desc fd4a7090.qcom,modem: mdm3_00: Brought out of reset
+[   12.396326] smsm_change_state <SM NO STATE>
+[   12.400884] diag: In diag_send_feature_mask_update, control channel is not open, p: 0, c086b878
+[   12.486398] smsm_change_state <SM NO STATE>
+Waiting for fsminitd (reattemp 3)...
+[   12.656033] Synchronized with fsminitd
+[   12.929833] incorrect memory info c1005d8c len 16
+[   12.948994] <NSS-CRYPTO>:module loaded (platform - IPQ806x, build - Build_ID - 04/09/21, 11:18:21)
+[   12.957576] <NSS-CRYPTO>:Register with NSS driver-
+Shutting down system logger (rsyslogd): [   12.981371] crypto bench loaded - Build_ID - 04/09/21, 11:18:21
+stopped /usr/sbin/rsyslogd (pid 408)
+
+[   13.009037] nss_ipsecmgr_init[1362]:NSS IPsec manager loaded: Build Id: 04/09/21, 11:18:21
+[   13.027538] nss_nl_init[296]:NSS Netlink manager loaded: Build Id: 04/09/21, 11:18:21
+[   13.034333] nss_nl_init[314]:attaching family:nss_nlcrypto
+[   13.039917] nss_nlcrypto_init[598]:initiallizing the NSS netlink crypto handler
+[   13.047116] nss_nl_init[314]:attaching family:nss_nlipv4
+[   13.052411] nss_nlipv4_init[793]:Init NSS netlink IPv4 handler
+[   13.057217] <NSS-CRYPTO>:NSS Firmware initialized
+[   13.057439] <NSS-CRYPTO>:probing engine - 0
+[   13.057442] <NSS-CRYPTO>:Device Tree node found
+[   13.057565] <NSS-CRYPTO>:init completed for Pipe Pair[0]
+[   13.057581] <NSS-CRYPTO>:init completed for Pipe Pair[1]
+[   13.082212] nss_nl_init[314]:attaching family:nss_nlipsec
+[   13.087566] nss_nlipsec_init[1150]:Init NSS netlink IPsec handler
+[   13.093647] nss_nl_init[314]:attaching family:nss_nloam
+[   13.098869] nss_nl_init[314]:attaching family:nss_nlipv6
+[   13.104124] nss_nlipv6_init[777]:Init NSS netlink IPV6 handler
+[   13.971344] <NSS-CRYPTO>:probing engine - 1
+[   13.974491] <NSS-CRYPTO>:Device Tree node found
+[   13.979099] <NSS-CRYPTO>:init completed for Pipe Pair[0]
+[   13.984324] <NSS-CRYPTO>:init completed for Pipe Pair[1]
+Starting system logger (rsyslogd): 
+/stack/etc/rc.d/S01stackenv: line 181: /sys/kernel/debug/tracing/tracing_on: No such file or directory
+[   14.302169] Configuring board type: 9016, RF id: 51
+[   14.333800] hex2_shm: registered correctly with major number 243
+[   14.338886] hex2_shm: device class registered correctly
+[   14.344216] hex2_shm: device class created correctly
+[   14.357272] casa_gpio: Initializing
+[   14.360008] casa_gpio: Valid GPIO in device tree (red_led-gpio,1002)
+[   14.366084] casa_gpio: Valid GPIO in device tree (green_led-gpio,954)
+[   14.372773] casa_gpio: Valid GPIO in device tree (blue_led-gpio,956)
+[   14.378918] casa_gpio: GPIO not found in device tree (orange_led-gpio)
+[   14.387285] casa_gpio: Valid GPIO in device tree (reset_button-gpio,955)
+[   14.393286] casa_gpio: GPIO not found in device tree (killswitch_button-gpio)
+[   14.400326] casa_gpio: Valid GPIO in device tree (wifireset_control-gpio,958)
+[   14.407501] casa_gpio: Valid GPIO in device tree (wifiwps_control-gpio,959)
+[   14.712127] health_monitor started
+[   15.024529] smsm_change_state <SM NO STATE>
+[   15.064275] oam_proxy started
+[   16.679016] system_layer: ==================================================================
+[   16.687468] system_layer: System layer
+[   16.691102] system_layer: Casa Systems Inc. Â© 2008-2020 All Rights Reserved
+[   16.701044] system_layer: Sofware version: 4.8.26
+[   16.705687] system_layer: Serial number: A01A19002135
+[   16.710703] system_layer: ==================================================================
+[   16.856661] system_layer: [OAM] Component registration complete
+[   16.873160] system_layer: [OAM] Subscribed to event: no_ues_connected
+[   16.888179] system_layer: [OAM] Subscribed to event: ues_connected
+[   16.903057] system_layer: [OAM] Subscribed to event: location_acquired
+[   16.917876] system_layer: [OAM] Subscribed to event: waiting_for_wifi_configuration
+[   16.933864] system_layer: [OAM] Subscribed to event: booting
+[   16.947708] system_layer: [OAM] Subscribed to event: admin_mode_enabled
+[   16.963038] system_layer: [OAM] Subscribed to event: enb_online
+[   16.977077] system_layer: [OAM] Subscribed to event: acquiring_backhaul
+[   16.992138] system_layer: [OAM] Subscribed to event: acquiring_location
+[   17.007411] system_layer: [OAM] Subscribed to event: critical_alarm_raised
+[   17.022848] system_layer: [OAM] Subscribed to event: factory_reset
+[   17.037061] system_layer: [OAM] Subscribed to event: disabling_admin_mode
+[   17.052200] system_layer: [OAM] Subscribed to event: backhaul_acquired
+[   17.149268] system_layer: Starting WiFi module
+[   37.957125] qup_i2c f9924000.i2c: QUP: I2C status flags :0x1363c8, irq:129
+[   37.963035] qup_i2c f9924000.i2c: I2C slave addr:0x54 not connected
+[   39.194935] qup_i2c f9924000.i2c: QUP: I2C status flags :0x1363c8, irq:129
+[   39.200918] qup_i2c f9924000.i2c: I2C slave addr:0x54 not connected
+[   53.883791] system_layer: Wifi module boot up completed.
+[   54.054148] system_layer: WiFi Module Banner:
+[   54.054148]   _______                     ________        __
+[   54.054148]  |       |.-----.-----.-----.|  |  |  |.----.|  |_
+[   54.054148]  |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+[   54.054148]  |_______||   __|_____|__|__||________||__|  |____|
+[   54.054148]           |__| W I R E L E S S   F R E E D O M
+[   54.054148]  -----------------------------------------------------
+[   54.054148]  BARRIER BREAKER (Barrier Breaker, r15)
+[   54.054148]  -----------------------------------------------------
+[   54.054148]   * 1/2 oz Galliano         Pour all ingredients into
+[   54.054148]   * 4 oz cold Coffee        an irish coffee mug filled
+[   54.054148]   * 1 1/2 oz Dark Rum       with crushed ice. Stir.
+[   54.054148]   * 2 tsp. Creme de Cacao
+[   54.054148]  -----------------------------------------------------
+[   54.054148]  MTK OpenWrt SDK V3.4
+[   54.054148]  revision : 1443366e
+[   54.054148]  benchmark : APSoC SDK 5.0.1.0
+[   54.178731] system_layer: WiFi Module Uptime : 
+[   54.178731]  21:59:36 up 0 min,  load average: 1.12, 0.29, 0.10
+[   54.178731] 
+[   54.228441] system_layer: WiFi Module Version : 
+[   54.228441] MOWIFI CX2 V1.0
+[   54.228441] 1.0.1 Build 20190508 Rel.15n
+[   54.228441] G24=1 G5=1
+[   54.228441] 
+[   54.258718] system_layer: Configuring WiFi DHCP...
+[   56.128821] system_layer: WiFi DHCP configured
+[   56.142590] system_layer: [OAM] Subscribed to event: enabling_admin_mode
+[   56.157631] system_layer: [OAM] Subscribed to event: admin_mode_enabled
+[   56.172926] system_layer: [OAM] Subscribed to event: disabling_admin_mode
+[   56.188017] system_layer: [OAM] Subscribed to event: enb_online
+[   56.213553] system_layer: [OAM] Subscribed to event: forced_reboot
+[   56.228578] system_layer: [OAM] Subscribed to event: acquiring_location
+[   56.243587] system_layer: [OAM] Subscribed to event: location_acquired
+[   56.258324] system_layer: [OAM] Subscribed to event: failure_acquiring_location
+[   56.273684] system_layer: [OAM] Subscribed to event: critical_alarm_raised
+[   56.289293] system_layer: [OAM] Subscribed to event: critical_alarm_cleared
+[   56.413875] system_layer: [OAM] Subscribed to event: location_acquired
+[   56.423937] system_layer: Configured device_time zone to PST8PDT
+[   56.442791] system_layer: [OAM] Subscribed to event: backhaul_acquired
+[   57.841680] system_layer: Interface eth0 MAC address set to 00:17:10:26:E3:EC
+[   57.881982] system_layer: Interface eth1 MAC address set to 02:17:10:26:E3:EC
+[   57.890312] system_layer: Preferred Backhaul Mode: ethernet
+[   57.896074] system_layer: Preferred Backhaul Ethernet
+[   57.901076] system_layer: Configuring Ethernet Backhaul
+[   57.938216] IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready
+[   68.003229] system_layer: Failure configuring Ethernet Backhaul
+[   68.009258] system_layer: Interface eth0 state did not change to up: Condition not meet after 10 seconds with interval 0.1
+[   68.020473] system_layer: Configuring WiFi Backhaul
+[   68.025303] system_layer: Enabling WiFi STA
+[   90.708300] system_layer: Checking WiFi connection, attempt 0.
+[   95.803932] system_layer: Checking WiFi connection, attempt 1.
+[  100.906704] system_layer: Checking WiFi connection, attempt 2.
+[  106.002518] system_layer: Checking WiFi connection, attempt 3.
+[  111.098262] system_layer: Checking WiFi connection, attempt 4.
+[  116.193829] system_layer: Checking WiFi connection, attempt 5.
+[  121.289480] system_layer: Checking WiFi connection, attempt 6.
+[  126.384992] system_layer: Checking WiFi connection, attempt 7.
+[  131.498737] system_layer: Failure configuring WiFi Backhaul
+[  131.504302] system_layer: Max retries reached trying to connect to Band 5g, SSID ***REDACTED***
+[  131.512423] system_layer: Configuring WiFi AP. SSID: Sprint-Pebble
+[  131.518674] system_layer: Configuring WiFi...
+[  163.218677] system_layer: WiFi configured as AP
+[  163.287590] IPv6: ADDRCONF(NETDEV_UP): eth1: link is not ready
+[  166.489544] IPv6: ADDRCONF(NETDEV_CHANGE): eth1: link becomes ready
+[  166.501406] eth1: 1000 Mbps Full Duplex
+[  166.514230] system_layer: eth1: Using DHCP...
+[  179.269404] BACKHAUL_INTERFACE = , interface = eth1, ip = 192.168.51.2
+[  179.275281] Setting hostname to pebble
+[  179.282525] system_layer: eth1 IP set by DHCP
+[  179.284043] eth1: deleting routers
+[  179.294441] eth1: Deleting dns from /etc/resolv.conf
+[  179.304234] eth1: adding dns 192.168.51.1
+[  179.387627] system_layer: Started PTP client
+[  179.433644] system_layer: [OAM] Subscribed to event: layer_not_running
+[  179.441245] system_layer: System layer started
+[  179.446706] system_layer: Creating Sentinel Mark /tmp/watchdog_alive
+[  179.977949] ftrm started
+[  180.019482] locmgr started
+[  180.062380] nl started
+[  180.104295] nlSyncApp started
+[  180.258944] Waiting for NSS driver...
+[  180.268838] syncmgr started using GNSS as primary source
+Accepting OAM request from command line...
+RecordID: 0x15010005
+RequestType: Set
+RequestOpType: Update
+RequestData:
+<?xml version="1.0"?>
+<record>
+  <key name="subsystem" value="LTE_L1"/>
+  <field name="logToFile" value="false"/>
+</record>
+Result: Success
+Apply Action: no-action-required
+
+Accepting OAM request from command line...
+RecordID: 0x15010005
+RequestType: Set
+RequestOpType: Update
+RequestData:
+<?xml version="1.0"?>
+<record>
+  <key name="subsystem" value="COMBINED"/>
+  <field name="logFileCount" value="2"/>
+</record>
+Result: Success
+Apply Action: no-action-required
+
+[  182.468692] Cleaning residual values on configuration database
+[  183.028910] upnp started
+[  183.965494] Waiting for GPS synchronization...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    26    0     0  100    26      0   9454 --:--:-- --:--:-- --:--:-- 13000
+
+
+
+
+
+
+^Nle[ 1683.854567] WARNING: GPS synchronization failed!
+[ 1689.117649] system_layer: NTP synchronization with server pool.ntp.org failed
+{"cause": "NTP Synchronization failed"}[ 1689.666841] Regenerating vendor key.der
+writing RSA key
+00[APP] Encrypted key written to /tmp/key.bin
+00[APP] /mnt/flash/persist/root/.vendor/private/key.der successfully encrypted!
+00[APP] Key from /tmp/key.bin successfully provisioned!
+Certificate will not expire
+Certificate will not expire
+[ 1689.877717] Main SeGW FQDN set to segw-sc-global.spcsdns.net
+[ 1689.882616] Generating connection conf: 192.168.51.2 ==> segw-sc-global.spcsdns.net
+cp: can't stat '/mnt/flash/persist/root/.vendor/cacerts//*': No such file or directory
+Stopping strongSwan IPsec...
+Starting strongSwan 5.3.5 IPsec [starter]...
+modprobe: module ah4 not found in modules.dep
+modprobe: module esp4 not found in modules.dep
+modprobe: module ipcomp not found in modules.dep
+modprobe: module xfrm4_tunnel not found in modules.dep
+modprobe: module xfrm_user not found in modules.dep
+Waiting for ipsec... #Repeats a whole bunch of times
+Waiting for ipsec...
+[ 1814.910621] Restarting system.
+[ 1814.912666] Going down for restart now
+[ 1814.916633] Failed to disable secure wdog debug: -4
+[ 1814.921378] Calling SCM to disable SPMI PMIC arbiter
+</pre>
+and then it reboots to the bootloader.
+</p>
