@@ -1,0 +1,66 @@
+Title:Low Latency Video - Image Signal Processor
+Author:rsaxvc
+CreatedDateTime:2021-08-17T00:47:23
+ModifiedDateTime:2021-08-17T00:47:23
+Tag:ImageSignalProcessor
+Tag:VideoInputPort
+Tag:Video
+---
+
+<p>
+Once our video is digitized at the image sensor, the next stop is the input port(sometimes called Video Input Port or VIP) to the Image Signal Processor, or ISP. Both
+the VIP and ISP are often integrated components in a larger chip, as is the case for Raspberry Pi processors. The ISP's role
+is to convert the subpixels(often in Bayer RGGB) into a much more common format like YUV or RGB for each spatial sample, compute statistics
+for the current frame, as well as applying a number of other corrections and tunings(list represents an example ISP
+from "Architectural Analysis of a Baseline ISP Pipeline" by Hyun Sang Park):
+</p>
+
+<ul>
+<li>dead pixel concealment - usually copy an adjacent pixels over the dead or interpolate</li>
+<li>black level compensation - rescale values so the darkest level from sensor is now black or otherwise known(usually from a few optically blocked pixels)</li>
+<li>lens shading correction - apply a per-pixel scaling to even the sample level to correct for lens vignetting or angular sensitivity of image sensor</li>
+<li>denoising - often applying a convolutional filter</li>
+<li>auto white balancing(AWB) gain control - scale each channel by separate gain</li>
+<li>color filter array (CFA) interpolation - resample Bayer RGGB into RGB</li>
+<li>gamma correction - per pixel straightening or readjusting of response curve from camera format usually to sRGB gamma near 2.2</li>
+<li>color correction - fine adjustment per pixel</li>
+<li>colorspace conversion - RGB->YUV</li>
+<li>luma channel filtering / more denoising - often another convolution filter, but more sensible in YUV orientation</li>
+<li>edge & contrast Enhancement(digital sharpening) - often another convolution filter</li>
+</ul>
+
+<p>
+Notably, most of the adjustments made here are calculated using statistics or factors generated from previous frames - only a few
+utilize information from neighboring pixels, and even then a 7x7 convolution uses only the current row, 7 pixels from each of 3 previous rows,
+and 7 pixels from each of 3 future rows - this means the ISP can, and probably should
+</p>
+
+<h2>Common Pitfalls - VIP to ISP Integration</h2>
+<p>
+The VIP is often either tightly integrated into the ISP, or implemented as a simple DMA engine that reads pixels from the camera, buffers
+as needed, and writes into RAM. For either case, how often should the VIP trigger processing of the rest of the ISP?
+If the VIP waits until the frame is completely acquired before signalling for ISP processing to begin, latency of nearly 1 cameraFrameTransmissionTime
+is added to the oldest pixel from the camera, with an average of 0.5 cameraFrameTransmissionTimes. For 60FPS video, this is 8.3ms average and 16.7ms max.
+</p>
+
+<p>
+Another approach is to signal the ISP each time a line or group of lines is ready, forward the raw pixels into the ISP, or integrate
+the VIP into the ISP, and perform all operations there, which allows ISP processing with much lower latency.
+</p>
+
+<h2>Common Pitfalls - ISP to Codec Integration</h2>
+<p>
+On the output side of the ISP, we have a similar latency problem to the input side. If the next stage (encoder or CPU) is signalled only after each frame
+is fully processed by the ISP, again the first pixel sent from the camera has waited under the ISP's control for as long as the ISP takes to compute
+a frame. If camera framerate and resolution utilize near the maximum ISP ability, this takes almost another frame time to compute.
+</p><p>
+Again, the solution is to signal the encoder more often perhaps at every macroblock-row boundary of 16 pixel height, so that the encoder does
+not need to wait in the same way.
+</p>
+
+<h2>Common Pitfalls - userspace API</h2>
+<p>
+The ISP driver usually presents an API to programs. Examples of this like V4L2 or UWP usually allow programs to block until a video frame is ready,
+then read or access it. This creates the same issue we can run into on the input to the VIP - frames are temporally long objects. Userspace APIs
+like V4L2 and UWP place a restriction of a minimum of 1 frame of buffering in this way.
+</p>
