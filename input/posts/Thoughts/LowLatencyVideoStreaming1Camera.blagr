@@ -1,7 +1,7 @@
 Title:Low Latency Video - Cameras
 Author:rsaxvc
-CreatedDateTime:2021-08-15T00:47:22
-ModifiedDateTime:2021-08-15T00:47:22
+CreatedDateTime:2021-08-16T00:47:22
+ModifiedDateTime:2021-10-31T00:47:22
 Tag:H264
 Tag:NTSC
 Tag:Video
@@ -27,4 +27,8 @@ sensor configuration, we cannot stream pixels faster than the framerate - as soo
 start streaming out the first pixel of the next frame. This creates rolling shutter artifacts due to the time delay in reading the pixels at
 different locations in the sensor. This isn't a direct cause of latency since each pixel is still only at most exposureTime old, but can be reduced
 by shortening the number of pixels sent or using a faster or wider datalink.
+
+</p><p>
+We will want as fast a data link as reasonably possible. For OpenHD on RaspberryPi, this presents a bottleneck as most Raspberry Pi boards connect only
+2 MIPI CSI lanes, while most of the processors used support 4 lanes.
 </p>
