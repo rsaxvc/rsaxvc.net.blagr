@@ -32,7 +32,7 @@ from "Architectural Analysis of a Baseline ISP Pipeline" by Hyun Sang Park):
 <p>
 Notably, most of the adjustments made here are calculated using statistics or factors generated from previous frames - only a few
 utilize information from neighboring pixels, and even then a 7x7 convolution uses only the current row, 7 pixels from each of 3 previous rows,
-and 7 pixels from each of 3 future rows - this means the ISP can, and probably should
+and 7 pixels from each of 3 future rows - this means the ISP can, and probably should start processing either as pixels come in or in thin strips.
 </p>
 
 <h2>Common Pitfalls - VIP to ISP Integration</h2>
@@ -60,7 +60,8 @@ not need to wait in the same way.
 
 <h2>Common Pitfalls - userspace API</h2>
 <p>
-The ISP driver usually presents an API to programs. Examples of this like V4L2 or UWP usually allow programs to block until a video frame is ready,
+If we don't connect the ISP directly to the encoder, the ISP driver usually instead presents an API to programs.
+Examples of this like V4L2 or UWP usually allow programs to block until a video frame is ready,
 then read or access it. This creates the same issue we can run into on the input to the VIP - frames are temporally long objects. Userspace APIs
 like V4L2 and UWP place a restriction of a minimum of 1 frame of buffering in this way.
 </p>
