@@ -1,0 +1,65 @@
+Title:Low Latency Video - Encoder
+Author:rsaxvc
+CreatedDateTime:2021-08-18T00:47:24
+ModifiedDateTime:2021-08-18T00:47:24
+Tag:ImageSignalProcessor
+Tag:H264
+Tag:Video
+---
+
+<p>
+Once preprocessed digital pixels come in from the ISP, we need to compress and encode them for digital transmission. We'll use the h264 format for discussion.
+</p>
+
+<h2>Compression Frame Types</h2>
+<p>
+Normally, video streams are encoded with repeating patterns of compression, using <a href="https://en.wikipedia.org/wiki/Video_compression_picture_types">different picture types</a>
+in a pattern called a <a href="https://en.wikipedia.org/wiki/Group_of_pictures">group of pictures</a>, or GOP. Namely,
+</p>
+
+<ul>
+<li>I-frames, or keyframes, are standalone images and do not reference earlier or later images.</li>
+<li>P-frames reference earlier frames and represent encoding of the current frame using changes from a (sometimes multiple) previous frames, and usually compress better than I-frames.</li>
+<li>B-frames can reference earlier and later frames, and usually compress better than P-frames and much better than I-frames.</li>
+</ul>
+
+<p>
+When there is no latency requirement, often h264 GOPs will most frames will consist of one I frame, a few P frames, and mostly B frames for best compression. One example GOP structure
+might be IBBBBPBBBBPBBBBI. But, for low-latency compression we face some trade-offs.
+</p>
+
+<h2>No B-Frames here</h2>
+<p>
+Since a B-Frame relies on frames acquired after it for compression, it cannot be compressed immediately. If a B-frame can only look forward and back 1 frame, 1 frame of lag is added.
+If a B-frame can look back and forward up to 4 frames, it's 4 frames of lag added. For streaming this tends to also create uneven processing bottlenecks - for our example of IBBBBPBBBBPBBBBI
+and an encoder operating at 80% throughput, compression of the first 4 B frames must wait until the data is ready for the first P frame, so an input lag of 4 frames just to start
+plus another .8 frames of processing time for each, adding more lag.
+</p><p>
+If we can accept lower compression, we should use only P frames, which suffer from neither of these effects.
+</p>
+
+<h2>Plan for packet loss</h2>
+Another challenge with low latency is error recovery. This can be handled at the wirless link layer, but we can make some choices to make it easier for the encoder.
+H264 supports two different Network Abstraction Layer(NAL) types, stream and packet. Steam is a good fit for sending over TCP, but in the event of a lost packet, should
+we recover and resend? Usually not - it's easier to send another frame soon and leave a little corruption on screen, so the packet-transport NAL format is preferred, since
+we can align NAL units into UDP or other frames. Often, the encoder has some control max NAL size as well.
+
+<h2>I/P frame size imbalance</h2>
+<p>
+Since I frames are full standalone images, they're usually much larger than their neighboring P frames. As long as our output wireless link is fast enough,
+this may not be an issue, but we'll see later that keeping the average bandwidth even is still useful for latency.
+</p><p>
+One solution for this is to split up each frame into <a href="https://en.wikipedia.org/wiki/Flexible_Macroblock_Ordering">slices of macroblocks smaller than a whole frame</a>, which
+can be encoded mostly separately. Alternatively, we can encode each frame using a mix of I and P macroblocks, but slicing can provide error resilience benefits as well.
+
+<h2>Encoder frame latency</h2>
+<p>Assuming our encoder is operating at 80% throughput, and 30FPS framerate, it takes about 27ms to encode each frame. Raspberry Pi's encoder is pipelined so it takes around 40ms to encode a 1080p30
+frame, but the stages of encoding are pipelined such that no piece of hardware is in use more than 1/30th of a second. This means Rasperry Pi's encoder must be fed without waiting for the previous
+frame to complete.
+</p><p>
+Some encoders will emit NALs before the entire frame is processed,
+which is useful to begin wireless transmission sooner, but slices
+enable ensuring that the NALs can be decoded separately as soon as the right NALs arrive at the decoder for display too.
+</p><p>
+It's the same game as we saw with the ISP - processing needs to start early and emit as soon as the next stage has a meaningful amount of work ready for the next stage.
+</p>
