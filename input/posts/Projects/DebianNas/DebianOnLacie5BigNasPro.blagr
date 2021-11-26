@@ -1,0 +1,69 @@
+Title:Debian Bullseye + ZFS on Lacie 5Big NAS Pro
+Author:rsaxvc
+CreatedDateTime:2021-11-26T01:08:32
+ModifiedDateTime:2021-11-26T01:34:32
+Tag:Lacie
+Tag:5big
+Tag:NAS
+Tag:Debian
+---
+I've added a SanDisk Ultra Fit USB disk to my 5Big NAS Pro for the purposes of setting
+up Debian with ZFS as a NAS. TrueNAS is another option, but suggests a minimum of 16GB
+of RAM, while the processor in the Lacie 5Big NAS Pro is limited to 4GB. ZFS does work better
+with more available memory, but I don't plan to use deduplication, and only would like
+to sustain a 1gbps ethernet link.
+
+<h2>System Configuration</h2>
+<p>5Big NAS Pro, unlike Lacie's earlier, ARM-based systems, has an Intel Atom processor, DDR3
+SO-DIMM RAM, and a traditional BIOS accessible with a keyboard and VGA monitor. For my system,
+I added an internal USB stick for the OS, but this is not required - you could also use
+a SATA disk, though I wanted to reserve all of those for storage. For now you'll need to set the
+BIOS to boot from an external USB stick over any SATA or internal USB disks.</p>
+
+<h2>Base Installation</h2>
+<p>I used the ISO from here: https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/current/amd64/iso-cd/
+and then wrote it to a USB thumbdrive, inserted it to the NAS, booted and installed. Notably, though the BIOS appears to support EFI, I couldn't get it to boot Debian, and so re-installed with GRUB and no EFI partition.</p>
+
+<h2>Apt Configuration</h2>
+<p>Add or update the following entries to /etc/apt/sources.list
+<pre>
+    Add backports: deb http://deb.debian.org/debian/ bullseye-backports main contrib non-free
+    Add contrib non-free to: deb http://deb.debian.org/debian/ bullseye main contrib non-free
+</pre>
+ZFS is in bullseye-backports and we need bulleye's contrib and non-free components to update the
+CPU microcode. Once done, run 'apt update'.</p>
+
+<h2>Additional Packages</h2>
+<p>You may find the additional packages useful</p>
+<pre>
+    sudo
+    openssh-server #remote access
+    htop #better system monitor
+    nload #network monitor
+    fatrace #watch for unexpected disk accesses
+    powertop #power monitoring and configuration
+    intel-microcode #ZFS guide suggests running up to date microcode
+    linux-headers-amd64 #will be needed for installing ZFS
+    hdparm #used to set spindown for power savings
+    samba #used for windows file sharing
+    nfs-kernel-server #used for UNIX-like file sharing
+</pre>
+
+<p>Debian recommended installing ZFS by specifying the target release like so:</p>
+<pre>apt install -t bullseye-backports zfsutils-linux</pre>
+
+<h2>Configuring Spindown</h2>
+<p>Edit /etc/hdparm.conf and uncomment or adjust(it means N * 5 seconds):</p>
+<pre>spindown_time = 24</pre>
+
+
+<h2>Configure Swappiness</h2>
+<p>Because I placed a swap partition on a USB drive, I lowered the swappiness from default
+to 10. To do so, add a line(or file) to /etc/sysctl.d/local.conf with <pre>vm.swappiness = 10</pre></p>
+
+<h2>Setting up ZFS</h2>
+At this point, pick up at <a>https://wiki.debian.org/ZFS#Creating_the_Pool</a> and continue there.
+
+<h2>Misc Powersaving Tasks</h2>
+Once installed, powertop can provide guidance on power tuning. If disks support it,
+ALPM can save some power as well. fatrace can help identify any periodic disk accesses as well.
