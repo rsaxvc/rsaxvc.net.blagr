@@ -47,15 +47,21 @@ CPU microcode. Once done, run 'apt update'.</p>
     hdparm #used to set spindown for power savings
     samba #used for windows file sharing
     nfs-kernel-server #used for UNIX-like file sharing
+    i2c-tools #needed for scanning the motherboard
 </pre>
 
 <p>Debian recommended installing ZFS by specifying the target release like so:</p>
 <pre>apt install -t bullseye-backports zfsutils-linux</pre>
 
 <h2>Configuring Spindown</h2>
+<p>Note, this is a point of contention among many, and it is easy to end up
+with a system where your disks spin up and down too often. Keeping the disks
+up limits latency and wear and tear, but does cost power. In my case, the NAS
+lives in a small office with poor ventilation, and is not accessed often, so
+I enabled spindown</p>
+
 <p>Edit /etc/hdparm.conf and uncomment or adjust(it means N * 5 seconds):</p>
 <pre>spindown_time = 24</pre>
-
 
 <h2>Configure Swappiness</h2>
 <p>Because I placed a swap partition on a USB drive, I lowered the swappiness from default
@@ -67,3 +73,10 @@ At this point, pick up at <a>https://wiki.debian.org/ZFS#Creating_the_Pool</a> a
 <h2>Misc Powersaving Tasks</h2>
 Once installed, powertop can provide guidance on power tuning. If disks support it,
 ALPM can save some power as well. fatrace can help identify any periodic disk accesses as well.
+
+<h2>zfs-auto-snapshot</h2>
+The Debian package zfs-auto-snapshot will set up cron jobs to automatically create
+snapshots periodically. Note that if you enabled spindown, snapshots will spin up
+the disks. Specifically /etc/cron.d/zfs-auto-snapshot will snapshot every 15 minutes,
+and may need to be removed. Snapshots are pretty cheap in ZFS, but I kept only the weekly
+and monthly, as this is a low-write device.
