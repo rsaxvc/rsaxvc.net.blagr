@@ -402,7 +402,8 @@ Android Bootloader - UART_DM Initialized!!!
 [    5.216901] android_usb gadget: android_usb ready
 [    5.221355] /home/user/jenkins/workspace/QualcommBspArtifact/build_90xx/LINUX/opensource/kernel/drivers/rtc/hctosys.c: unable to open rtc device (rtc0)
 [    5.234750] msm_thermal:interrupt_mode_init Interrupt mode init
-[    5.241137] clock_late_init: Removing enables held for handed-off cloÿ[    5.248286] Freeing unused kernel memory: 212K (c0734000 - c0769000)
+[    5.241137] clock_late_init: Removing enables held for handed-off clo...#lost UART synchronization
+[    5.248286] Freeing unused kernel memory: 212K (c0734000 - c0769000)
 starting pid 218, tty '': '/etc/init.d/rcS'
 rcS:::executing /etc/init.d/rcS script
 rcS:::mounting filesystems
