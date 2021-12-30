@@ -1,0 +1,66 @@
+Title:TRS to XLR Adapter Frequency Response
+Author:rsaxvc
+CreatedDateTime:2021-12-30T02:10:52
+Tag:XLR
+Tag:audio
+Tag:microphone
+---
+
+<p>
+I've got a couple TRS microphone to phantom power XLR adapters, one Rode VXLR+
+and Move F-XLR Pro. The Rode has a better housing and interoperability
+with my equipment, so it's already my favorite, but I was curious about their
+frequency responses and if there were any band limits. 
+</p>
+
+<h2>Test Setup</h2>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51786729857/in/dateposted-public/" title="sweep_setup"><img src="https://live.staticflickr.com/65535/51786729857_0ca239c153_z.jpg" width="640" height="506" alt="sweep_setup"></a>
+<ol>
+	<li>Rigol DG1022 DDS waveform generator emitting 100mVPP sine waves, 50Ohm source</li>
+	<li>6uF capacitor, 1kOhm resistor in series</li>
+	<li>TRRS pigtail, select leads according to TRS/XLR adapter under test</li>
+	<li>Tascam DR-44WL audio recorder in 96KHz 24bit WAV mode, using first XLR input</li>
+	<li>Step through each frequency, dwelling several seconds</li>
+</ol>
+
+<h2>Analysis</h2>
+<p>
+For each tone, I selected the relevant segment in Audacity's spectrogram view:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51787718293/in/dateposted-public/" title="audacity_spectrogram"><img src="https://live.staticflickr.com/65535/51787718293_c63c591052_z.jpg" width="594" height="153" alt="audacity_spectrogram"></a>
+</p><p>
+Once a tone is selected, I used analysis->plot spectrum to bring up an FFT of
+only the selected interval. I used a Hann window and 65536 points, though this
+image shows a 4096 point, as the 65536 point FFT pixels are smaller than display
+pixels and become hard to see.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51788099729/in/dateposted-public/" title="frequency_analysis"><img src="https://live.staticflickr.com/65535/51788099729_fa73cc6bc3_z.jpg" width="640" height="182" alt="frequency_analysis"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Then I selected the peak frequency and amplitude and saved to a spreadsheet.
+</p><p>
+Because of the DDS generator, I did not try to measure SNR. SNR through these adapters is interesting, as they use zener diodes to conver the 48V phantom power to 3-5v microphone power, but in doing so, emit wideband noise or hiss, and the selection of zener diode becomes quite important. <a href="https://youtu.be/2xUNmTzq8i0?t=222">Kamil's tech tips found the Movo to be around 7dB noisier than the Rode</a>. I might look at noise floor separately later.
+</p>
+
+<h2>Results</h2>
+<p>
+The Rode and Movo adapters have eerily similar response curves. It turns out that they are
+largely the same design with a slightly different wiring, so this actually makes sense. <a href="https://www.zachpoff.com/resources/testing-xlr-adapters-with-plug-in-power/">Zach Poff has an explanation and reverse engineered schematic here</a>.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51788316025/in/dateposted-public/" title="frequency_response_rode_movo"><img src="https://live.staticflickr.com/65535/51788316025_4a88f3d90a_c.jpg" width="800" height="362" alt="frequency_response_rode_movo"></a>
+</p><p>
+The low end is fine for speech and the high end actually extends a bit past nyquist(48KHz here)
+and aliases back in the spectrogram - I'm not sure if the adapters are limiting it or
+an anti-aliasing filter inside the Tascam recorder. Make no mistake, this roll-off is
+necessary and important, but if I were making my own adapter, it might make sense to
+move the cut-off even lower
+</p>
+
+<h2>Error Analysis</h2>
+<ul>
+	<li>The AC coupling of my signal source has an implicit high-pass filter effect, and it's quite possible the high-pass filter is limiting the low-end response. I can confirm some degree of this with my oscilloscope showing voltage across the capacitor.</li>
+	<li>My signal generator is of the DDS type, which shows odd, but quiet noises. These were on differing frequencies, so I was able separate them spectrally, so I don't think this should impact things much.</li>
+	<li>These results likely aren't directly comparable to anyone else's, but JEITA CP-2150 isn't publicly available.</li>
+	<li>There's a bunch of other electronics on my desk, and my test wasn't shielded.</li>
+	<li>The flatness of the signal generator is 0.1dB under 100kHz, should be fine.</li>
+</ul>
+	
