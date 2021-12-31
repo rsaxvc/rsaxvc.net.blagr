@@ -1,0 +1,56 @@
+Title:TRS to XLR Adapter Noise Floor
+Author:rsaxvc
+CreatedDateTime:2021-12-30T22:10:52
+Tag:XLR
+Tag:audio
+Tag:microphone
+---
+
+<p>
+Today I take a look at the noise floor of my Tascam DR-44WL
+with a couple phantom power XLR to plug-in power TRRS microphone adapters.
+</p>
+
+<h2>Test Setup</h2>
+<p>
+Tascam DR-44WL set away from other electronics and recorded with no adapter, and again with each adapter in XLR port 1 with 48V phantom power.
+No input termination was used. The recorder was set for +15dB gain, the most sensitive setting.
+</p>
+
+<h2>Analysis and Results</h2>
+<p>
+All three recordings were run through a 16k point spectrum analysis in Audacity,
+then each spectrum exported and combined in OpenOffice Calc. This first plot
+has a linear frequency horizontal axis.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51788113172/in/dateposted-public/" title="16kFFT_noise_floor_15dB_boost"><img src="https://live.staticflickr.com/65535/51788113172_5be7742008_z.jpg" width="640" height="219" alt="16kFFT_noise_floor_15dB_boost"></a>
+</p><p>
+The first thing I noticed was a slight peak around 34.5KHz, but I would never hear it, and it's present without the adapters so it's either inside the recorder or around my home.
+Also note that the orange(Rode) and yellow(Movo) curves overlap nearly exactly,
+and are both higher than the blue curve(no adapter).
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51789181203/in/dateposted-public/" title="16kFFT_noise_floor_15dB_boost_logfreq"><img src="https://live.staticflickr.com/65535/51789181203_2551807e22_z.jpg" width="640" height="217" alt="16kFFT_noise_floor_15dB_boost_logfreq"></a>
+</p><p>
+If we rescale the horizontal axis with a log scale, we can see the effect of the
+added noise of the adapters at 20Hz can be 20dB worse than without one,
+but the difference rolls off as we go up in frequency. Really though, these are
+likely to be combined with a low-cut filter for voice recording.
+</p><p>
+<a href="https://www.epanorama.net/circuits/microphone_powering.html#plugin">Tomi Engdahl has a good write-up on plug-in-power and a few different designs for how these adapters work</a>,
+if you scroll to "Balanced electret microphone circuit" it is quite similar to what Zach Poff found.
+</p><p>
+Initially, I was concerned these adapters were going to add a lot of wideband noise,
+as that's what Zener diodes emit. However, there's a little more going on here.
+The actual impact to noise floor is both lower than I had suspected, but still a little
+disappointing that it reaches up into the voice band.
+</p><p>
+First, the tantalum capacitor in parallel with the Zener diode does a lot to
+filter out noise. The choice of tantalum here may be important, as electrolytic
+capacitors tend to have higher ESR than tantalum, and more ESR would limit
+ability to filter noise here.
+</p><p>
+Second, the Zener diode is powered from the XLR audio+ and audio- lines through a
+pair of resistors. Because XLR is differential, and similar amounts of Zener noise
+should flow back through both resistors, most of the Zener noise seen through the
+XLR should be common-mode and thus easy to reject.
+</p>

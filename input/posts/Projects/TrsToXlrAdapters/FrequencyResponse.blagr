@@ -38,7 +38,7 @@ pixels and become hard to see.
 </p><p>
 Then I selected the peak frequency and amplitude and saved to a spreadsheet.
 </p><p>
-Because of the DDS generator, I did not try to measure SNR. SNR through these adapters is interesting, as they use zener diodes to conver the 48V phantom power to 3-5v microphone power, but in doing so, emit wideband noise or hiss, and the selection of zener diode becomes quite important. <a href="https://youtu.be/2xUNmTzq8i0?t=222">Kamil's tech tips found the Movo to be around 7dB noisier than the Rode</a>. I might look at noise floor separately later.
+Because of the DDS generator, I did not try to measure SNR. SNR through these adapters is interesting, as they use a Zener diode and resistors to conver the 48V phantom power to 3-5v microphone power, but in doing so, emit some  noise or hiss, and the selection of Zener diode becomes quite important. <a href="https://youtu.be/2xUNmTzq8i0?t=222">Kamil's tech tips found the Movo to be around 7dB noisier than the Rode</a>. I might look at noise floor separately later.
 </p>
 
 <h2>Results</h2>
