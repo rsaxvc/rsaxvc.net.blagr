@@ -1,0 +1,133 @@
+Title:Automatic Video Latency Measurement, Part 1
+Author:rsaxvc
+CreatedDateTime:2022-03-22T10:44:54
+ModifiedDateTime:2022-03-22T10:44:54
+Tag:Latency
+Tag:Video
+Tag:CorrelationCodes
+Tag:Correlation
+Tag:BarkerCodes
+---
+
+<h2>Problem</h2>
+<p>
+I want an automatic method for measuring video latency of a wireless video transmission system.
+As always, I'm willing to spend far more time automating than it would save one person.
+</p><p>
+A common current approach is point the wireless camera at a moving target
+like an analog ticking clock or video of counters or another moving pattern, then
+use an additional camera to record both the wireless video link display along with the 
+reference target. One of my favorite targets was a chain of indicators on lego gears
+driven at high speed, each indicator gear reducing the ratio for the next so it had
+an enormous repeatition interval.
+</p>
+
+<h2>Overall system idea</h2>
+<p>
+If we can run some code on the video transmission system,
+render some images on its display, and analyze frames coming in,
+we can make the thing measure itself. Once that's measured, we
+can insert another video link if desired to characterize it.
+</p>
+
+<h2>Video Target Design</h2>
+<p>
+To support cameras with auto-exposure and auto-white balance, we need a target
+with a somewhat stable average brightness and a spread of colors for white-balance.
+</p><p>
+After a few tries here's what I use:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51955475296/in/dateposted-public/" title="glBarkerLagCalTarget"><img src="https://live.staticflickr.com/65535/51955475296_3600f3a495_n.jpg" width="320" height="243" alt="glBarkerLagCalTarget"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+The inner red/green/blue/grey squares are fixed while the outer
+corners blink together and edges blink together opposite the corners.
+In this way, there's always plenty of full brightness and darkness
+in every frame, and a little color.
+</p>
+
+<h2>Short intro to Barker Coding</h2>
+<p>
+Barker codes are short binary(in the sense of two discrete values, -1 and 1, not 0 and 1)
+patterns of numbers that have a few useful properties:
+</p><p>
+<ul>
+	<li>The correlation of a Barker code with exactly itself is strong.</li>
+	<li>The correlation of a Barker code with a time-shifted copy of itself is weak.</li>
+	<li>The correlation of a Barker code with most random signals is also weak.</li>
+	<li>The difference between a strong and weak response scales with code length.</li>
+</ul>
+</p><p>
+This means that if we transmit a Barker code by modulating the display by blinking similarly
+to programming a <a href="https://en.wikipedia.org/wiki/Timex_Datalink">Timex Datalink</a>,
+we can measure when an event occurs by sending out a Barker code then listening for
+the same Barker code. This general approach of marking a transmission with a correlation
+code of favorable properties is often used in communications to mark the start
+of a packet or other timing sensitive information.
+</p><p>
+Go here to read more: <a href="https://en.wikipedia.org/wiki/Barker_code">https://en.wikipedia.org/wiki/Barker_code</a>.
+</p>
+
+<h2>Overview</h2>
+<p>
+Here's what it looks like - left side is the output target, right side is the camera preview
+with thin blue alignment rectangles to help you see where to aim it for the corner boxes. Program
+supports automatic measurements and one-shot(default).
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51956063605/in/dateposted-public/" title="glBarkerLag"><img src="https://live.staticflickr.com/65535/51956063605_8f8e4dc1b1.jpg" width="500" height="281" alt="glBarkerLag"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p>
+
+<h2>Initial Results</h2>
+<p>
+Here's a recording of latency over 71 latency measurements from a 60Hz Thinkpad LCD to a 30Hz
+PS3 Eye camera. Variation is within 20ms and an input frame is at most 33ms here. Computing
+at sub-frame offsets in time is the next step for improving this.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51954649582/in/dateposted-public/" title="glBarkerLagPlot"><img src="https://live.staticflickr.com/65535/51954649582_5fa620c246_c.jpg" width="800" height="271" alt="glBarkerLagPlot"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Here it is again in a histogram:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51955950374/in/dateposted-public/" title="glBarkerLagHist"><img src="https://live.staticflickr.com/65535/51955950374_a9fac11815_c.jpg" width="800" height="317" alt="glBarkerLagHist"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p>
+
+<h2>Implementation Challenges and Tradeoffs</h2>
+<h3>Operating System Support</h3>
+<p>Windows has bad OS timing resolution. VSYNC on Linux is hard. I ended up using Linux.</p>
+
+<h3>Video Output</h3>
+<p>
+Video output seemed straightforward except that at first I used OpenCV which doesn't directly
+support VSYNC which is needed to measure output FPS, so I ported the video output to OpenGL,
+then reconfigured my video driver to enable VSYNC, then reconfigured my xserver to enable VSYNC.
+Year of the Linux desktop and all.
+</p>
+
+<h3>Video Input</h3>
+<p>
+Using OpenCV's video stream blocks until a frame is ready, which can often take longer
+than an output frame depending on input and output frame rates, causes the output
+stream to fail to draw each frame - this is important for correctly transmitting a code.
+</p><p>
+The common solution is to use one thread for the camera and one for the display works
+well, though the startup code is complicated as we use camera resolution to decide
+display window resolution, and some of the initialization code on each thread seems
+to cause the other thread to stutter a few frames until we get going - maybe it's Python's GIL?
+</p>
+
+<h3>scan-in/scan-out synchro</h3>
+<p>
+When I first got this working with a USB webcam, each run would have different
+average latency - not wildly different, always within 1 input frame time. I suspect
+this is due to variation in when the camera starts its scanout vs when the display
+starts its scan-in. Also, the camera and LCD VSYNCs are not synchronized, so they
+do tend to drift over time.
+</p>
+
+<h2>Possible Future Improvements</h2>
+<ul>
+	<li>Sub-frame correlation resolution - currently timing is limited to the slowest frametime</li>
+	<li>Live FPS monitoring - currently FPS is computed at startup. If it varies the coding doesn't work well</li>
+	<li>Port to OpenHD?</li>
+	<li>A more complicated coding scheme could encode a serial number into each pattern for identification later. When using a single Barker code, we have to wait for it to arrive or timeout and retransmit</li>
+	<li>Verify any possible off-by-one-frame-time errors. There's a few spots I need to ensure are using the correct start vs end of frame timings.</li>
+</ul>
+
