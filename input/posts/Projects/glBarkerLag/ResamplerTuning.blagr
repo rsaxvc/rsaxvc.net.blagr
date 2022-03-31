@@ -1,0 +1,36 @@
+Title:Latency Measurement, Part 2: Resampler Tuning
+Author:rsaxvc
+CreatedDateTime:2022-03-30T10:44:54
+ModifiedDateTime:2022-03-30T10:44:54
+Tag:Latency
+Tag:Video
+Tag:CorrelationCodes
+Tag:Correlation
+Tag:BarkerCodes
+---
+
+<p>
+One of the challenges with time-aligning correlation codes blinked out by
+a computer monitor and into a camera is that the sample-rates(FPS) are
+usually not the same, and even if close, they're slightly different.
+</p><p>
+On my first pass, my stopwatch started when the frame went out, and stopped
+when the next frame in decreased in correlation strength(also a frame late).
+This limits the timing resolution to 1 input frame time. Adding quadratic
+interpolation to compute the peak correlation strength in between frames
+helped enormously. Adding an anti-aliasing filter when resampling the
+correlation code used at the camera helps too.
+</p><p>
+In the following plot, Lag curve is the old approach, and Lag2 curve
+include parabolic peak interpolation and resampler filter. Lag1 is roughly
+33ms(one input frame time) later/higher than Lag2 because it always picks
+the first decreasing correlation frame, but Lag2 picks a closer point in time.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51972960980/in/dateposted-public/" title="glBarkerLagPlot_LpfParabolic"><img src="https://live.staticflickr.com/65535/51972960980_dbc94fcd8b_z.jpg" width="582" height="331" alt="glBarkerLagPlot_LpfParabolic"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+While there is still a significant offset error in the below graph, the variation
+is down to around 4ms now, which we can see in the following histogram(horizontal
+scale width same as previous post below).
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/51972957660/in/dateposted-public/" title="glBarkerLagHist_LpfParabolic"><img src="https://live.staticflickr.com/65535/51972957660_ecd717c132_z.jpg" width="640" height="282" alt="glBarkerLagHist_LpfParabolic"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p>
