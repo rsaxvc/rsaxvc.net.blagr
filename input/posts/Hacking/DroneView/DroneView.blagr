@@ -62,7 +62,13 @@ with this camera module:
 <ul>
 	<li>rtsp://192.168.234.1/11</li>
 	<li><a data-flickr-embed="true"  href="https://www.flickr.com/photos/40925843@N03/31112312314/in/dateposted-public/" title="Screenshot at 2016-12-28 23-29-37"><img src="https://c3.staticflickr.com/1/665/31112312314_83d704aa07.jpg" width="500" height="277" alt="Screenshot at 2016-12-28 23-29-37"></a></li>
-	<li>This is my bedroom, as seen by my drone sitting on my bed. The bed is green due to the green navigation LEDs on the drone. In the center of the frame are three plants I am watching for a friend.</li>
+	<li>This is my bedroom, as seen by my drone sitting on my bed. The bed is green due to the green navigation LEDs on the drone. In the center of the frame are three plants I am watching for a friend.</li
+    <li>Stream is 720p20. At this resolution vs_server struggles to keep up</li>
+</ul>
+
+<ul>
+	<li>rtsp://192.168.234.1/12</li>
+    <li>Stream is 360p59.94</li>
 </ul>
 
 <h2>Next Steps</h2>
