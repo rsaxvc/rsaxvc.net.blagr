@@ -1,12 +1,13 @@
 Title:Optimized division of uint64_t by a constant on 32-bit microcontrollers
 Author:rsaxvc
 CreatedDateTime:2022-07-21T01:01:01
-ModifiedDateTime:2022-07-21T01:01:01
+ModifiedDateTime:2022-08-03T01:01:01
 Tag:Optimization
 Tag:Division
 Tag:Multiplication
 Tag:ARM
 ---
+<h2>Problem Statement</h2>
 <p>
 Recently, I ran into a bottleneck and my profiler highlighted that
 a large fraction of program time was being spent in __aeabi_uldivmod(),
@@ -27,13 +28,16 @@ struct result __aeabi_uldivmod(u64 numerator, u64 denominator)
 </pre>
 
 <p>
-Internally, __aeabi_uldivmod() is often implemented with either simple
-long division or sometimes long division with a simple speedup from
-a count-leading-zeros instruction, like ARM's CLZ.
+There's several differeny ways to implement __aeabi_uldivmod(), including
+1-bit-at-a-time long division, the same with speedup from a count-leading-zeros
+instrucion like ARM's CLZ, or 32-bit-at-a-time long-division using the udiv
+instruction present on some ARM cores.
 </p>
 
+<h2>A partial solution</h2>
+
 <p>
-Strangely, most of my program's calls to __aeabi_uldivmod() were with a fixed
+But most of my program's calls to __aeabi_uldivmod() were with a fixed
 denominator - this common special-case is often optimized by compilers by
 replacing division with multiplication by the inverse - since we're dealing
 with integers, they actually use multiplication by a scaled inverse, something
@@ -88,8 +92,12 @@ At first I thought this made sense, since 32-bit arm doesn't have a umulh instru
 two 64bit registers and multiplies them together to compute a 128bit result then truncates it.
 But 32bit by 32bit multiplication with 64bit result is relatively quick on 32-bit arm cores,
 and add and subtract instructions can be chained together to do a 128-bit add in only 4 instructions.
-If only I had a umulh function, the aarch64 division trick above could be made to work.
+If only I had a umulh function, the aarch64 division trick above could be made to work...
 </p>
+
+<h2>The hack</h2>
+
+<p>...why not implement one?</p>
 
 <p>
 At first I started with a slightly naive approach to 128-bit addition by adding after each
@@ -158,29 +166,46 @@ return umulh( 0x44b82fa09b5A53ULL, ns64 >> 9 ) >> 11;
 }
 </pre>
 
+<h2>Results</h2>
 <p>
-But, how much faster is it? I timed it on an nRF52,
-with an embedded ARM compiler that generated similar instructions to GCC10's
-build of my umulh and timed it with a GPIO as the test look gave it different values to test.
-Perhaps I should confirm how their __aeabi_uldivmod works to be sure, maybe GCC's isn't so bad...
+I timed it on an nRF52, and it beats all __aeabi_uldivmod implementations I've seen
+so far, though udiv based approachs are quite close.
 </p>
 
 <table border="3">
 	<tr><th>Algorithm\InstructionCache<th>Disabled</th><th>Enabled</th></tr>
-	<tr><td>ns_to_s()/__aeabi_uldivmod</td><td>50.4-64us</td><td>30.8-40.8us</td></tr>
+	<tr><td>ns_to_s()/__aeabi_uldivmod - traditional</td><td>50.4-64us</td><td>30.8-40.8us</td></tr>
+	<tr><td>ns_to_s()/__aeabi_uldivmod - udiv based</td><td>2.64-3.36us</td><td>2.16-4.64us</td></tr>
 	<tr><td>ns_to_s_inv()/umulh</td><td>1.26us</td><td>1.09us</td></tr>
 </table>
 
-<p>This comes roughly to a 25x to 50x runtime improvement, and the reason for that variability
+<p>This comes roughly to a 25x to 50x runtime improvement from where I started. The reason for some of this variability
 is that __aeabi_uldivmod() often takes a different number of cycles based on the values of the inputs.
 When I saw this in the timing with my oscilloscope, I set the oscilloscope to trigger on the start of
-each computation, then average 256x resulting triggers together. Here's the __aeabi_uldivmod approach:
+each computation, then average 256x resulting triggers together.
+
+<h2>Oscilloscope captures</h2>
+
+<p>
+__aeabi_uldivmod common approach:
 </p><p>
 <a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/52232632363/in/dateposted-public/" title="aeabi_uldivmod"><img src="https://live.staticflickr.com/65535/52232632363_7a1f152068.jpg" width="500" height="385" alt="aeabi_uldivmod"></a>
 </p><p>
-And here's the umulh-based approach - averaging is still on, but since the umulh-based approach contains no loops or other data-dependent control-flow the calculation time is far more repeatable when given
-different inputs. Also note this is 20x zoomed in time compared to the above plot:
+Now here's GCC11 for Cortex-M3/M4's udiv-based approach:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/52332305591/in/dateposted-public/" title="aeabi_uldivmod_gcc11"><img src="https://live.staticflickr.com/65535/52332305591_eba4cf5fd4.jpg" width="500" height="391" alt="aeabi_uldivmod_gcc11"></a>
+</p><p>
+And here's my umulh-emulation-based approach - averaging is still on, but since the umulh-based approach contains no loops or other data-dependent control-flow the calculation time is far more repeatable when given
+different inputs. Also note this is 20x zoomed in time compared to the first plot:
 </p><p>
 <a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/52232897174/in/dateposted-public/" title="umulh_div"><img src="https://live.staticflickr.com/65535/52232897174_53a2083f17.jpg" width="500" height="373" alt="umulh_div"></a>
 </p>
 
+<h2>Applicability</h2>
+<p>
+Generally, the umulh-based approach above may apply to any machine with a 32 bit x 32 bit multiply instruction with 64-bit result. This instruction is called umull for ARM cores.
+
+When a 32-bit udiv instruction is available, __aeabi_uldivmod is competitive on: <a href="https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/divide-and-conquer">Cortex-M3, M4, M33, M35P, M55, and newer Cortex-A cores including Cortex-A7, Cortex-A15, Cortex-A53, Cortex-A57</a>.
+
+Cores with umull but without udiv is where the umulh approach really shines: <a href="https://developer.arm.com/documentation/ddi0210/c/Instruction-Cycle-Timings/Multiply-and-multiply-accumulate">ARM7TDMI</a>, ARM9, ARM10, ARM11, Cortex-A8, and Cortex-A9. Possibly also XScale and StrongARM.
+<p>
