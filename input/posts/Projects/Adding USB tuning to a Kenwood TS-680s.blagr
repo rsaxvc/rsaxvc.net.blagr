@@ -1,7 +1,7 @@
 Title:Adding USB tuning support to a Kenwood TS-680s
 Author:rsaxvc
 CreatedDateTime:2013-06-10T22:10:26
-ModifiedDateTime:2013-06-10T22:10:26
+ModifiedDateTime:2022-10-30T22:10:26
 Tag:Kenwood
 Tag:FTDI
 Tag:Circuit
@@ -10,7 +10,7 @@ Tag:Ham Radio
 Tag:USB
 ---
 <div>
-<p>So, a few weeks ago I bought a ham radio. Kenwood made a series of these radios, TS-680, TS-680s, TS-140, and several others during the late 80s and early 90s. They're mostly solid-state with tube-based final amplifiers. However, there are a few niceties missing that are available on current radios. These include the lack of a simple computer-control port.</p>
+<p>So, a few weeks ago I bought a ham radio. Kenwood made a series of these radios, TS-680, TS-680s, TS-140, and several others during the late 80s and early 90s. They're solid-state; however, there are a few niceties missing that are available on current radios. These include the lack of a simple computer-control port.</p>
 
 <p>Kenwood did add a small expansion slot though, that can hold a card called an IF-10C. The IF-10C consists of an 8251 USART configured asynchronously, a clock generator and divider circuit, and some inverters. This must be coupled with an IF-232 device that sits outside the radio and converts the inverted logic back and then level shifts it to normal RS-232 levels. Finally, you need another device - a USB to serial adapter to connect to a legacy-free PC. Lastly, Kenwood doesn't sell the IF-10C any more, and they are around $80 used. I can do better.</p>
 
