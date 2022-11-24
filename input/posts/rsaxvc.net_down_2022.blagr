@@ -1,0 +1,16 @@
+Title:rsaxvc.net maintenance
+Author:rsaxvc
+CreatedDateTime:2022-11-23T11:14:03
+ModifiedDateTime:2022-11-23T11:14:03
+Tag:hosting
+Tag:rsaxvc.net
+---
+<p>
+rsaxvc.net has been hosted by Nalan Nijesh's <a href="https://happybeehost.com/">HappyBee Host</a> since December 2017.
+Outside of one hiccup when my VM's host ran out of disk space, it's been quite reliable, and low priced.
+</p><p>
+Part of what made this cost effective is a container technology called <a href="https://openvz.org/">OpenVZ</a>
+containers.  HappyBee Host is now transitioning their users off OpenVZ to KVM, which they've also supported for some time.
+</p><p>
+Expect this site to go down a bit in the coming weeks.
+</p>
