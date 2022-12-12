@@ -1,0 +1,20 @@
+Title:Neat unit conversion trick
+Author:rsaxvc
+CreatedDateTime:2022-12-11T11:15:03
+ModifiedDateTime:2022-12-11T11:15:03
+Tag:Ham Radio
+---
+<p>
+Amateur radio requires a multiple-choice test for each new grant of operator permissions, each granting a larger amount of spectrum and capabitilies.
+You are allowed a calculator, but it's possible to get by with pen and paper or memorization. 
+One question that comes up on the tests fairly often is conversion between band names and frequency band edges.
+If you've memorized the band-edge frequencies, you're all done.
+But if you haven't, you can rule out most of the possibilities from the answer set with a simple relationship.
+</p><p>
+Though I usually use a unit-aware calculator most days, that's not available on the radio tests.
+One simple math trick I've found I enjoy is expressing relationships in particularly useful units.
+The basic physics relationship we have is wavelength * frequency = speed of light. On the test,
+wavelength is expressed in meters, and frequency in MHz. If we represent speed of light not as 3e8 meters per second,
+but 300e6 meters per second, or 300 megameters per second, we can rearrange our equation without units
+as: wavelength = 300 / frequency or frequency = 300 / wavelength, which feels a little easier to work out.
+</p>
