@@ -6,6 +6,7 @@ Tag:Lacie
 Tag:5big
 Tag:NAS
 Tag:Debian
+Tag:ZFS
 ---
 I've added a SanDisk Ultra Fit USB disk to my 5Big NAS Pro for the purposes of setting
 up Debian with ZFS as a NAS. TrueNAS is another option, but suggests a minimum of 16GB
