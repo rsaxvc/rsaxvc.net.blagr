@@ -1,0 +1,49 @@
+Title:Questionable XT90 Anti-Spark connectors
+Author:rsaxvc
+CreatedDateTime:2023-09-07T11:14:03
+ModifiedDateTime:2023-09-07T11:14:03
+Tag:soldering
+Tag:RC
+Tag:Connectors
+---
+<p>
+When dealing with larger RC batteries, it's sometimes possible for the act off
+connecting a battery to an ESC or other component can exceed the max current
+for components like capacitors. To this end, anti-spark or soft-start circuits
+are used. These need to have two characteristics: limit inrush current, and
+not consume or waste a large amount of power themselves.
+</p><p>
+What I've used before is a small circuit board with a MOSFET and an RC
+circuit that slowly turns on the MOSFET, and soon the MOSFET is
+fully on. Sometimes with capacitor and inductor filtering as well.
+</p><p>
+Recently, I found an 'anti-spark' connector called XT90S. Supposedly it
+has great efficiency while still limiting current with a 5.6 ohm resistor.
+</p><p>
+Internally, this is much like a regular DC connector, except that there is
+an insulating ring and connecting ring with a 5.6ohm resistor. As the connector
+is plugged it first makes contact through the 5.6ohm resistor for current-limited
+charging, and lastly makes contact directly, enabling efficient operation.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53171786258/in/dateposted-public/" title="IMG20230907145919"><img src="https://live.staticflickr.com/65535/53171786258_857631b6c5.jpg" width="500" height="348" alt="IMG20230907145919"/></a>
+</p><p>
+But there is a significant problem with this design: it's accidentally a break-before-make
+connection. Due to the shape of the bullet contacts below, the bullet contacts actually
+disconnect between the 5.6ohm ring contact and final seated contact, leading to an
+intermittent no-current state, followed by a current spike that is likely to cause, you guessed it, a spark.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53170715057/in/dateposted-public/" title="IMG20230907150009"><img src="https://live.staticflickr.com/65535/53170715057_e2610e64b9.jpg" width="500" height="364" alt="IMG20230907150009"/></a>
+</p><p>
+To test for this, I set up the following circuit using a 1-ohm resistor for current sensing, a power supply, and an oscilloscope:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53170667807/in/dateposted-public/" title="IMG20230907142003"><img src="https://live.staticflickr.com/65535/53170667807_103f592397.jpg" width="500" height="322" alt="IMG20230907142003"/></a>
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53171254396/in/dateposted-public/" title="IMG20230907142107"><img src="https://live.staticflickr.com/65535/53171254396_780d1944b3.jpg" width="500" height="462" alt="IMG20230907142107"/></a>
+</p><p>
+I tried several times, but the fastest I could plug the connector in still resulted in a 25millisecond power-cut as the bullet connector glided over the insulator, followed by a large current spike:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53171511354/in/dateposted-public/" title="annotated"><img src="https://live.staticflickr.com/65535/53171511354_077120d1ef.jpg" width="500" height="375" alt="annotated"/></a>
+</p><p>
+I think this general idea is great - it's super simple and bypasses itself so it's even more efficient that a MOSFET.
+If one of the bullet connector fins could be made shorter, it would makes contact with the 5.6ohm resistor ring after the other three fins, but before they disconnect, it could keep the 5.6ohm ring connected until the other fins fully engage at the end.
+</p>
