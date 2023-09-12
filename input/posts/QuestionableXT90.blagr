@@ -7,8 +7,8 @@ Tag:RC
 Tag:Connectors
 ---
 <p>
-When dealing with larger RC batteries, it's sometimes possible for the act off
-connecting a battery to an ESC or other component can exceed the max current
+When dealing with larger RC batteries, it's sometimes possible for the act of
+connecting a battery to an ESC or other component to exceed the max current
 for components like capacitors. To this end, anti-spark or soft-start circuits
 are used. These need to have two characteristics: limit inrush current, and
 not consume or waste a large amount of power themselves.
