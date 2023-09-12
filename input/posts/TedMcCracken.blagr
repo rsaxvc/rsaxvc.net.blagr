@@ -1,0 +1,119 @@
+Title:Stores of the famous Dr McCracken
+Author:rsaxvc
+CreatedDateTime:2023-09-12T00:47:21
+ModifiedDateTime:2023-09-12T00:47:21
+Tag:Rolla
+Tag:UMR
+Tag:MST
+---
+<p>
+Back around 2008, I and a few friends had a computer architecture class
+that would change the course of my degree. There were two sections, and
+we started by designing a simple computer, maybe a 4-bit ALU, from scratch.
+</p><p>
+By scratch, I mean that we started with diodes, resistors, and transistors,
+from that built gates, latches, registers, address decoders, an ALU, memory.
+</p><p>
+The class was difficult, yet highly productive. Eventually, students of the
+two sections that year found each other, and merged our study groups at
+night in the library.
+</p><p>
+Eventually we wrote simple programs for it in machine code, which we would
+submit to him, he would evaluate, explain any errors or inefficiencies,
+and return to us. Up to that class, most of my programming had been on
+UNIX and Linux systems, so it was strange to find myself writing for a
+hypothetical machine that couldn't really be tested. At some point I
+wrote a simple assembler and simulator to help me.
+</p><p>
+But this post isn't about me, it's about a few of the things the teacher,
+Ted McCracken, mentioned about his previous career, during that semester.
+A few of these things, namely that he had survived three airplane wrecks
+and built one of the earliest 3D video cards pushing the limits of
+display resolutions...in the 1980s!
+</p><p>
+Thinking back on my career, I learned the most about system design
+in Dr Ted McCracken's class. One of the most knowledgable teachers in my major I had met,
+but a few of these things seemed maybe a little far fetched or at least
+unusual. But the more I learn, it's all true.
+</p>
+
+<h2>VECTRIX</h2>
+VECTRIX was a manufacturer of video graphics accelerators.
+A great resource on these is <a href="http://bitsavers.org/pdf/vectrix/">bitsavers.org</a>.
+We can find the business registration for <a href="https://bsd.sos.mo.gov/BusinessEntity/BusinessEntityDetail.aspx?ID=308137&page=beSearch">Vectrix of Missouri</a>.
+We do know a few models:
+<ul>
+	<li>VX128 and VX384 - from the users manual we know these had a user programmable 8088 and uPD7220, similar to TI TIGA TMS34010 </li>
+	<li>Pepe - 1024x1024 16 and 4096 color options</li>
+	<li>Presto</li>
+</ul>
+
+Some competitors included:
+<ul>
+	<li><a href="https://en.wikipedia.org/wiki/Orchid_Graphics_Adapter">Orchid</a></li>
+	<li><a href="https://en.wikipedia.org/wiki/Professional_Graphics_Controller>IBM Professional Graphics Controller</a></li>
+	<li>And eventually the <a href="https://en.wikipedia.org/wiki/IBM_8514>IBM 8514</a></li>
+</ul>
+
+Some contemporary IBM CGA modes for reference(which my family had as a child):
+<ul>
+	<li>640x200x1bpp
+	<li>320x200x2bpp
+</ul>
+
+<p>
+One thing that didn't make sense to me, for a time, about some of the VECTRIX units was the framerate and resolution claim.
+</p><p>
+For many display technologies pixels need to be periodically refreshed - this is true of phosphor CRTs, most LCDs, AMOLED and PMOLED
+displays, though with differing decay rates and corresponding minimum refresh rates to limit flicker. When display refresh is driven
+from a framebuffer it's usually known as scanout. It's fairly common to have at least a small amount of dedicated high speed or dual-ported
+video memory for the framebuffer(s), both for performance reasons and because scanout has some realtime requirements that must
+be met. For single-ported memories scanout bandwidth takes away from bandwidth usable for rendering, so today's GPU memory tends
+to be one of the fastests in the system.
+</p><p>
+We can estimate the minimum average memory bandwidth required for scanout like so: number of columns transmitted *
+number of rows transmitted * framerate * framebuffer bits per pixel. And when we do 1024x1024x60Hz*12bit, we
+find that the maximum spec'd VECTRIX Pepe minimum scanout bandwidth is ~95MB/s. An IBM CGA(color graphics array)
+adapter has almost 1MB/s. What gives?
+</p><p>
+That's really an unfair comparison - Pepe was a high end device, so we should compare perhaps with IBM's
+Professional Graphics Controller(PGC) at only 18.5 MB/s. The IBM PC/AT 16-bit ISA bus is only around 8MB/s, and
+a significant limitation if flinging pixels over the bus. The more I learned about embedded displays,
+the more I wondered how this thing could've worked because the framebuffer bandwidth is several times that of the system.
+</p><p>
+The truth is stranger than fiction - both PGC and Pepe supported both a fully remote framebuffer as well as offloading vector
+rendering to the display controller. The IBM PGC supported <a href="https://en.wikipedia.org/wiki/Graphical_Kernel_System">GKS</a> and
+VECTRIX's had its own command set, and a bit-planed framebuffer.
+</p><p>
+The original VECTRIX VX series were external components connected by serial or parallel cable to a PC. The command
+set included instructions for 3D rendering, matrix rotation/translation/scaling, adjusting the synchronization
+between rendering and scanout(BLANK MODE vs FLASH MODE), but also, arbitrary code execution - the U-command allows
+uploader user-code to the VX to memory location 0x100 and jumps to it. The hardware registers are documented in
+the Vectrix Advanced Programming Manual. Eventually VECTRIX would ship their Pepe model, which fit everything
+into a twin-slot AT card, removing the serial port rendering command bottleneck.
+</p><p>
+The key trick in attaining the needed framebuffer bandwidth was bit-planeing. Rather than byte-addressable RAMs,
+usage of single-bit RAMs allowed wiring as many as needed in parallel, so that framebuffer bandwidth scaled
+with the number of bitplanes, which scaled with log2(number of colors). Of course, the IBM PC, XT, and AT
+computers couldn't even reach this bandwidth but didn't need to, as they only needed to upload commands
+to the video system over whatever bus was available. There was a dedicated microprocessor responsible
+for managing the hardware. And, you can even upload your own instruction streams to it, like an early proto-shader.
+</p>
+
+<h2>Third Airplane Wreck</h2>
+<p>
+In order to more efficiently deliver video cards, Ted said they bought an airplane.
+At some point, I think while landing, he misjudged the windsock, leading him to land with a tailwind
+instead of a headwind. After touching down, he realized the airplane wasn't going to stop in time,
+and throttled back up to take off. However, at the end of the landing strip is a berm with a fence,
+topped with a power line. He's not going to make it over the powerlines, so he aims under them.
+This almost works, except that his landing gear catch the fence, pulling up fence posts until
+his airplane slows to a stall and falls into a barn.
+</p><p>
+About the time my friend Doug K became a pilot, he searched through the accident reports
+for small airports around the area we went to school in. Sure enough, he found
+<a href="https://app.ntsb.gov/pdfgenerator/ReportGeneratorFile.ashx?EventID=20001214X41651&AKey=1&RType=HTML&IType=LA">
+the report for this wreck pretty much as described in class</a>,
+registered to <a href="https://bsd.sos.mo.gov/BusinessEntity/BusinessEntityDetail.aspx?page=beSearch&ID=174976">
+Video Systems Engineering</a>.
+</p>
