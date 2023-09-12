@@ -1,0 +1,37 @@
+Title:ZFS Pool upgrade
+Author:rsaxvc
+CreatedDateTime:2023-09-10T01:08:32
+ModifiedDateTime:2023-09-10T01:34:32
+Tag:Lacie
+Tag:5big
+Tag:NAS
+Tag:Debian
+Tag:ZFS
+---
+One of the old 500GB disks in my NAS has begin to throw errors.
+
+<h2>Buy SSDs</h2>
+I picked up 6x used PM863 SSDs from eBay. They came with 90%+ wear leveling remaining, except for one at 85%, which will be my cold spare and backup disk.
+
+<h2>Checksum everything</h2>
+<pre>find /media/ -type f -exec md5sum {} \+ >backup.md5sum 2>backup.failure</pre>
+<pre>cat backup.failure #should be empty</pre>
+
+<h2>zfs-send everything to the cold-spare</h2>
+First, we need a <a href="https://docs.oracle.com/cd/E19253-01/819-5461/ghzwu/index.html">root pool snapshot</a>. In my case:
+<pre>zfs snapshot -r tank@backup</pre>
+Next, we send it to the external SSD that I've mounted at /media/usb, running in screen:
+<pre>zfs send -vRI tank > /media/usb/backup.zfs</pre>
+<p>pro-tip: make sure you're plugged into the USB3 not the USB2 ports :p</p>
+
+<h2>Hardware swap</h2>
+Take out the old array, put the new array into adapters and install.
+
+<h2>recreate new zpool</h2>
+sudo zpool create tank raidz <list of disks here>
+
+<h2>zfs-recv everything from the cold-spare to the pool</h2>
+cat /media/usb/tank@backup | sudo zfs receive tank -F
+
+<h2>verify checksums</h2>
+<pre>md5sum --check backup.md5sum</pre>
