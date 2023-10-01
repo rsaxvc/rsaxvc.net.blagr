@@ -63,11 +63,11 @@ I no longer have access to the original, so I've run this through GCC 13.2.0, -O
 read_timer():
         ldr     r2, .L10 //Load address of hardware register into r2
         ldr     r0, [r2] //load value of timer into r0
-.L8:
+.loop:
         mov     r3, r0
         ldr     r0, [r2] //load next value of timer into r0
         cmp     r3, r0   //compare previous and next value of timer
-        bne     .L8      //if not equal, go to .L8 to read timer again
+        bne     .loop    //if not equal, go to .L8 to read timer again
         bx      lr       //return value in r0
 .L10:
         .word   0x4003D000
@@ -88,9 +88,9 @@ read_timer():
         ldr     r0, [r2] //load value of timer into r0
         mov     r3, r0
         ldr     r0, [r2] //load next value of timer into r0
-.L8:
+.loop:
         cmp     r3, r0   //compare previous and next value of timer
-        bne     .L8      //if not equal, go to .L8 to read timer again
+        bne     .loop    //if not equal, go to .L8 to read timer again
         bx      lr       //return value in r0
 .L10:
         .word   0x4003D000
