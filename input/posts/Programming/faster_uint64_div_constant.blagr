@@ -1,7 +1,7 @@
 Title:Optimized division of uint64_t by a constant on 32-bit microcontrollers
 Author:rsaxvc
 CreatedDateTime:2022-07-21T01:01:01
-ModifiedDateTime:2022-08-03T01:01:01
+ModifiedDateTime:2024-01-27T01:01:01
 Tag:Optimization
 Tag:Division
 Tag:Multiplication
@@ -187,16 +187,16 @@ each computation, then average 256x resulting triggers together.
 <h2>Oscilloscope captures</h2>
 
 <p>
-__aeabi_uldivmod common approach:
+__aeabi_uldivmod common approach: 30.8-40.8 microseconds depending on numerator, or around 2300 machine cycles.
 </p><p>
 <a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/52232632363/in/dateposted-public/" title="aeabi_uldivmod"><img src="https://live.staticflickr.com/65535/52232632363_7a1f152068.jpg" width="500" height="385" alt="aeabi_uldivmod"></a>
 </p><p>
-Now here's GCC11 for Cortex-M3/M4's udiv-based approach:
+Now here's GCC11 for Cortex-M3/M4's udiv-based approach: 2.16-4.64 microseconds depending on numerator, or around 220 machine cycles. Note the below plot is zoomed in 5x from the above plot.
 </p><p>
 <a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/52332305591/in/dateposted-public/" title="aeabi_uldivmod_gcc11"><img src="https://live.staticflickr.com/65535/52332305591_eba4cf5fd4.jpg" width="500" height="391" alt="aeabi_uldivmod_gcc11"></a>
 </p><p>
 And here's my umulh-emulation-based approach - averaging is still on, but since the umulh-based approach contains no loops or other data-dependent control-flow the calculation time is far more repeatable when given
-different inputs. Also note this is 20x zoomed in time compared to the first plot:
+different inputs, always taking 1.09 microseconds or 70 machine cycles. Also note this is 20x zoomed in time compared to the first plot:
 </p><p>
 <a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/52232897174/in/dateposted-public/" title="umulh_div"><img src="https://live.staticflickr.com/65535/52232897174_53a2083f17.jpg" width="500" height="373" alt="umulh_div"></a>
 </p>
