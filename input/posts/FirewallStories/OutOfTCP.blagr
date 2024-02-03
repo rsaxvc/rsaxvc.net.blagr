@@ -1,0 +1,98 @@
+Title:FireWall Stories: Your firewall is out of TCPs!
+Author:rsaxvc
+CreatedDateTime:2024-02-01T02:44:54
+ModifiedDateTime:2024-02-01T02:44:54
+Tag:Firewall
+Tag:Linux
+Tag:TLS
+Tag:HTTPS
+---
+
+<p>
+Back in 2015, I worked in small security group at a medium-sized electronics company.
+Nominally, I was supposed be testing our products. My coworkers managed a small fleet
+of big firewalls, and I thought they were really neat. Nominally Linux but with 10gig
+and sometimes 40gig ethernet, dozens of cores, and weird IRQ steering. Big loud machines,
+a far cry from the embedded systems I usually work on. I'd help them out whenever I could.
+</p><p>
+One day, my coworker AaronV asked if I could make a bash script to take the
+text output of some of the firewall commands and process to make it easier
+to track down a problem one of our internal application server teams was experiencing.
+Between us, we put a quickly one-liner together to scan through all established
+TCP connections and group and count them as he needed. Aaron says, "sure enough,
+there they are".
+</p><p>
+I couldn't resist asking why we were doing this. The affected application was
+responsible for taking data from a queue uploaded from our users, and if the
+user had checked a box to enable 3rd party integration, the application would
+ship it off to the 3rd party for processing. But today was different. The
+3rd party system was timing out, leading to our queue backing up. But why
+was this a firewall issue? The 3rd party said they were having a handful
+of load spikes in their fleet of VMs, but nothing significant, and had
+already scaled up the VM count to accommodate. Load balancing was done
+though DNS round-robin, so our load should be spread wide. And, if our server team
+went around the firewall and made HTTP requests manually, it always worked.
+Seems like it could be a firewall issue. The application team suggested
+we increase the number of TCP connections allocated on the firewall,
+as this had fixed some things before for them.
+</p><p>
+Indeed, the firewall running out of TCP connection tracking allocations
+is such a bad thing that would impact every system going through the it
+so we had plenty of connections allocated, and weren't running low
+on them today.
+</p><p>
+In fact, we didn't see the application team's VMs in our throughput load
+graph at all. But, when we sorted by how many connections were open
+per IP on our side, "sure enough, there they are", right at the top of
+the list we see our application team's servers each using more TCP
+connections than anyone else in the company.
+</p><p>
+A little more bash and we can watch the TCP connections forming live
+for a single one of our application VMs. It seemed around 20k connections
+to a 3rd party server were usually open, then about every five minutes
+around 5k of the connections would close and reopen to a different
+server from the same 3rd party.
+</p><p>
+We asked our team if they were re-using HTTPS connections and they
+assured us they were. But when we plotted data throughput over time
+for a single TCP connection, we saw the user data go out, the response
+come back, then only periodic packets - likely keepalives until the
+connection closed. Our application team confirmed that when
+it was working, the requests and responses were fairly quick,
+nothing as long as we were seeing the connections open for.
+So, why were multiple HTTPS requests not flowing through each
+TCP connection?
+</p><p>
+Recently our application team had their code to OpenGrok, so we
+decided to take a peak. At first everything seemed good,
+creating a Apache Java connection pool, and using HTTP keepalives.
+We were increasing the connections-per-route count because
+it defaults at 2 and I guess we'd like more concurrency?
+</p><p>
+But, something was amiss. We were constructing the pool in
+the code that generated the request, so each connection was
+getting its own pool. So the connections weren't being
+re-used, and both our application and the 3rd party
+server was spending most of their time doing TLS handshakes.
+To make matters worse, the HTTP connection pools weren't
+being destroyed until their connection closed, which
+meant we were progressively tying up per-connection resources
+on the 3rd party web server nutil the connections timed out.
+In general, it went something like this:
+</p><ol>
+	<li>Each thread on our server pulls an item from the upload queue.</li>
+	<li>Create a connection pool for the request, query DNS for the 3rd party service, DNS request cache misses and we get a new IP pointing to one of their VMs.</li>
+	<li>Open a new TLS connection, send the request, server responds, and we keep the connection open using keepalives, just in case we might want it later, for 20 minutes.</li>
+	<li>Our thread pulls another item from the queue</li>
+	<li>Create a connection pool for the request, query DNS for the 3rd party service, DNS cache hits, same IP points to same server</li>
+	<li>goto #3 until the DNS TTL expires</li>
+</ol><p>
+About halfway though the DNS TTL, the 3rd party's VM would start to bog down under load of continuously establishing new TLS connections,
+the third party would see that machine's load spike, and we'd see a bunch of timeouts. Once we knew the issue, our app server team
+was able to rework the HTTP connection pool to be shared among threads, leading to much quicker processing for our customers
+and a reduction in load for everyone.
+</p><p>
+It turns out this is a key configuration in the Apache Java connection pool client - the limit for connections is separate from the limit for connections per host.
+This way the pool can limit itself in the face of DNS TTL caching to try to spread load wider, which would've helped a ton. Of course, this, and connection pooling
+in general requires creating a single pool and letting all the threads utilize it, rather an a pool per HTTP request :P
+</p>
