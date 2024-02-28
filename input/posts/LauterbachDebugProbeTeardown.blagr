@@ -1,0 +1,50 @@
+Title:Lauterbach Teardowns
+Author:rsaxvc
+CreatedDateTime:2024-02-27T01:14:03
+ModifiedDateTime:2024-02-27T01:14:03
+Tag:Lauterbach
+Tag:Debugging
+Tag:
+---
+<p>
+I was curious what was inside the Lauterbach debug tips
+(also called probe heads around here). For the unfamiliar,
+the Lauterbach power-debug system consists of two parts.
+The first part is a universal module that connects to
+a PC over USB or Ethernet, or in the old days parallel.
+The second part adapts the debug-cable port on the module
+to a specific JTAG or SWD target, like 20-pin ARM. I took
+apart two of mine.
+</p>
+
+
+<h2>LA-7742(ARM9)</h2>
+<p>
+I like this one because while Lauterbach generally sticks
+to a Vintage 1990s hardware design, this LA-7742 seems
+even older. If you look closely, the housing says W. Germany.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53556668126/in/album-72177720315108480/" title="IMG_20240227_194107"><img src="https://live.staticflickr.com/65535/53556668126_19d6206cf0.jpg" width="308" height="500" alt="IMG_20240227_194107"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53555818087/in/album-72177720315108480/" title="IMG20240227195122"><img src="https://live.staticflickr.com/65535/53555818087_1d935e5218.jpg" width="500" height="375" alt="IMG20240227195122"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+This one consists of a 24C02 serial flash and a ALVC164245 level translating tri-state buffer.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53555818092/in/album-72177720315108480/" title="IMG_20240227_194128"><img src="https://live.staticflickr.com/65535/53555818092_b21735fa6c.jpg" width="500" height="301" alt="IMG_20240227_194128"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53556668111/in/album-72177720315108480/" title="IMG_20240227_194149"><img src="https://live.staticflickr.com/65535/53556668111_2dc029fcda.jpg" width="500" height="447" alt="IMG_20240227_194149"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p>
+
+<h2>LA-7747(ARM7)</h2>
+<p>
+This one looks like the current debug adapter cables, except with a 20pin IDC socket rather than pigtail.
+even though it is for an older core design than the LA-7742.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53556669406/in/album-72177720315128924/" title="IMG20240227194710"><img src="https://live.staticflickr.com/65535/53556669406_270b22ebd1.jpg" width="500" height="375" alt="IMG20240227194710"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53556669391/in/album-72177720315128924/" title="IMG_20240227_194801"><img src="https://live.staticflickr.com/65535/53556669391_87eca0142c.jpg" width="500" height="375" alt="IMG_20240227_194801"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Inside it appears more complicated, and seems be the same 24C02 serial flash, but instead has MAX4615/6 analog switches, DS90C032 quad differential receivers, and some PACDN006 ESD diode packs.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53555819472/in/album-72177720315128924/" title="IMG20240227194333"><img src="https://live.staticflickr.com/65535/53555819472_8e10bfbf99.jpg" width="500" height="375" alt="IMG20240227194333"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53555819477/in/album-72177720315128924/" title="IMG20240227194225"><img src="https://live.staticflickr.com/65535/53555819477_ed89047732.jpg" width="500" height="375" alt="IMG20240227194225"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53555819367/in/album-72177720315128924/" title="IMG20240227194435"><img src="https://live.staticflickr.com/65535/53555819367_9f7e1305d4.jpg" width="500" height="375" alt="IMG20240227194435"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p>
+
