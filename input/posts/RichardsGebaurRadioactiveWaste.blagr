@@ -1,10 +1,11 @@
 Title:the Richards-Gebaur radioactive waste burial site.
 Author:rsaxvc
 CreatedDateTime:2023-11-24T01:14:03
-ModifiedDateTime:2023-12-22T01:14:03
+ModifiedDateTime:2024-03-07T01:14:03
 Tag:radiation
 Tag:ColdWar
 Tag:Richards-Gebaur
+Tag:FOIA
 ---
 <p>
 In the late 1950s and early 1960s, the US military created a large number of radioactive waste
@@ -34,6 +35,10 @@ General timeline:
 	<li>5 September 1997: "Richards-Gebaur Decommisioning Survey" evaluates the former weapons storage area buildings just south of the radioactive waste dump for use as a city business park. A copy of this can be found in "PHASE I ENVIRONMENTAL SITE ASSESSMENT MARKEY BUSINESS PARK SITE, BELTON, MISSOURI" by Seagull Environmental Technologies, Inc. But the radiological survey stays south of the waste well.</li>
 	<li>21 April 2023: Martin City Telegraph publishes "CONTAMINATION CLEAN UP AT RICHARDS-GEBAUR HAS BEEN A 25-YEAR PROJECT", no mention of radioactive waste site.</li>
 	<li>17 November 2023: Shane Lakin posts about it in local Facebook history group. Coincidentally I get home from surgery and am laid up for several days, and begin reading old records.</li>
+	<li>22 December 2024: This post first published</li>
+	<li>23 December 2023: Filed a FOIA request #2024-01461-F</li>
+	<li>4 March 2024: FOIA response includes documentation of the decomissioning</li>
+	<li>7 March 2024: this post updated</li>
 </ul>
 
 <h2>A note about TO 00-110A-l</h2>
@@ -177,30 +182,18 @@ No mention of following 1972 recommendation for documenting the unremediated sit
 <h2>Lack of mention in "FINAL ENVIRONMENTAL IMPACT STATEMENT DISPOSAL AND REUSE OF RICHARDS-GEBAUR AIR FORCE BASE, MISSOURI", July 1994</h2>
 <p>
 Under section 3.3, HAZARDOUS MATERIALS AND HAZARDOUS WASTE MANAGEMENT, the only mention of radioactive dangers is radon gas.
-The well is no longer present on any maps I have found after this point.
+The well is no longer present on any maps I have found after this point. At this point, I decided to file a FOIA request.
 </p>
 
-<h2>Where is the radioactive waste now?</h2>
+<h2>FOIA response includes "LOW-LEVEL RADIOACTIVE DISPOSAL CELL EXHUMATION, TRANSPORTATION, AND DISPOSAL FORMER RICHARDS-GEBAUR AIR FORCE BASE, March 2024 </h2>
 <p>
-After CH2M in 1983 did not recommend any action, there is a 10-year gap in my records before it disappears from the 1990s maps. It is possible the well was removed and there is no longer a need to monitor it.
+This newly available report explains that the LLRDC was removed, tested, sealed in another steel pipe full of sand, that was welded shut, and it was shipped off for long term storage.
+Removal operations occured September 11 to 17, 1997.
 </p><p>
-I haven't heard back from the Air Force.
-I spoke to folks at Belton City Hall, who pointed me to Port of Kansas City, as the well is on their land.
-They pointed me back to the federal government.
-I was hoping someone would know when it was removed, or that it was being actively managed or planned for remediation, but of those I was able to reach, everyone seemed surprised to learn it was ever there.
-</p><p>
-So far everything I've mentioned comes from government sources or their contractors, and references to the source material are listed below.
-When cycling through the diferent aerial imagery available on Google Earth, there is one thing in that field that doesn't die off in the winter, green up in the spring, doesn't grow, and doesn't move.
-Here is my only conjecture: if it's still out there, this might be the concrete well cap.
-</p><p>
-<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53382249527/in/dateposted-public/" title="CassCoMapOverlay"><img src="https://live.staticflickr.com/65535/53382249527_dfd339d579_b.jpg" width="962" height="638" alt="CassCoMapOverlay"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+Well, that's a relief.
 </p>
 
 <h2>References</h2>
-<p>
-All of these documents come from public or now-public sources, and I've collected them into <a href="https://github.com/rsaxvc/richards-gebaur-maps/">a github project along with a KMZ here</a>.
-</p>
-
 <ol>
 <li>Shane Lakin, Untitled Map, https://www.facebook.com/groups/126159798374/permalink/10160323174818375/a</li>
 <li>"Grandview Airport", https://en.wikipedia.org/wiki/Richards-Gebaur_Memorial_Airport, accessed Dec 5, 2023</li>
@@ -213,6 +206,7 @@ All of these documents come from public or now-public sources, and I've collecte
 <li>Cass County Parcel Viewer, 05-02-03-000-000-001.001, https://cass.missouriassessors.com/parcel.php?pin=05-02-03-000-000-001.001, accessed Nov 2023</li>
 <li>Cass County GIS, https://maps.camavision.com/cassmo, 2020 Imagery Layer, accessed Dec 2023</li>
 <li>Special thanks to https://www.georgeafb.info/radioactive-waste-timeline/, which covers a similar site in California</li>
+<li>Special thanks to Joint Base San Antonio for handling the FOIA request.</li>
 </ol>
 
 <h2>Bonus technical content: Map Alignment Challenges</h2>
