@@ -1,0 +1,86 @@
+Title:ArduPilot: An Unrelated Matter of Time
+Author:rsaxvc
+CreatedDateTime:2024-03-25T11:14:03
+ModifiedDateTime:2024-03-25T11:14:03
+Tag:ArduPilot
+Tag:race-condition
+---
+<p>
+I found another odd timer behaviour in ArduPilot on Linux, when
+monitoring the scheduler using a GPIO. I had hooked up a low-priority thread
+to check in on the autopilot software every second, and if all checks were good,
+set a pin, delay(1ms), clear pin. The only problem was that rarely,
+I would find that the pin wasn't going high, but there were no problems recorded.
+<p></p>
+Historically, delay(N) on Arduino delayed at least N milliseconds.
+Practically, I couldn't find anything in ArduPilot that cared about sub-millisecond
+precision that called delay() - usually the caller wanted a rather long amount
+of time, or it was used for something like throttling logging code. On the Linux
+scheduler backend, there was a rare race-condition when calling delay(N) just at
+the top of millisecond. Unknowingly my test setup was configured to expose
+this discrepancy a couple times per day. Here's the offending code:
+</p><pre>
+void Scheduler::delay(uint16_t ms)
+{
+    if (_stopped_clock_usec) {
+        return;
+    }
+
+    uint64_t start = AP_HAL::millis64();
+
+    //Race condition occurs between previous and next calls to millis64()
+
+    while ((AP_HAL::millis64() - start) < ms) {
+        // this yields the CPU to other apps
+        microsleep(1000);
+        if (in_main_thread() && _min_delay_cb_ms <= ms) {
+            call_delay_cb();
+        }
+    }
+}
+</pre><p>
+Instead of a ~1ms pulse at 1Hz, a few times per day I would see a dropped pulse.
+At first, this appeared as a slight deviation in the frequency, as my frequency counter
+averages pulse-count over measurement period. Until I started looking with an oscilloscope,
+then I noticed that what I was seeing was a runt pulse, where the GPIO was being cleared low
+just as soon as it was being set high. With the frequency counter's low-pass filter enabled,
+these runt pulses were being skipped.
+</p><p>
+The bug was simple once I accepted it was actually happening. When calling delay(1) it is rare, but
+possible to call start = milli64() just on the edge of the next millisecond. When
+this happens, the loop condition degrades into while(((start + 1) - start) < 1){...},
+so the loop exits immediately without calling microsleep() to delay execution.
+</p><p>
+The fix consists of a few parts. First the exit condition is based on the starting
+timestamp +1 so we cannot return early. The internal resolution is also increased
+from milliseconds to microseconds, so that the amount of time lost to round-off
+is reduced. The final calls to microsleep() is now based on how much time is actually
+needed relative to the starting timestamp, so most drift is accounted except for the last
+call to microsleep(). The new delay(N):
+</p><pre>
+void Scheduler::delay(uint16_t ms)
+{
+    if (_stopped_clock_usec) {
+        return;
+    }
+
+    if (ms == 0) {
+        return;
+    }
+
+    uint64_t now = AP_HAL::micros64();
+    uint64_t end = now + 1000UL * ms + 1U;
+    do {
+        // this yields the CPU to other apps
+        microsleep(MIN(1000UL, end-now));
+        if (in_main_thread() && _min_delay_cb_ms <= ms) {
+            call_delay_cb();
+        }
+        now = AP_HAL::micros64();
+    } while (now < end);
+}
+</pre><p>
+I measured the impact of this on an otherwise idle CPU core on my Raspberry Pi 4, calling delay(100ms) after usleep(rand()%1000) to ensure the test wasn't getting locked to milliseconds. I used delay(100) because delay(1) 1/20000 times would not have made for as interesting of a graph, though the orignal bimodal distribution below is the same cause:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53612031174/in/dateposted-public/" title="ArduPilotOnLinux delay()"><img src="https://live.staticflickr.com/65535/53612031174_bc7bc1222e_b.jpg" width="1024" height="510" alt="ArduPilotOnLinux delay()"/></a>
+</p>
