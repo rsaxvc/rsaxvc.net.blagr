@@ -1,0 +1,71 @@
+Title:Disassembly of Sherwood Wisdom 2 Dive Computer
+Author:rsaxvc
+CreatedDateTime:2024-04-21T11:14:03
+ModifiedDateTime:2024-04-21T11:14:03
+Tag:SCUBA
+Tag:MSP430
+---
+<p>
+At the spring dive swap meet I picked up a broken
+Sherwood Wisdom 2 dive computer, just to take apart.
+I was mostly curious about the mechanical assembly.
+</p><p>
+A note to anyone considering repairing their dive computer:
+you should have a manufacturer-trained service center repair
+it. I bought this planning to destroy it. Here it is, roughly
+intact, minus compass assembly.
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53669084219/" title="IMG20240421104910"><img src="https://live.staticflickr.com/65535/53669084219_53b813b9e1.jpg" width="375" height="500" alt="IMG20240421104910"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+On to the disassembly. I started taking this apart before I photographed it, but I first noticed a small mark of
+RTV, likely a warranty-void indicator(this photo post cracking it open):
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53668733101/" title="IMG20240421104918"><img src="https://live.staticflickr.com/65535/53668733101_f4d9171190.jpg" width="375" height="500" alt="IMG20240421104918"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+I first was able to lever out the front optical cover.
+</p><p>
+So, this bezel is important. There were a few slots around the edge of
+the bezel. In this photo, I have already gotten it mostly loose. I am uncertain
+how you would take this apart with less damage, likely with a custom tool.
+The retaining bar the bezel clips over is quite tall, and the bezel plastic
+brittle, perhaps from age? But anyways, I started at the top with a thin
+screwdriver, and some guitar picks and spudgers, and worked my way around:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53667859162/" title="IMG20240421104922"><img src="https://live.staticflickr.com/65535/53667859162_e2efc83bbd.jpg" width="375" height="500" alt="IMG20240421104922"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Once that was out of the way, I could remove the gasket and
+the next layer of display plastic:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53668733306/" title="IMG20240421104543"><img src="https://live.staticflickr.com/65535/53668733306_7020cd0e3c.jpg" width="500" height="186" alt="IMG20240421104543"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+At this point, I foolishly pulled the electronics module out by flipping
+the assembly upside down. This dumped a handful of springs on to my desk,
+and they bounced away. These things are tiny. I found one in my leg hair.
+Here are those I was able to find:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53669103894/" title="IMG20240421111747"><img src="https://live.staticflickr.com/65535/53669103894_8b163d927c_w.jpg" width="300" height="400" alt="IMG20240421111747"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Clusters of springs above:
+<ul>
+	<li>Top two short: these are for the UART data port. I'm missing one</li>
+	<li>Left spring and clip: part of a button</li>
+	<li>bottom/right: long, uncertain</li>
+	<li>bottom/left-center, look like battery contact sized, but battery only needs two</li>
+	<li>mid/right: mid-length, these connect to a flex that connects to the high-pressure port</li>
+</ul>
+</p><p>
+Here is the rear of the circuit board:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53667859037/" title="IMG20240421105128"><img src="https://live.staticflickr.com/65535/53667859037_b855bffe88.jpg" width="375" height="500" alt="IMG20240421105128"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+And here is the front-side with the LCD unfolded to the left:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53667858912/" title="IMG20240421105300"><img src="https://live.staticflickr.com/65535/53667858912_a4f95c1865.jpg" width="500" height="375" alt="IMG20240421105300"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Here is the PCB, with better lighting:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53669083849/in/dateposted-public/" title="IMG20240421110747"><img src="https://live.staticflickr.com/65535/53669083849_325ceffe71.jpg" width="375" height="500" alt="IMG20240421110747"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Above the left side is mostly analogs for depth sensing. Big IC bottom middle is
+an LCD controller/driver. Big IC near center is an MSP430, with JTAG pins brought out to test points likely for programming. Top right section is a RS232 line driver for the data port. Bottom right looks like an op-amp for the high-pressure port.
+</p>
