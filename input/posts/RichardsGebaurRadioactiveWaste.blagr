@@ -1,7 +1,7 @@
 Title:the Richards-Gebaur radioactive waste burial site.
 Author:rsaxvc
 CreatedDateTime:2023-11-24T01:14:03
-ModifiedDateTime:2024-03-07T01:14:03
+ModifiedDateTime:2024-04-28T01:14:03
 Tag:radiation
 Tag:ColdWar
 Tag:Richards-Gebaur
@@ -187,7 +187,10 @@ The well is no longer present on any maps I have found after this point. At this
 
 <h2>FOIA response includes "LOW-LEVEL RADIOACTIVE DISPOSAL CELL EXHUMATION, TRANSPORTATION, AND DISPOSAL FORMER RICHARDS-GEBAUR AIR FORCE BASE, March 2024 </h2>
 <p>
-This newly available report explains that the LLRDC was removed, tested, sealed in another steel pipe full of sand, that was welded shut, and it was shipped off for long term storage.
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53686106303/in/dateposted-public/" title="1999_07_FinalClosureReport_LowLevelRadioactiveDisposalCellExumationTransportationAndDisposalFormerRichardsGebaurAFB"><img src="https://live.staticflickr.com/65535/53686106303_ba2ab1ab0d_c.jpg" width="601" height="800" alt="1999_07_FinalClosureReport_LowLevelRadioactiveDisposalCellExumationTransportationAndDisposalFormerRichardsGebaurAFB"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+In short, this newly available report explains that the LLRDC was removed, tested, sealed in another steel pipe full of sand, 
+that was welded shut, and it was shipped off for long term storage.
 Removal operations occured September 11 to 17, 1997.
 </p><p>
 Well, that's a relief.
@@ -195,7 +198,7 @@ Well, that's a relief.
 
 <h2>References</h2>
 <ol>
-<li>Shane Lakin, Untitled Map, https://www.facebook.com/groups/126159798374/permalink/10160323174818375/a</li>
+<li><a href="https://www.facebook.com/groups/126159798374/permalink/10160323174818375">Shane Lakin, Untitled Map</a></li>
 <li>"Grandview Airport", https://en.wikipedia.org/wiki/Richards-Gebaur_Memorial_Airport, accessed Dec 5, 2023</li>
 <li>Air Force "T.O. 00-110A-1", 25 May 1956</li>
 <li>USAF Radioisotope Committee, "BURIAL OF RADIOACTIVE WASTE IN THE USAF", 15 March 1972</li>
@@ -207,6 +210,8 @@ Well, that's a relief.
 <li>Cass County GIS, https://maps.camavision.com/cassmo, 2020 Imagery Layer, accessed Dec 2023</li>
 <li>Special thanks to https://www.georgeafb.info/radioactive-waste-timeline/, which covers a similar site in California</li>
 <li>Special thanks to Joint Base San Antonio for handling the FOIA request.</li>
+<li><a href="https://www.flickr.com/photos/40925843@N03/albums/72177720312925758/">My related Flickr album</a></li>
+<li><a href="https://github.com/rsaxvc/richards-gebaur-maps/">My document copies and resources on github</a></li>
 </ol>
 
 <h2>Bonus technical content: Map Alignment Challenges</h2>
