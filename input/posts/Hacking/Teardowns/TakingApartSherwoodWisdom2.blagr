@@ -67,5 +67,7 @@ Here is the PCB, with better lighting:
 <a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/53669083849/in/dateposted-public/" title="IMG20240421110747"><img src="https://live.staticflickr.com/65535/53669083849_325ceffe71.jpg" width="375" height="500" alt="IMG20240421110747"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
 </p><p>
 Above the left side is mostly analogs for depth sensing. Big IC bottom middle is
-an LCD controller/driver. Big IC near center is an MSP430, with JTAG pins brought out to test points likely for programming. Top right section is a RS232 line driver for the data port. Bottom right looks like an op-amp for the high-pressure port.
+an LCD controller/driver. Big IC near center is a TI MSP430F148(48KB Flash, 2KB SRAM, 12-bit ADC, UART),
+with JTAG pins brought out to test points possibly for programming. 
+Top right section is a RS232 line driver for the data port. Bottom right looks like an op-amp for the high-pressure port.
 </p>
