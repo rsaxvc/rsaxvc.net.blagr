@@ -1,0 +1,19 @@
+Title:Genetec G64x File Fomat
+Author:rsaxvc
+CreatedDateTime:2024-10-18T02:10:52
+ModifiedDateTime:2024-10-18T02:10:52
+Tag:Genetec
+Tag:ALPR
+---
+<h2>G64x</h2>
+<p>
+Genetec would have you know that "G64x and G64 are proprietary video formats that support audio, bookmarks, date-time information, and motion indicators. G64x also supports metadata overlays. All event markers are included in the exported file, except metadata markers. These formats also support variable frame rates and variable image resolution."
+</p><p>
+Practically, G64x is a ZIP file of G64, and other files:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/54077384765/in/dateposted-public/" title="genetec2"><img src="https://live.staticflickr.com/65535/54077384765_204c5505fa_c.jpg" width="800" height="380" alt="genetec2"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Here's the entry for a file in FileInfo.xml:
+</p><pre>
+&lt;File SourceId="1" start="2020-06-02T03:00:15.940Z" end="2020-06-02T03:17:38.380Z" FileName="*************************-2020-06-01_22h00min00s000ms.g64" FileSize="360570718" WM="false" TPWM="0" Encrypted="false" TZ="Central Standard Time" &gt;
+</pre>
