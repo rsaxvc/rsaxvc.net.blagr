@@ -1,0 +1,123 @@
+Title:Bit-blasting DSHOT600 and PWM with Raspberry Pi's SMA and DMA
+Author:rsaxvc
+CreatedDateTime:2025-01-19T02:44:54
+ModifiedDateTime:2025-01-19T02:44:54
+Tag:Jitter
+Tag:Linux
+Tag:ArduPilot
+Tag:DSHOT
+Tag:PWM
+---
+
+<h2>Problem</h2>
+<p>
+ArduPilot on RaspberryPi based autopilots currently require additional
+PWM chips to drive servos and ESCs, or an external microcontroller to 
+drive more advanced protocols. This is slower and way less cool than
+doing it all directly in the SoC.
+</p>
+
+<h2>Enter, the SMI</h2>
+<p>
+Many Broadcom chips include a parallel bus peripheral named Secondary Memory Interface(SMI).
+This consists of 6 address lines, 18 data lines, and some strobe and control signals.
+Originally designed for interfacing with parallel SLC NAND, 
+<a href="https://iosoft.blog/2020/07/16/raspberry-pi-smi/">
+Lean2 has a great description.</a> This could also be used for driving
+parallel displays and DACs or reading ADCs like the <a href="https://github.com/cariboulabs/cariboulite">
+CaribouLite SDR project</a>.
+
+<h2>Can we treat the SMI as a 16x bitstream transmitter?</h2>
+<p>
+Mostly. Read on.
+</p>
+
+<h2>Challenge: pinmap</h2>
+<p>
+Raspberry Pis have only a 40-pin header, with many pins on the header dual-purposed.
+For a typical AutoPilot, a UART consumes 1-4 pins, SPI takes 4-5 pins, I2C takes 2 more,
+plus a handful of GPIOs, RC-Input using the PDM port leaves little available for SMI, except
+on the high bits. Using the SMI in 16-bit mode takes double the memory bandwidth of 8-bit
+mode, only to reach the upper bits.
+
+<h2>Challenge: output clock granularity</h2>
+<p>
+The SMI runs at 8/16/18bits@125MHz, so it seems like we could drive a new bit onto each
+output line every 8 nanoseconds. This is quite good, considering that DSHOT600
+needs 625ns or 1250ns pulses inside a 1667ns bit-frame. However, this assumes
+that the DMA driving the SMI can sustain 2 gigabits of traffic continuously.
+It cannot. Attempting to do so makes a mushy, jittery waveform because the DMA
+seems to get stalled sometimes, probably contention with CPU, GPU, or
+peripheral bus access. Or perhaps contention with another DMA controller or channel.
+</p>
+
+<h2>Challenge: clock strobe mask</h2>
+<p>
+The SMI is limited to an output strobe clock divisor of 128, so it
+cannot run any slower than just under 1MHz(125MHz/128).
+For some protocols like RC-PWM, running slower would be quite helpful.
+</p>
+
+<h2>Challenge: contiguous physical userspace buffers</h2>
+<p>
+When sending a large transfer through the SMI, the current kernel driver
+has to send each physically separate block of data through a separate
+transfer. This causes little gaps in the timing during which time the
+CPU is running and updating the DMA. These timing glitches are terrible
+for timing sensitive protocols like DSHOT.
+</p><p>
+ArduPilot runs in userspace, and I'd prefer not to make a new kernel driver to
+generate the bitstreams or manage physically contiguous buffers. And we want
+to support 4096 byte pages, which are still quite common on these little ARMs.
+</p><p>
+One solution is to allocate one <=4096 byte buffer using memalign() to
+start the buffer on a page boundary. At least within that page, the physical
+memory is contiguous, so the SMI DMA can send it all in one shot. Downside:
+this isn't huge - with only 2048x16bit samples per page, and one page, clocking
+the SMI fast enough to get good granularity and slow enough to fit the whole page
+is crucial. At a minimum speed of (125/128)MHz, 2048 samples takes 2.097 milliseconds
+- any longer transmittion would need broken into multiple pages, which may
+be physically discontiguous.
+</p>
+
+<h2>16x RC-PWM transmitter</h2>
+<p>
+RC-PWM is a protocol where typically 0% is encoded as a 1000us positive pulse,
+repeating at around 50Hz. 100% is encoded as a 2000us pulse. Nominally,
+the center of the servo would be encoded close to 1500us. Unlike pure, duty-cycle
+based PWM, RC-PWM can tell apart a disconnected controller from a 0% position.
+</p><p>
+Luckily for us, if we only need to transmit variable length pulses up to 2 milliseconds
+long, we can fit that in our transmit page with maximum strobe divider! But what about
+the other 18 milliseconds needed to make up a 50Hz rate? For that, we can pad the
+transmissions using CPU delays, and servos care far more about the length of the pulses
+than the rate accuracy, so the CPU jitter is acceptable in the idle period.
+</p>
+
+<h2>16x DSHOT600 transmitter</h2>
+<p>
+DSHOT is a fully digital servo protocol, where the following number
+describes the kilobits per second rate.
+Frames are 16 bits long: 11 bit position, 1 bit telemetry request, 4 bit CRC.
+For DSHOT600, each bit consists of a pulse within a 1667ns long window, with a short pulse
+meaning a zero, and a longer pulse meaning a one. This is similar to WS2812 LED bits.
+</p><p>
+My first thought was running the SMI at 125MHz/2 = 62.5MHz. But, this revealed contention jitter.
+By relaxing the timing accuracy very slightly, I arrived at using 125MHz/13=9.6MHz, with 104ns per sample.
+DSHOT600 is then sent with 16 samples per bit:
+</p>
+
+<table border="1">
+<tr><th>Parameter</th><th>Ideal</th><th>Achieved</th></tr>
+<tr><td>Bit-Time</th><td>1667ns</td><td>1664ns</td></tr>
+<tr><td>Zero-Pulse</th><td>625ns</td><td>624ns</td></tr>
+<tr><td>One-Pulse</th><td>1250ns</td><td>1248ns</td></tr>
+</table>
+
+For a digital protocol, deviation from the ideal parameter just removes margin from
+the receiver. I consider these close enough. Additional DSHOT rates can be reached
+by inreasing the number of SMI samples per bit, though minimum rate is limited
+by the DMA page-size restriction.
+
+<h2>Just show me the code!</h2>
+<a href="https://github.com/rsaxvc/rpi_smi_rc_dshot_pwm_demo">Sample code available here</a>
