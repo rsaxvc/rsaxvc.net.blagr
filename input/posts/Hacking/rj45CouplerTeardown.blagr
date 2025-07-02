@@ -1,0 +1,34 @@
+Title:RJ45 Coupler Teardown
+Author:rsaxvc
+CreatedDateTime:2025-07-01T00:10:53
+ModifiedDateTime:2025-07-01T00:10:53
+Tag:RJ45
+Tag:Ethernet
+---
+<p>
+I need to build a packet-dropper for work. I bought a sack
+of ethernet couplers, but they were surprisingly heavy.
+Molded into the case is "RJ45 Coupler" and "Cat 15A16A",
+neither of which are particularly descriptive.
+</p><p>
+Ages ago, they used to be lightweight beige plastic with
+stamped metal pins connecting from one side to the other.
+</p><p>
+So, I opened one of the new ones to find they use a tiny 2-layer
+circuit board now, and standard through-hole connectors.
+The traces aren't length-matched, but that probably mostly
+matters within each pair of signals. My handiwork has indeed
+damaged a few of the traces.
+</p>
+
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/54627474911/in/dateposted-public/" title="IMG_20250701_210033"><img src="https://live.staticflickr.com/65535/54627474911_08ddd0c2c8.jpg" width="465" height="500" alt="IMG_20250701_210033"/></a>
+
+<p>
+The circuit board isn't long enough to solder to the shield, so
+the shields are floating bits of metal, and this acts as a break in STP.
+Since the shields aren't soldered, they're usually held by the plastic molding.
+A few times I've run into really interesting uses of conductive rubber and
+plastics, but no, the meter says 20+ mega ohms.
+</p>
+
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/54626593112/in/dateposted-public/" title="IMG_20250701_210113"><img src="https://live.staticflickr.com/65535/54626593112_df125d565e.jpg" width="500" height="208" alt="IMG_20250701_210113"/></a>
