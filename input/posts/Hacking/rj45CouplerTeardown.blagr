@@ -32,3 +32,7 @@ plastics, but no, the meter says 20+ mega ohms.
 </p>
 
 <a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/54626593112/in/dateposted-public/" title="IMG_20250701_210113"><img src="https://live.staticflickr.com/65535/54626593112_df125d565e.jpg" width="500" height="208" alt="IMG_20250701_210113"/></a>
+
+<h2>But why?</h2>
+<p>
+I ran into a strange situation at work where I needed to be able to drop packets on demand. I was pushing a button on a device under test, and found I could rub my wedding ring on the RJ45 coupler pins more reliably than stretching across the desk to fiddle with the ethernet cable and trying to jam it back in. Eventually this resulted in <a href="https://github.com/espressif/esp-idf/pull/16194">this fix to the ESP-IDF</a>
