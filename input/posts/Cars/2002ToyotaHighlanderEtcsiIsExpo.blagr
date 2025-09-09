@@ -1,0 +1,42 @@
+Title:Toyota ETCS-i is Expo!
+Author:rsaxvc
+CreatedDateTime:2025-09-08T10:30:10
+ModifiedDateTime:2025-09-08T10:30:10
+Tag:Toyota
+Tag:ETCS-I
+---
+<p>
+One of the upsides to older car ownership is that over time, more internal information
+tends to leak out from manufacturers.
+</p><p>
+Every vehicle has a relationship between pedal input and throttle. With older vehicles,
+there was a lever, linkages, or cables between the pedal and engine. Some amount of
+nonlinearity can be chosen by adjusting the linkages or the throttle pulley.
+With electronic systems, we can replace that relationship with software, and
+switch it at runtime.
+</p><p>
+Toyota's implementation is known as Electronic Throttle Control System-
+intelligence(or ECTS-i), and I recently found a "How it works" PDF.
+Largely the 2000s can be divided into three periods for each Toyota model:
+before ETCS-i(mechanical throttle cable and pulley), ETCS-i with mechanical fallback,
+all-electric ETCS-i.
+</p><p>
+At time of writing, I still own a 2002 Toyota Highlander. There's a throttle cable
+between the pedal and throttle, so I knew it wasn't not fully electric. This
+car features a Snow-Mode button that tends to reduce take-off burnouts, but I
+have always wondered exactly how it works. This PDF confirms that snow mode does
+nothing at all to the throttle - Highlanders up to 2003 are mechanical cable only,
+and 2004 and beyond are ETCS-i. This largely confirms that snow-mode on these
+earlier 1st gen cars is implemented by adjusting the transmission shift points.
+</p><p>
+Later on in the document, there's an interesting description of the details of
+the newer implementations. To start, the pedal is a 5v sensor, and outputs a
+linearized DC voltage(presumably with the standard headroom & footroom that
+allows the ECU to detect a broken or shorted signal wire). Once the ECU reads
+the input from the pedal, it can remap the pedal to throttle relationship
+programmatically, like so:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/54774087387/in/dateposted-public/" title="Toyota_ETCS_I Control_modes"><img src="https://live.staticflickr.com/65535/54774087387_6c81910c37.jpg" width="378" height="500" alt="Toyota_ETCS_I Control_modes"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+Anyone who has tuned RC vehicles may recognize these curves as...mostly just expo!
+</p>
