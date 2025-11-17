@@ -1,0 +1,107 @@
+Title:Alpha Filter Initialization
+Author:rsaxvc
+CreatedDateTime:2025-11-17T00:00:01
+ModifiedDateTime:2025-11-17T00:00:01
+Tag:filters
+---
+<p>
+My home has mostly been converted to LED lightbulbs. With a variety of needs
+of brightness and socket bases, we have a variety of bulbs on switched dimmers, with a
+variety of turn-on behaviours. Some start from zero and ramp up. Some start
+from the minimum turn-on level of the bulb. Some seemingly start randomly then
+approach the expected output level. This has got me thinking about the topic
+of filter-initialization.
+</p>
+
+<h2>AC Dimmer Introduction</h2>
+<p>
+Wall power here is 120-Volt, AC/sine, 60Hz. Typical home dimmer systems operate
+by chopping the sine-wave at a specified phase(point in time relative to the cycle).
+This leads to a rather jumpy voltage delivery to light bulbs. In the incandescent past,
+the thermal mass of bulb filaments was enough to filter out the voltage spikes from
+the dimmer. With the advent of LED bulbs, "dimmable" bulbs usually include a decoder or
+filter of sorts to handle this.
+</p>
+
+<h2>Alpha-Filter Introduction</h2>
+An <a href="https://en.wikipedia.org/wiki/Alpha_beta_filter#Alpha_filter">alpha filter</a>,
+or exponential moving average filter,
+is one of the simplest low-pass
+<a href="https://en.wikipedia.org/wiki/Infinite_impulse_response">IIR filters</a>.
+Generally, the filter is represented by two values. The first value is a state-variable
+that is updated each time we process a new sample. The first value is a constant,
+named alpha, that relates to how much smoothing occurs. For each sample the math is
+simply:
+
+<pre>state = sample * alpha + prevState * (1 - alpha)</pre>
+
+<p>
+When alpha=1.0, the filter simply passes input to output, and can be
+considered to have unlimited bandwidth. When alpha=0.0, the filter blocks
+any changes as has zero bandwidth. Everything in-between provides a trade-off
+between responsiveness and smoothness. Typically, alpha is an application-specific constant.
+</p><p>
+I have no idea if light-bulbs use alpha-filters, but we'll use them as a way to discuss a more general problem.
+</p>
+
+<h2>Initialization</h2>
+What should we use for prevState for the first sample?
+In some applications turn-on transients may not matter too much,
+but here are a few approaches:
+
+<h3>Option1: zero</h3>
+<p>
+<pre>prevState = 0</pre>
+</p><p>
+Starting at zero means the filter is going to under-estimate the target value for a while,
+but in the case of a light-bulb this can give a slow but not unpleasant ramp-up, especially
+while carrying a newborn infant around the house wondering about how my lightbulbs handle
+filter initialization. One downside is that there is a noticeable delay getting a useful
+level of light output.
+</p>
+
+<h3>Option2: minimum bulb output</h3>
+<pre>prevState = minOutput</pre>
+<p>
+Similar to starting at zero, starting from the minimum bulb steady-state output
+also gives us a small amount of light immediately, then ramp-up to the target.
+One odd thing about this when the dimmer is set to the minimum level when switched on,
+the bulb turns on immediately but then doesn't ramp up at all since it's already reached
+its target output. It feels inconsistent and find myself sometimes expecting it to brighten
+further.
+</p>
+
+<h3>Option3: first sample</h3>
+<pre>prevState = anyPossibleInputValue</pre>
+<p>
+Some of my lightbulbs strike on to a seemingly random value, then ramp up or down
+as needed to the target dimming. Due to the chopped AC waveform, this is almost certainly
+the wrong choice for a light bulb, but may not be a bad choice for other applications.
+</p><p>
+But this approach has one advantage - on average, it'll at least start somewhere in the
+expected range.
+</p><p>
+This is equivalent to overriding alpha=1.0, just for the first sample.
+</p>
+
+<h2>Proposal: variable filter bandwidth initialization</h2>
+<p>
+What if we ramped alpha from 1.0 toward during the first few samples?
+It turns out we can get both quick initialization and a variety of
+filter responses from this. One possibility - substitute alpha for 1/N
+(where N is the sample-number, starting with 1):
+</p><pre>
+state = sample * 1/N + prevState * (1 - 1/N)</pre>
+</pre><p>
+This happens to generate a sliding-window filter. After 1/N decreases below 
+some minimum-alpha, we can transition to traditional alpha-filter behaviour, like so:
+</p>
+<pre>
+tmpAlpha = MAX(alpha, 1/N)
+state = sample * tmpAlpha + prevState * (1 - tmpAlpha)
+</pre>
+<p>
+The end result of this is that we take the first sample as truth,
+then several subsequent samples are averaged together with decreasing filter
+bandwidth for each, before reaching our final minimum bandwidth steady-state alpha.
+</p>
