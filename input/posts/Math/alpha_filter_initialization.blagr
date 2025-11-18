@@ -104,4 +104,19 @@ state = sample * tmpAlpha + prevState * (1 - tmpAlpha)
 The end result of this is that we take the first sample as truth,
 then several subsequent samples are averaged together with decreasing filter
 bandwidth for each, before reaching our final minimum bandwidth steady-state alpha.
+Early during startup this can lead to very noisy samples, so we might want to clip
+tmpAlpha, like so:
+</p>
+<pre>
+tmpAlpha = CLAMP(alpha, 1/N, 10 * alpha)
+state = sample * tmpAlpha + prevState * (1 - tmpAlpha)
+</pre>
+<p>
+Here's what that looks like. 1500 random samples, alpha=0.002
+for the fixed-bandwidth filters, but ranges 0.002 to 0.02 for
+the variable filter:
+</p><p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/54931227118/in/dateposted-public/" title="alphaFilterInitialization"><img src="https://live.staticflickr.com/65535/54931227118_23e1048a6a_c.jpg" width="800" height="403" alt="alphaFilterInitialization"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p><p>
+The variable-bandwidth filter approaches the target value quickly, perhaps a little too quickly and overshoots slightly, then smoothly approaches much quicker than constant alpha filters.
 </p>
