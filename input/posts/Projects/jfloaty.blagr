@@ -1,0 +1,33 @@
+Title:jFloaty: a weird littly JPEG-code and STB-image fork
+Author:rsaxvc
+CreatedDateTime:2026-04-23T00:47:21
+ModifiedDateTime:2026-04-23T00:47:21
+Tag:JPEG
+Tag:YUV
+Tag:RGB
+---
+<p>
+While it was too cold to dive around here,
+I was editing some photos and really wished I had a few more bits in the images.
+Since part of the JPEG compression process is red/green/blue to YUV color conversion,
+I wondered if decompressing a JPEG with floating-point operations would improve it any.
+</p><p>
+<a href="https://github.com/rsaxvc/jFloaty">jFloaty</a> is a fork of STB-image that
+supports encoding and decoding JPEGs direct to floating-point images, as well as an
+upgraded PNG encoder with dual 8/16-bit support, and some tools like scaling and
+dithering. <a href="https://imagemagick.org/">ImageMagick</a> is far more powerful,
+but at the time didn't support 8-bit to floating-point JPEG decode.
+</p><p>
+After discussing with libjpeg-turbo's maintainer, dcommander, they it wasn't as
+simple as I thought  - the quality improvements I was seeing were mostly because
+JPEGs store 10-bit DCT bins for 8-bit images, and they patched libjpeg to support
+rendering 8-bit JPEGs to a 12-bit surface with a configuration change. This is
+helpful for software like GIMP and Darktable, who will hopefully pull this in too.
+I've got a patch up for GIMP and am using it at home - much nicer than an external
+codec and doing JPEG->PFM->GIMP.
+</p><p>
+Google has also written a floating-point JPEG codec,
+<a href="https://github.com/google/jpegli">jpegli</a> though I didn't
+see it before making my own. They also have a smarter quantizer than the fixed
+Q-factor-based quantization tables of most encoders.
+</p>
