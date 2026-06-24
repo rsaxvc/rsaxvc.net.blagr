@@ -1,0 +1,140 @@
+Title:Embedded Firmware with Claude: Building a UASP ESP32-S3 thumbdrive
+Author:rsaxvc
+CreatedDateTime:2026-06-24T01:14:03
+ModifiedDateTime:2026-06-24T01:14:03
+Tag:AI
+Tag:LLM
+Tag:Claude
+Tag:Embedded
+---
+<p>
+I've been looking for a good introduction to LLMs for embedded firmware for a bit and
+recently found myself needing a UASP(USB Attached SCSI Protocol) module where I could
+control the SCSI commands.
+</p><p>
+Claude already knows about UASP, and ESP chips and their ESP-IDF SDK, so it seemed like a great fit.
+</p>
+
+<h2>Getting started</h2>
+<p>In VS-Code on Windows, with the ESP-IDF and Claude plugins, Claude got a first pass ready,
+but it wouldn't enumerate correctly, and wanted me to run it on Linux where we could use
+dmesg and usbmon. Makes sense, but super tedious.
+</p><p>
+I booted up my Linux disk in VirtualBox only to find that partially enumerated devices
+cannot be passed through to VMs. After a couple edit-reboot-run-debug loops, I moved
+the project to Linux.
+</p><p>
+Within VS-Code, I couldn't get Claude to run the build/flash/monitor tools from the ESP-IDF VS-Code
+plugin, and Claude struggled with sudo, which barked about being unable to enter a password
+without stdin or something. Claude's responses to this were...really strange and somewhat
+unsettling. A Linux developer in the same situation would want to fix sudo, but Claude
+would say something like "ooh this indicates something deeply interesting now I'll fix...", bruh.
+I almost gave up at this point. Just tell me if you need tools dude.
+</p>
+
+<h2>Mostly working development setup</h2>
+<p>
+I made a new user account on Linux, with command-line-Claude, connected the
+Espressif MCPs <a href="https://mcp.espressif.com/">for their documentation server</a> and
+<a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/tools/idf-py.html#esp-idf-mcp-server">idf.py mcp-server</a>
+tool which allows building and flashing my board direct from Claude.
+
+Each time Claude prompted to run a new command with sudo, I'd allow it into /etc/sudoers.d/,
+like so:
+
+<pre>claude  ALL=(ALL) NOPASSWD: /usr/bin/lsusb</pre>
+
+Whenever it wanted me to capture logs, I did it like so:
+
+<pre>dmesg -c; rm build/logs/*; idf.py monitor ...wait30secondsMaybeUseTimeout...; mv build/logs/*stdout*/ idf_py_stdout; dmesg > dmesg.log</pre>
+
+Eventually Claude would patch the project, build and flash it, I would run it and it would re-read the logs and retry.
+
+I'd switch x sessions to my regular account, and when Claude was idle, switch back for another go.
+
+<h2>Hilarity ensues before success</h2>
+<p>
+At first, Claude ran into a missing USB packet. It immediately dug into the designware USB phy's
+registers and setup a thread to poll them, even though TinyUSB usually handles this for you.
+</p><p>
+I came back to 'timeout 20 cat /dev/ttyACM0', command timeout with no data, "fascinating!"
+</p><p>
+Every time it added some logging, it would also tweak the SCSI IUs slightly, either renaming or moving
+bytes or sizes around. Often we weren't even getting to these packets so I didn't get what was happening.
+Eventually I saved my browser tabs of SCSI, USB, and UASP standards to a folder and told it to come back
+once it grokked them and that seemed to help.
+</p><p>
+Eventually I suggested it to check the return values of usbd_edpt_xfer() - it was failing.
+</p><p>
+While Claude knows how UASP works, I don't think Claude was aware that UASP can run with or
+without USB3 streams. On USB2 and below, it works a little differently. To its credit,
+Claude read the Linux UASP driver source and rearranged the endpoint transfers to match the
+streamless protocol.
+</p><p>
+Several times the context memory reached a point where it was too full and speed ground to a token-burning
+crawl. Seems to be a commonly reported issue with Claude. Eventually it gets bad enough that creating a new
+session seemed to fix it.
+</p><p>
+Suddenly, dmesg started spewing an endless list of SCSI device enumerations.
+Ever wonder what comes after /dev/sdz? /dev/sdaa of course!
+Claude's SCSI INQUIRY handler replied success for every LUN, so Linux dutifully kept enumerating them at
+high speed. This was a little tricky to catch the start of the dmesg log since it was going so fast.
+Eventually raced it by running `idf.py monitor` then plugging in the USB-port cable and hitting enter.
+This is a weird little effect that might be fun to play with later, but I asked Claude to report just one
+LUN...
+</p><p>
+And then it worked. 6MB wear-leveled block device over USB. Made a filesystem, saved some files,
+ejected, remounted, seems to be working fine! A whopping 2mbps with loads of serial logging, but the
+protocol is up!
+</p>
+
+<h2>What went well?</h2>
+
+<h3>Optimizing read-eval-debug loop</h3>
+As for traditional software development, make it fast or pay the tax.
+Embedded is especially awful, since flashing a microcontroller is almost never fast.
+One big upside is that Claude was kicking this off for me, so I never had to wait for it.
+
+<h3>Observability</h3>
+<p>
+LLMs are limited by the same observability limitations as any programmer. In the
+embedded space, observability gets weird as you're often testing against physical
+objects or effects, and you're often limited by the available tools, and sometimes whittling
+your own. I picked UASP to do since with this board I just needed two USB ports.
+</p><p>
+Until Claude could read dmesg and idf.py-monitor logs, it was very much stumbling around
+blindly in 
+<a href="https://en.wikipedia.org/wiki/Allegory_of_the_cave">Plato's Cave</a>.
+</p><p>
+Software tooling like tshark and usbmon are best used if the LLM can be setup to run and analyze
+them itself. And on the electrical side of things, folks are working on plugins for oscilloscopes,
+power supplies, and other test equipment too. Part of the process for tuning the edit-run-debug
+loop is going to be connecting the plumbing for these.
+</p>
+
+<h3>MCP Servers</h3>
+These are terrific, especially for embedded where they're required for integrating hardware I/O,
+and also for documentation search. The ESP-IDF build and flash mcp service is only 3 months old,
+and is the next area for extension - with the ESP32-S3 with dual ports(USB-UART and USB-Native),
+it'll soon be possible for LLMs to pull logs themselves as well. There is also work going
+on in the electrical space <a href="https://www.youtube.com/watch?v=hwIYK7mD7zI">at Tektronix for this</a>.
+
+<h3>Familiarity with protocols</h3>
+Just like regular meatspace firmware development, knowing how to write f(x) and g(x) makes writing f(g(x)) much simpler.
+
+<h3>Document Ingress</h3>
+Explicitly providing the protocol specs fixed a number of oddities where I have to assume it just didn't remember
+the details of the SCSI packet layouts. I couldn't either.
+
+<h2>Closing</h2>
+<p>
+Is it worth it? In short, yes. It's like the trains here - sometimes slower than driving, but I can
+multitask, play with my nieces, photograph, and sleep. Just being async to my life is a boon.
+</p><p>
+Though sometimes frustrating when it made silly mistakes and plastered over permissions
+issues rather than asking for help, LLM development doesn't have to be perfect, and it
+gets a huge bonus just for being asynchronous.
+</p><p>
+For the banging-the-head-on-the-wall parts of debugging, it was able to handle most of that,
+just needing me in the backseat to hand it logs as I passed by.
+</p>
