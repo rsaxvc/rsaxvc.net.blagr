@@ -1,0 +1,126 @@
+Title:The State of Android Auto
+Author:rsaxvc
+CreatedDateTime:2026-08-07T20:46:21
+ModifiedDateTime:2026-08-07T20:46:21
+Tag:Software
+Tag:Craftsmanship
+Tag:Toyota
+Tag:Android
+Tag:AndroidAuto
+---
+<p>
+My first professional firmware job was at Garmin International,
+making backpacking products, at a time of my life when I backpacked myself.
+It was a good fit. Our team would go out a few times per year, picking up lunch,
+then heading to a large park to test, practice, review, and plan.
+I really enjoyed making a thing I wanted to use, and knowing how I wanted it to work.
+</p><p>
+Sometime you pick up a tool, and it's intuitive. It's the right tool for the job.
+It feels like something you'd've made to solve the same problems you have.
+Android Auto is not one of those products.
+</p>
+
+<h2>Toyota Bugs</h2>
+<p>
+Starting a route or canceling a route in Android Auto causes the compass to glitch back and forth.
+</p><p>
+The entertainment system clock location varies depending on the current page.
+</p><p>
+They're starting with a lower-contrast display technology and on top of that, in dark mode,
+the gauge-cluster clock is gray instead of white just to make it that extra bit more difficult to read.
+</p><p>
+The entertainment system clock does not always match the gauge cluster clock, and is sometimes off by a daylight savings time.
+</p><p>
+I cannot rev the internal combustion engine in neutral or park.
+My car had a rattle that only occurs at certain RPMs, but no way for me to diagnose further.
+This took half a day at the dealership since we couldn't reproduce it easily.
+</p><p>
+Having two different voice assistance fighting for the audio is confusing.
+There are voice assistants buttons on both the steering wheel and the entertainment display and they seem also to be listening all the time anyways.
+Long press opens Android Auto, and short tap cancels Android Auto.
+Short press opens Toyota Assist, and long press cancels Toyota Assist.
+This is, of course, incredibly confusing to both assistants.
+</p><p>
+There are two speed limit indicators, one on the dashboard and another on the entertainment screen in Android Auto.
+And they don't always match. The dashboard speed limit indicator is camera based, while the Android one is map-based.
+This means that the dashboard one is usually wrong after a turn but the Android one is usually correct if available.
+After passing a speed limit sign the camera one is almost always correct and the Android one is only wrong for a short while until the map is updated.
+I do not want to have to think about which type of speed limit is most of interest to me.
+The Android Auto speed limit indicator is placed on the farthest location from the driver which makes it distracting to use.
+You could display the minimum of both systems in a single location.
+Did I mention that the dashboard speed limit indicator moves around based on other indicator icons?
+</p><p>
+Connection between phone and carputer is inconsistent.
+The actual pairing entry in both devices works, however
+the link between them often fails to come up until I wade deep into the bowels of the settings
+on the entertainment unit and once again turn on the checkbox to enable Android Auto for this
+particular phone.
+
+30 years of Bluetooth and connection management is still terrible.
+</p><p>
+I do like the fuel efficiency, but wowee this thing takes forever to warm up in the winter.
+</p><p>
+When it's raining hard, the capacitive door locks don't always open.
+</p>
+
+<h2>Android Auto Bugs</h2>
+<p>
+Audio stream management is bad.
+When a new Pandora song starts in the middle of important turn directions,
+the turn directions stop jarringly mid-word to let the song start.
+</p><p>
+But when I try to send a text, it reads it back to me but jumbles the turn instructions together with the outgoing text.
+</p><p>
+Today after configuring a route my car said,
+"by the way if you want to listen to the news say hey Google...",
+then abruptly cut itself off with a "Hi how can I help?" Prompt.
+</p><p>
+Eventually I figured out how to read the news, but didn't have time to finish it.
+The next time I started the car it started playing the news not from the beginning of the story,
+but from the beginning of the days news. I still have yet to finish a day's news.
+</p><p>
+Much of the user interface seems to be engagement driven, which is wildly out of place while driving.
+
+It's great to be able to send a text hands-free, but I have to click play to hear the response.
+This would be fine, if the button to play the text didn't disappear after a couple seconds while
+I was executing a lane change. Once it times out the message is seemingly gone until another message
+comes from the same sender.
+
+Of course you can always tap the multitask button,
+followed by the app list button that appears in its place,
+then scroll down to messages,
+then open the message,
+then play it.
+
+A simple untimed dismiss button would have worked too.
+</p><p>
+Many, many things just work better on my phone.
+</p><p>
+The quietest car I've owned, a microphone barely six inches from my mouth,
+music paused, can barely understand my voice.
+And then Gemini has the gall to say, "You probably mean ${THE_THING_I_ACTUALLY_SAID_ALOUD}"
+The speech to text process isn't just bad, it's buggy too - often cutting me off mid sentence and trying to process that,
+or waiting indefinitely for who knows what.
+</p><p>
+Several times now Gemini has responded by dumping a page of software gore: text prompts.
+If you ask it what happened, it'll lie and claim it didn't glitch out and prompt dump.
+It's not good at lying though, since there's a log. It does this at least once a week.
+</p><a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/55450620632/in/dateposted-public/" title="Gemini Prompt Dump"><img src="https://live.staticflickr.com/65535/55450620632_5c3681b1a2_z.jpg" width="288" height="640" alt="Gemini Prompt Dump"/></a><p>
+</p><p>
+Perhaps this is a misplaced expectation,
+but I want the Android SmartPhoneAssistant to be accessible hands-free in my car just like using a Bluetooth speaker.
+I don't want Android DumbCarAssistant ever really.
+</p><p>
+I used to open an email to myself before driving, and dictate into it.
+The alternative, which is the Google Android auto note subsystem seems to record,
+but doesn't actually seem to go anywhere. Perhaps my hardcopy is stuck in the mail?
+</p><p>
+Using Google Maps in my car makes my phone overheat with "3D Buildings have been disabled".
+3D buildings are already disabled both in Google Maps on my phone and car.
+</p><p>
+Gemini is often unusably slow, sometimes taking tens of seconds to be able to send a text message.
+</p><p>
+Gemini cannot route me to my Google maps favorites. It knows home, work, and loves making suggestions for restaurants,
+but only if speech to text can name the correctly - our gym, High Blue, will only route to the local high school.
+</p>
+
