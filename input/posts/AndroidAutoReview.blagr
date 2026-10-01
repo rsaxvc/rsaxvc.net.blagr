@@ -1,7 +1,7 @@
 Title:The State of Android Auto
 Author:rsaxvc
 CreatedDateTime:2026-08-07T20:46:21
-ModifiedDateTime:2026-08-07T20:46:21
+ModifiedDateTime:2026-09-30T20:46:21
 Tag:Software
 Tag:Craftsmanship
 Tag:Toyota
@@ -124,3 +124,27 @@ Gemini cannot route me to my Google maps favorites. It knows home, work, and lov
 but only if speech to text can name it correctly - our gym, High Blue, will only route to the local high school.
 </p>
 
+<h3>Where's Walmart?</h3>
+<p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/55562002958/in/dateposted-public/" title="CannotFindWalmart"><img src="https://live.staticflickr.com/65535/55562002958_1b7439557b.jpg" width="500" height="375" alt="CannotFindWalmart"/></a>
+</p><p>
+Today, I was pretty sure I was close to a Walmart if I could just get out of the neighborhood I was in.
+Google vehemently believed that I should drive to the closest Walmart, 31 minutes away.
+There is another only six minutes away.
+Then there is this one, on the other side of the neighborhood I was in, where I parked
+ and took this photo.
+<p>
+
+<h3>Where are my favorite Waypoints?</h3>
+<p>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/55562061724/in/dateposted-public/" title="WhereAreFavorites1"><img src="https://live.staticflickr.com/65535/55562061724_ca1e788acb_w.jpg" width="400" height="300" alt="WhereAreFavorites1"/></a>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/55560880302/in/dateposted-public/" title="WhereAreFavorites2"><img src="https://live.staticflickr.com/65535/55560880302_7bd768fd22_w.jpg" width="400" height="300" alt="WhereAreFavorites2"/></a>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/40925843@N03/55561900901/in/dateposted-public/" title="WhereAreFavorites3"><img src="https://live.staticflickr.com/65535/55561900901_7ee5fd3391_w.jpg" width="400" height="300" alt="WhereAreFavorites3"/></a>
+</p><p>
+Android Auto has a really handy feature where it suggests one or two places you might
+want to go based on historical and calendar data. However, it never stays in the same place.
+Sometimes it's in a bubble on the top left. Sometimes it's in a subwindow on the top right.
+Sometimes it's hidden under a briefcase icon halfway between the search bar and Pandora.
+It's frightening how much driver attention is spent fiddling with Android Auto trying to
+find functions that move with little rhyme or reason when their eyes should be on the road.
+</p>
