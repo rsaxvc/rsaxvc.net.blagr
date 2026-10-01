@@ -1,7 +1,7 @@
 Title:Embedded Firmware with Claude: Building a UASP ESP32-S3 thumbdrive
 Author:rsaxvc
 CreatedDateTime:2026-06-24T01:14:03
-ModifiedDateTime:2026-06-24T01:14:03
+ModifiedDateTime:2026-09-30T01:14:03
 Tag:AI
 Tag:LLM
 Tag:Claude
@@ -12,11 +12,13 @@ I've been looking for a good introduction to LLMs for embedded firmware for a bi
 recently found myself needing a UASP(USB Attached SCSI Protocol) module where I could
 control the SCSI commands.
 </p><p>
-Claude already knows about UASP, and ESP chips and their ESP-IDF SDK, so it seemed like a great fit.
+Claude already knows about UASP, USB, ESP chips, and their ESP-IDF SDK, so it seemed like a great fit.
+The only hardware was an ESP32-S3-wroom1 N16R8 development board.
 </p>
 
 <h2>Getting started</h2>
-<p>In VS-Code on Windows, with the ESP-IDF and Claude plugins, Claude got a first pass ready,
+<p>
+In VS-Code on Windows, with the ESP-IDF and Claude plugins, Claude got a first pass ready,
 but it wouldn't enumerate correctly, and wanted me to run it on Linux where we could use
 dmesg and usbmon. Makes sense, but super tedious.
 </p><p>
@@ -85,7 +87,11 @@ LUN...
 </p><p>
 And then it worked. 6MB wear-leveled block device over USB. Made a filesystem, saved some files,
 ejected, remounted, seems to be working fine! A whopping 2mbps with loads of serial logging, but the
-protocol is up!
+protocol is up! After stripping out the logging, we're above 7mbps and nearing the goodput of USB1.1.
+Writes are embarassingly slow, but that's because it's NOR flash, around 300-400kbps.
+</p><p>
+My board has PSRAM, why not try that? ~8mbps both ways! Since UASP supports multiple LUNs,
+we can mount both the remaining flash and PSRAM at startup.
 </p>
 
 <h2>What went well?</h2>
@@ -121,20 +127,23 @@ on in the electrical space <a href="https://www.youtube.com/watch?v=hwIYK7mD7zI"
 
 <h3>Familiarity with protocols</h3>
 Just like regular meatspace firmware development, knowing how to write f(x) and g(x) makes writing f(g(x)) much simpler.
+Claude started off well ahead of me on the UASP front, but got stuck in a few places that seemed obvious to me to try.
 
 <h3>Document Ingress</h3>
 Explicitly providing the protocol specs fixed a number of oddities where I have to assume it just didn't remember
-the details of the SCSI packet layouts. I couldn't either.
+the details of the SCSI packet layouts. I couldn't either. I hope this sort of thing gets better over time.
 
 <h2>Closing</h2>
 <p>
-Is it worth it? In short, yes. It's like the trains here - sometimes slower than driving, but I can
-multitask, play with my nieces, photograph, and sleep. Just being async to my life is a boon.
+Is it worth it? In short, yes.
 </p><p>
-Though sometimes frustrating when it made silly mistakes and plastered over permissions
-issues rather than asking for help, LLM development doesn't have to be perfect, and it
-gets a huge bonus just for being asynchronous.
+Though frustrating when it made silly mistakes and plastered over them
+rather than asking for help, LLM development doesn't have to be perfect,
+and it gets a huge bonus just for being asynchronous.
 </p><p>
 For the banging-the-head-on-the-wall parts of debugging, it was able to handle most of that,
-just needing me in the backseat to hand it logs as I passed by.
+just needing me in the backseat to feed it log captures, and
+<a href="https://github.com/espressif/esp-idf/issues/18757">that too will eventually become automated</a>.
+</p><p>
+<a href="https://github.com/rsaxvc/esp32-uasp">Github source code</a>
 </p>
