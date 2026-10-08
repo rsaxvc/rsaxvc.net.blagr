@@ -1,7 +1,7 @@
 Title:Optimized division of uint64_t by a constant on 32-bit microcontrollers
 Author:rsaxvc
 CreatedDateTime:2022-07-21T01:01:01
-ModifiedDateTime:2024-01-27T01:01:01
+ModifiedDateTime:2026-10-07T01:01:01
 Tag:Optimization
 Tag:Division
 Tag:Multiplication
@@ -208,4 +208,12 @@ Generally, the umulh-based approach above may apply to any machine with a 32 bit
 When a 32-bit udiv instruction is available, __aeabi_uldivmod is competitive on: <a href="https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/divide-and-conquer">Cortex-M3, M4, M33, M35P, M55, and newer Cortex-A cores including Cortex-A7, Cortex-A15, Cortex-A53, Cortex-A57</a>.
 
 Cores with umull but without udiv is where the umulh approach really shines: <a href="https://developer.arm.com/documentation/ddi0210/c/Instruction-Cycle-Timings/Multiply-and-multiply-accumulate">ARM7TDMI</a>, ARM9, ARM10, ARM11, Cortex-A8, and Cortex-A9. Possibly also XScale and StrongARM.
+</p>
+
+<h2>Update 2026</h2>
 <p>
+While working with ArduPilot, I found that they were using the same hack,
+<a href="https://0x414b.com/2021/04/16/arm-division.html"> originally found here!</a>
+<a href="https://github.com/llvm/llvm-project/issues/63731"> Clang/llvm report.</a>
+<a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106484"> GCC report.</a>
+</p>
